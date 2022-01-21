@@ -16,5 +16,6 @@ module Semi
     include("syntax/addition.jl")
     include("broadcast.jl")
     include("syntax/semi_macro.jl")
+    include("modification.jl")
 
 end
