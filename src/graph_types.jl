@@ -10,18 +10,25 @@ end
 
 abstract type Edge end
 
+function Edge(lhs, rhs)
+    DirectedEdge(lhs, rhs)    
+end
+
 struct DirectedEdge{T <: Node} <: Edge
     lhs::T
     rhs::T
 end
 
-function Edge(lhs, rhs)
-    DirectedEdge(lhs, rhs)    
-end
-
 struct UndirectedEdge{T <: Node} <: Edge
     lhs::T
     rhs::T
+end
+
+edges = (:DirectedEdge, :UndirectedEdge)
+for e in edges
+    @eval $e(lhs::Symbol, rhs::Symbol) = $e(Node(lhs), Node(rhs))
+    @eval $e(lhs, rhs::Symbol) = $e(lhs, Node(rhs))
+    @eval $e(lhs::Symbol, rhs) = $e(Node(lhs), rhs)
 end
 
 abstract type Modifier end
@@ -39,6 +46,8 @@ struct ModifiedNode{N <: Node, M <: Modifier} <: Node
     node::N
     modifier::M
 end
+
+ModifiedNode(node::Symbol, modifier) = ModifiedNode(Node(node), modifier)
 
 function Edge(lhs, rhs::ModifiedNode)
     edge = Edge(lhs, rhs.node)
