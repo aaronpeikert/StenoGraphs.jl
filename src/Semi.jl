@@ -1,5 +1,7 @@
 module Semi
 
-# Write your package code here.
+export Node
+
+include("graph_types.jl")
 
 end
