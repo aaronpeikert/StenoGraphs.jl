@@ -8,11 +8,13 @@ module Semi
     export Modifier
     export ModifiedEdge
     export ModifiedNode
+    export @semi
 
     include("graph_types.jl")
     include("syntax/symbol.jl")
     include("syntax/edge.jl")
     include("syntax/addition.jl")
     include("broadcast.jl")
+    include("syntax/semi_macro.jl")
 
 end
