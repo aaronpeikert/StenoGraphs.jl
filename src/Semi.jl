@@ -12,5 +12,7 @@ module Semi
     include("graph_types.jl")
     include("syntax/symbol.jl")
     include("syntax/edge.jl")
+    include("syntax/addition.jl")
+    include("broadcast.jl")
 
 end
