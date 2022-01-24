@@ -1,8 +1,17 @@
 using Semi
-using Test
+using Test, SafeTestsets
 
 @testset "Semi.jl" begin
-    include("graph_types.jl")
-    include("syntax.jl")
-    include("modification.jl")
+    @safetestset "Graph Types" begin
+        using Semi
+        include("graph_types.jl")
+    end
+    @safetestset "Syntax" begin
+        using Semi
+        include("syntax.jl")
+    end
+    @safetestset "Modify Edges" begin
+        using Semi
+        include("modification.jl")
+    end
 end
