@@ -33,28 +33,34 @@ end
 
 abstract type Modifier end
 
-struct ModifiedEdge{E <: Edge, M <: Modifier} <: Edge
+struct ModifiedEdge{E <: Edge, VM <: Vector{M} where {M <: Modifier}} <: Edge
     edge::E
-    modifier::M
+    modifiers::VM
 end
 
 function ModifiedEdge(edge::ModifiedEdge, modifier::Modifier)
-    ModifiedEdge(edge.edge, [edge.modifier, modifier])    
+    ModifiedEdge(edge.edge, [edge.modifiers..., modifier])    
 end
 
-struct ModifiedNode{N <: Node, M <: Modifier} <: Node
+function ModifiedEdge(edge::Edge, modifier::Modifier)
+    ModifiedEdge(edge, [modifier])    
+end
+
+struct ModifiedNode{N <: Node, VM <: Vector{M} where {M <: Modifier}} <: Node
     node::N
-    modifier::M
+    modifiers::VM
 end
 
-ModifiedNode(node::Symbol, modifier) = ModifiedNode(Node(node), modifier)
+ModifiedNode(node, modifier::Modifier) = ModifiedNode(node, [modifier])
+
+ModifiedNode(node::Symbol, modifier::Vector{M} where {M <: Modifier}) = ModifiedNode(Node(node), modifier)
 
 function Edge(lhs, rhs::ModifiedNode)
     edge = Edge(lhs, rhs.node)
-    ModifiedEdge(edge, rhs.modifier)
+    ModifiedEdge(edge, rhs.modifiers)
 end
 
 function Edge(lhs::ModifiedNode, rhs)
     edge = Edge(lhs.node, rhs)
-    ModifiedEdge(edge, lhs.modifier)
+    ModifiedEdge(edge, lhs.modifiers)
 end
