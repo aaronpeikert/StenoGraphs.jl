@@ -9,6 +9,7 @@ module Semi
     export ModifiedEdge
     export ModifiedNode
     export @semi
+    export *
 
     include("graph_types.jl")
     include("syntax/symbol.jl")
