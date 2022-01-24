@@ -3,19 +3,22 @@
 end
 
 @testset "Edges" begin
-    @test Edge(:a, :b) == Edge(Node(:a), Node(:b)) == DirectedEdge(SimpleNode(:a), SimpleNode(:b))
+    e1 = Edge(:a, :b)
+    e2 = Edge(Node(:a), Node(:b))
+    e3 = DirectedEdge(SimpleNode(:a), SimpleNode(:b))
+    @test e1 ≂ e2 && e2 ≂ e3
 end
 
 # define modifier
 struct Weight <: Modifier end
 
 @testset "ModifedNode" begin
-    @test ModifiedNode(:a, Weight()) == ModifiedNode(Node(:a), Weight())
+    @test ModifiedNode(:a, Weight()) ≂ ModifiedNode(Node(:a), Weight())
 end
 
 @testset "ModifedEdges" begin
     # ModifiedNode leads to ModifiedEdge with simple Node
-    @test Edge(Node(:a), ModifiedNode(Node(:b), Weight())) == ModifiedEdge(Edge(:a, :b), Weight())
+    @test Edge(Node(:a), ModifiedNode(Node(:b), Weight())) ≂ ModifiedEdge(Edge(:a, :b), Weight())
 end
 
 #Edge(Node(:a), ModifiedNode(Node(:b), start(4)))
