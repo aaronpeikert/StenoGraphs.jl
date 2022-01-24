@@ -13,13 +13,13 @@ function *(lhs::Node, rhs::Modifier)
 end
 
 function *(lhs::Modifier, rhs::Node)
-    ModifiedNode(lhs, rhs)
+    ModifiedNode(rhs, lhs)
 end
 
 function *(lhs::Symbol, rhs::Modifier)
     ModifiedNode(lhs, rhs)
 end
 
-function *(lhs::Modifier, rhs::Node)
-    ModifiedNode(lhs, rhs)
+function *(lhs::Modifier, rhs::Symbol)
+    ModifiedNode(rhs, lhs)
 end
