@@ -46,6 +46,8 @@ function ModifiedEdge(edge::Edge, modifier::Modifier)
     ModifiedEdge(edge, [modifier])    
 end
 
+ModifiedEdge(edge::Edge, modifier::Matrix{M} where {M <: Modifier}) = ModifiedEdge(edge, vec(modifier))
+
 struct ModifiedNode{N <: Node, VM <: Vector{M} where {M <: Modifier}} <: Node
     node::N
     modifiers::VM
@@ -53,7 +55,11 @@ end
 
 ModifiedNode(node, modifier::Modifier) = ModifiedNode(node, [modifier])
 
-ModifiedNode(node::Symbol, modifier::Vector{M} where {M <: Modifier}) = ModifiedNode(Node(node), modifier)
+ModifiedNode(node::ModifiedNode, modifier::Modifier) = ModifiedNode(node.node, [node.modifiers modifier])
+
+ModifiedNode(node::Node, modifier::Matrix{M} where {M <: Modifier}) = ModifiedNode(node, vec(modifier))
+
+ModifiedNode(node::Symbol, modifier::Modifier) = ModifiedNode(Node(node), modifier)
 
 function Edge(lhs, rhs::ModifiedNode)
     edge = Edge(lhs, rhs.node)
