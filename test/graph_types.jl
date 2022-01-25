@@ -13,15 +13,15 @@ end
 struct Weight <: Modifier end
 
 @testset "ModifedNode" begin
-    @test ModifiedNode(:a, Weight()) ≂ ModifiedNode(Node(:a), Weight())
+    @test ModifyingNode(:a, Weight()) ≂ ModifyingNode(Node(:a), Weight())
 end
 
 @testset "ModifedEdges" begin
-    # ModifiedNode leads to ModifiedEdge with simple Node
-    @test Edge(Node(:a), ModifiedNode(Node(:b), Weight())) ≂ ModifiedEdge(Edge(:a, :b), Weight())
+    # ModifyingNode leads to ModifiedEdge with simple Node
+    @test Edge(Node(:a), ModifyingNode(Node(:b), Weight())) ≂ ModifiedEdge(Edge(:a, :b), Weight())
 end
 
-#Edge(Node(:a), ModifiedNode(Node(:b), start(4)))
+#Edge(Node(:a), ModifyingNode(Node(:b), start(4)))
 
 #Edge(Node(:a), Node(:b))
 

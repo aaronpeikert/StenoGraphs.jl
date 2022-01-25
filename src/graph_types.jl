@@ -48,25 +48,25 @@ end
 
 ModifiedEdge(edge::Edge, modifier::Matrix{M} where {M <: Modifier}) = ModifiedEdge(edge, vec(modifier))
 
-struct ModifiedNode{N <: Node, VM <: Vector{M} where {M <: Modifier}} <: Node
+struct ModifyingNode{N <: Node, VM <: Vector{M} where {M <: Modifier}} <: Node
     node::N
     modifiers::VM
 end
 
-ModifiedNode(node, modifier::Modifier) = ModifiedNode(node, [modifier])
+ModifyingNode(node, modifier::Modifier) = ModifyingNode(node, [modifier])
 
-ModifiedNode(node::ModifiedNode, modifier::Modifier) = ModifiedNode(node.node, [node.modifiers modifier])
+ModifyingNode(node::ModifyingNode, modifier::Modifier) = ModifyingNode(node.node, [node.modifiers modifier])
 
-ModifiedNode(node::Node, modifier::Matrix{M} where {M <: Modifier}) = ModifiedNode(node, vec(modifier))
+ModifyingNode(node::Node, modifier::Matrix{M} where {M <: Modifier}) = ModifyingNode(node, vec(modifier))
 
-ModifiedNode(node::Symbol, modifier::Modifier) = ModifiedNode(Node(node), modifier)
+ModifyingNode(node::Symbol, modifier::Modifier) = ModifyingNode(Node(node), modifier)
 
-function Edge(lhs, rhs::ModifiedNode)
+function Edge(lhs, rhs::ModifyingNode)
     edge = Edge(lhs, rhs.node)
     ModifiedEdge(edge, rhs.modifiers)
 end
 
-function Edge(lhs::ModifiedNode, rhs)
+function Edge(lhs::ModifyingNode, rhs)
     edge = Edge(lhs.node, rhs)
     ModifiedEdge(edge, lhs.modifiers)
 end

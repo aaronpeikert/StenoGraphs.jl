@@ -7,7 +7,7 @@ module Semi
     export UndirectedEdge
     export Modifier
     export ModifiedEdge
-    export ModifiedNode
+    export ModifyingNode
     export @semi
     export *
 

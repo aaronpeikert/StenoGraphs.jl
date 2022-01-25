@@ -9,19 +9,19 @@ function *(lhs::Edge, rhs::Modifier)
 end
 
 function *(lhs::Node, rhs::Modifier)
-    ModifiedNode(lhs, rhs)
+    ModifyingNode(lhs, rhs)
 end
 
 function *(lhs::Modifier, rhs::Node)
-    ModifiedNode(rhs, lhs)
+    ModifyingNode(rhs, lhs)
 end
 
 function *(lhs::Symbol, rhs::Modifier)
-    ModifiedNode(lhs, rhs)
+    ModifyingNode(lhs, rhs)
 end
 
 function *(lhs::Modifier, rhs::Symbol)
-    ModifiedNode(rhs, lhs)
+    ModifyingNode(rhs, lhs)
 end
 
 function *(lhs::Modifier, rhs::Modifier)
@@ -41,9 +41,9 @@ function *(lhs::Symbol, rhs::VecOrMat{M} where {M <: Modifier})
 end
 
 function *(lhs::VecOrMat{M} where {M <: Modifier}, rhs::Node)
-    ModifiedNode(rhs, lhs)
+    ModifyingNode(rhs, lhs)
 end
 
 function *(lhs::Node, rhs::VecOrMat{M} where {M <: Modifier})
-    ModifiedNode(lhs, rhs)
+    ModifyingNode(lhs, rhs)
 end
