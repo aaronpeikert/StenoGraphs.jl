@@ -24,13 +24,6 @@ struct UndirectedEdge{T <: Node} <: Edge
     rhs::T
 end
 
-edges = (:DirectedEdge, :UndirectedEdge)
-for e in edges
-    @eval $e(lhs::Symbol, rhs::Symbol) = $e(Node(lhs), Node(rhs))
-    @eval $e(lhs, rhs::Symbol) = $e(lhs, Node(rhs))
-    @eval $e(lhs::Symbol, rhs) = $e(Node(lhs), rhs)
-end
-
 abstract type Modifier end
 
 struct ModifiedEdge{E <: Edge, VM <: Vector{M} where {M <: Modifier}} <: Edge
