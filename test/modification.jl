@@ -48,3 +48,19 @@ end
     @test n5 ≂ n6
     @test n6 ≂ n7
 end
+
+
+@testset "Multiplication of VecOrMat of Modifiers" begin
+    [Weight(1), Start(1)] * [Weight(2) Start(2)] ≂ [Weight(1), Start(1), Weight(2), Start(2)]
+
+    vn1 = ModifyingNode(Node(:a), [Weight(1), Start(1)])
+    vn2 = [Weight(1), Start(1)] * :b
+    vn3 = :b * [Weight(1), Start(1)]
+    vn4 = [Weight(1)] * :b * [Start(1)]
+
+    vn1 ≂ vn2
+    vn2 ≂ vn3
+    vn3 ≂ vn4
+
+    @test [Weight(1) Start(1)] * :b *  [Weight(2) Start(2)] ≂ [Weight(1) Start(1) Weight(2) Start(2)] * :b
+end
