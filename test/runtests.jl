@@ -17,4 +17,8 @@ using Test, SafeTestsets
         include("test_helper.jl")
         include("modification.jl")
     end
+    @safetestset "Communative" begin
+        using Semi
+        include("comunative.jl")
+    end
 end

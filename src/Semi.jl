@@ -19,4 +19,5 @@ module Semi
     include("syntax/semi_macro.jl")
     include("modification.jl")
     include("symbol_as_node.jl")
+    include("macro_communative.jl")
 end
