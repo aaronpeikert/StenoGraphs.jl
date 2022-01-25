@@ -17,6 +17,7 @@ end
     @test Node(:a) * Weight(3) ≂ Weight(3) * Node(:a)
     @test ModifiedEdge(Edge(:a, :b), Weight(1)) ≂ Edge(:a * Weight(1), :b)
     @test Edge(:a * Weight(1), :b) ≂ Edge(Weight(1) * :a, :b)
+    @test ModifiedEdge(Edge(:a, :b), [Weight(1), Start(1)]) ≂ @semi Weight(1) * a ~ b * Start(1)
 end
 
 @testset "Multiplication of Modifiers" begin

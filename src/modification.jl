@@ -23,3 +23,10 @@ end
 function *(lhs::VecOrMat{M} where {M<:Modifier}, rhs::VecOrMat{M} where {M<:Modifier})
     vec([vec(lhs)... vec(rhs)...])
 end
+
+
+# Edge(:a, :b) ≠ Edge(:b, :a) 
+# not communative
+Edge(lhs, rhs::ModifyingNode) = ModifiedEdge(Edge(lhs, rhs.node), rhs.modifiers)
+Edge(lhs::ModifyingNode, rhs) = ModifiedEdge(Edge(lhs.node, rhs), lhs.modifiers)
+Edge(lhs::ModifyingNode, rhs::ModifyingNode) = ModifiedEdge(Edge(lhs.node, rhs.node), [lhs.modifiers..., rhs.modifiers...])
