@@ -21,4 +21,9 @@ using Test, SafeTestsets
         using Semi
         include("comunative.jl")
     end
+    @safetestset "Promotion and Conversion" begin
+        using Semi
+        include("test_helper.jl")
+        include("promotion.jl")
+    end
 end
