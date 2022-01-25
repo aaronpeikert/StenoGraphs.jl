@@ -7,6 +7,7 @@ struct Start <: Modifier
 end
 
 @testset "Multiplication of Edges" begin
+    @test Edge(:a, :b) * Weight(1) ≂ ModifiedEdge(Edge(:a, :b), Weight(1))
     @test ModifiedEdge(Edge(:a, :b), Weight(1)) ≂ Weight(1) * @semi a ~ b
     @test Edge(:a, :b) * Weight(1) ≂ Weight(1) * Edge(:a, :b)
 end
@@ -23,8 +24,26 @@ end
     e2 = @semi a ~ Weight(1) * Start(1) * b 
     e3 = @semi a ~ Weight(1) * b * Start(1)
     e4 = @semi a ~ b * Weight(1) * Start(1)
-
+    e5 = Edge(:a, :b) * Weight(1) * Start(1)
+    e6 = Weight(1) * Edge(:a, :b) * Start(1)
+    n7 = Edge(:a, :b) * (Weight(1) * Start(1))
     @test e1 ≂ e2
     @test e2 ≂ e3
     @test e3 ≂ e4
+    @test e4 ≂ e5
+    @test e5 ≂ e6
+
+    n1 = ModifyingNode(:b, [Weight(1) Start(1)])
+    n2 = @semi Weight(1) * Start(1) * b 
+    n3 = @semi Weight(1) * b * Start(1)
+    n4 = @semi b * Weight(1) * Start(1)
+    n5 = Node(:b) * Weight(1) * Start(1)
+    n6 = Weight(1) * Node(:b) * Start(1)
+    n7 = Node(:b) * (Weight(1) * Start(1))
+    @test n1 ≂ n2
+    @test n2 ≂ n3
+    @test n3 ≂ n4
+    @test n4 ≂ n5
+    @test n5 ≂ n6
+    @test n6 ≂ n7
 end

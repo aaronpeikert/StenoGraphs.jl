@@ -1,18 +1,19 @@
 import Base.*
+include("macro_communative.jl")
 
-function *(lhs::Modifier, rhs::Edge)
-    ModifiedEdge(rhs, lhs)
-end
-
-function *(lhs::Edge, rhs::Modifier)
+@communative function *(lhs::Edge, rhs::Modifier)
     ModifiedEdge(lhs, rhs)
 end
 
-function *(lhs::Node, rhs::Modifier)
+@communative function *(rhs::Edge, lhs::VecOrMat{M} where {M<:Modifier})
+    ModifiedEdge(rhs, lhs)
+end
+
+@communative function *(lhs::Node, rhs::Modifier)
     ModifyingNode(lhs, rhs)
 end
 
-function *(lhs::Modifier, rhs::Node)
+@communative function *(rhs::Node, lhs::VecOrMat{M} where {M<:Modifier})
     ModifyingNode(rhs, lhs)
 end
 
@@ -20,14 +21,6 @@ function *(lhs::Modifier, rhs::Modifier)
     vec([lhs rhs])
 end
 
-function *(lhs::VecOrMat{M} where {M <: Modifier}, rhs::VecOrMat{M} where {M <: Modifier})
+function *(lhs::VecOrMat{M} where {M<:Modifier}, rhs::VecOrMat{M} where {M<:Modifier})
     vec([vec(lhs)... vec(rhs)...])
-end
-
-function *(lhs::VecOrMat{M} where {M <: Modifier}, rhs::Node)
-    ModifyingNode(rhs, lhs)
-end
-
-function *(lhs::Node, rhs::VecOrMat{M} where {M <: Modifier})
-    ModifyingNode(lhs, rhs)
 end
