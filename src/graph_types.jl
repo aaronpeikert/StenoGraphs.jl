@@ -10,14 +10,14 @@ abstract type Edge end
 
 Edge(lhs, rhs) = DirectedEdge(lhs, rhs)
 
-struct DirectedEdge{T <: Node} <: Edge
-    lhs::T
-    rhs::T
+struct DirectedEdge{T1 <: Node, T2 <: Node} <: Edge
+    lhs::T1
+    rhs::T2
 end
 
-struct UndirectedEdge{T <: Node} <: Edge
-    lhs::T
-    rhs::T
+struct UndirectedEdge{T1 <: Node, T2 <: Node} <: Edge
+    lhs::T1
+    rhs::T2
 end
 
 abstract type Modifier end

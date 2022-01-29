@@ -27,6 +27,11 @@ end
 
 # Edge(:a, :b) ≠ Edge(:b, :a) 
 # not communative
-Edge(lhs, rhs::ModifyingNode) = ModifiedEdge(Edge(lhs, rhs.node), rhs.modifiers)
-Edge(lhs::ModifyingNode, rhs) = ModifiedEdge(Edge(lhs.node, rhs), lhs.modifiers)
-Edge(lhs::ModifyingNode, rhs::ModifyingNode) = ModifiedEdge(Edge(lhs.node, rhs.node), [lhs.modifiers..., rhs.modifiers...])
+
+
+edges = (:DirectedEdge, :UndirectedEdge)
+for e in edges
+    @eval $e(lhs::Node, rhs::ModifyingNode) = ModifiedEdge($e(lhs, rhs.node), rhs.modifiers)
+    @eval $e(lhs::ModifyingNode, rhs::Node) = ModifiedEdge($e(lhs.node, rhs), lhs.modifiers)
+    @eval $e(lhs::ModifyingNode, rhs::ModifyingNode) = ModifiedEdge($e(lhs.node, rhs.node), [lhs.modifiers..., rhs.modifiers...])
+end

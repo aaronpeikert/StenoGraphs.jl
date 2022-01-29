@@ -7,3 +7,11 @@
         :(x == y)
     end
 end
+
+function ≂(x::Vector, y::Vector)
+    if length(x) == length(y)
+        all(x[i] ≂ y[i] for i in 1:length(x))
+    else
+        false
+    end
+end
