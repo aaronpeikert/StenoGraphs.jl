@@ -25,4 +25,4 @@ convert(::Type{T}, x::T) where {T <: Node} = x
 
 import Base.promote_rule
 # Symbols get promoted
-promote_rule(::Type{T}, ::Type{Symbol}) where {T <: Node} = T
+promote_rule(::Type{T}, ::Type{Symbol}) where {T <: Node} = Node
