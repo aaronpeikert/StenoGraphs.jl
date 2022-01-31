@@ -1,4 +1,4 @@
-module Semi
+module StenoGraphs
 
     export Node
     export SimpleNode
@@ -8,7 +8,7 @@ module Semi
     export Modifier
     export ModifiedEdge
     export ModifyingNode
-    export @semi
+    export @StenoGraph
     export *
     export convert
     export promote_rule
@@ -20,7 +20,7 @@ module Semi
     include("syntax/addition.jl")
     include("broadcast.jl")
     include("macro_communative.jl")
-    include("syntax/semi_macro.jl")
+    include("syntax/macro.jl")
     include("modification.jl")
     include("symbol_as_node.jl")
 end

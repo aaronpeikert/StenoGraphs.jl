@@ -8,7 +8,7 @@ end
 
 @testset "Multiplication of Edges" begin
     @test Edge(:a, :b) * Weight(1) ≂ ModifiedEdge(Edge(:a, :b), Weight(1))
-    @test ModifiedEdge(Edge(:a, :b), Weight(1)) ≂ Weight(1) * @semi a → b
+    @test ModifiedEdge(Edge(:a, :b), Weight(1)) ≂ Weight(1) * @StenoGraph a → b
     @test Edge(:a, :b) * Weight(1) ≂ Weight(1) * Edge(:a, :b)
 end
 
@@ -17,14 +17,14 @@ end
     @test Node(:a) * Weight(3) ≂ Weight(3) * Node(:a)
     @test ModifiedEdge(Edge(:a, :b), Weight(1)) ≂ Edge(:a * Weight(1), :b)
     @test Edge(:a * Weight(1), :b) ≂ Edge(Weight(1) * :a, :b)
-    @test ModifiedEdge(Edge(:a, :b), [Weight(1), Start(1)]) ≂ @semi Weight(1) * a → b * Start(1)
+    @test ModifiedEdge(Edge(:a, :b), [Weight(1), Start(1)]) ≂ @StenoGraph Weight(1) * a → b * Start(1)
 end
 
 @testset "Multiplication of Modifiers" begin
     e1 = ModifiedEdge(Edge(:a, :b), [Weight(1) Start(1)])
-    e2 = @semi a → Weight(1) * Start(1) * b 
-    e3 = @semi a → Weight(1) * b * Start(1)
-    e4 = @semi a → b * Weight(1) * Start(1)
+    e2 = @StenoGraph a → Weight(1) * Start(1) * b 
+    e3 = @StenoGraph a → Weight(1) * b * Start(1)
+    e4 = @StenoGraph a → b * Weight(1) * Start(1)
     e5 = Edge(:a, :b) * Weight(1) * Start(1)
     e6 = Weight(1) * Edge(:a, :b) * Start(1)
     n7 = Edge(:a, :b) * (Weight(1) * Start(1))
@@ -35,9 +35,9 @@ end
     @test e5 ≂ e6
 
     n1 = ModifyingNode(:b, [Weight(1) Start(1)])
-    n2 = @semi Weight(1) * Start(1) * b 
-    n3 = @semi Weight(1) * b * Start(1)
-    n4 = @semi b * Weight(1) * Start(1)
+    n2 = @StenoGraph Weight(1) * Start(1) * b 
+    n3 = @StenoGraph Weight(1) * b * Start(1)
+    n4 = @StenoGraph b * Weight(1) * Start(1)
     n5 = Node(:b) * Weight(1) * Start(1)
     n6 = Weight(1) * Node(:b) * Start(1)
     n7 = Node(:b) * (Weight(1) * Start(1))
