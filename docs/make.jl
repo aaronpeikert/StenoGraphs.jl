@@ -8,3 +8,7 @@ makedocs(
     ),
     modules = [StenoGraphs]
 )
+
+deploydocs(
+    repo = "github.com/aaronpeikert/StenoGraphs.jl"
+)
