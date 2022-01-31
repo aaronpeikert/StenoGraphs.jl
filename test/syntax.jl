@@ -1,9 +1,5 @@
-@testset "SimpleEdge Syntax" begin
-    @test Edge(:a, :b) ≂ Semi.@make_edge :a ~ :b
-end
-
 @testset "Quoted Symbol Syntax" begin
-    @test Edge(:a, :b) ≂ Semi.@make_edge Semi.@quote_symbols a ~ b
+    @test Edge(:a, :b) ≂ Semi.@quote_symbols a → b
 end
 
 @testset "Addition as hcat" begin

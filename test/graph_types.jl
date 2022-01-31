@@ -19,7 +19,7 @@ end
 @testset "ModifedEdges" begin
     # ModifyingNode leads to ModifiedEdge with simple Node
     @test Edge(Node(:a), ModifyingNode(Node(:b), Weight())) ≂ ModifiedEdge(Edge(:a, :b), Weight())
-    @test [ModifiedEdge(Edge(:a, :b), Weight()), Edge(:a, :c)] ≂ @semi a ~ b * Weight() + c
+    @test [ModifiedEdge(Edge(:a, :b), Weight()), Edge(:a, :c)] ≂ @semi a → b * Weight() + c
 end
 
 #Edge(Node(:a), ModifyingNode(Node(:b), start(4)))

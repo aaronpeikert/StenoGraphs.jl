@@ -12,6 +12,7 @@ module Semi
     export *
     export convert
     export promote_rule
+    export →, ←, ↔
 
     include("graph_types.jl")
     include("syntax/symbol.jl")
