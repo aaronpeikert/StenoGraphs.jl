@@ -23,7 +23,6 @@ To install `StenoGraphs.jl`:
 
 ```julia
 import Pkg; Pkg.add(url="https://github.com/aaronpeikert/StenoGraphs.jl.git")
-"
 ```
 
 
