@@ -26,4 +26,9 @@ using Test, SafeTestsets
         include("test_helper.jl")
         include("promotion.jl")
     end
+
+    @safetestset "Comparison" begin
+        using StenoGraphs
+        include("compare.jl")
+    end
 end
