@@ -1,10 +1,12 @@
 using Documenter
 using StenoGraphs
 
+on_ci() = get(ENV, "CI", nothing) == "true"
+
 makedocs(
     sitename = "StenoGraphs",
     format = Documenter.HTML(
-        prettyurls = get(ENV, "CI", nothing) == "true"
+        prettyurls = on_ci()
     ),
     modules = [StenoGraphs]
 )
@@ -12,3 +14,5 @@ makedocs(
 deploydocs(
     repo = "github.com/aaronpeikert/StenoGraphs.jl"
 )
+
+!on_ci() && include("make_readme.jl")
