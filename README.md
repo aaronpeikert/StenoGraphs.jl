@@ -1,11 +1,11 @@
 
 <!-- README.md is generated from docs/src/README.md. Please edit that file and rebuild with `cd docs/ && julia make_readme.jl`-->
 
-<a id='StenoGraphs.jl-―-A-concise-language-to-write-meta-graphs'></a>
+<a id='StenoGraphs.jl-―-Write-meta-graphs-quickly'></a>
 
-<a id='StenoGraphs.jl-―-A-concise-language-to-write-meta-graphs-1'></a>
+<a id='StenoGraphs.jl-―-Write-meta-graphs-quickly-1'></a>
 
-# StenoGraphs.jl ― A concise language to write meta graphs
+# StenoGraphs.jl ― Write meta graphs quickly
 
 
 [![](https://img.shields.io/badge/docs-dev-blue.svg)](https://aaronpeikert.github.io/StenoGraphs.jl/dev) [![Build Status](https://github.com/aaronpeikert/Semi.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/aaronpeikert/Semi.jl/actions/workflows/CI.yml?query=branch%3Amain) [![Coverage](https://codecov.io/gh/aaronpeikert/Semi.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/aaronpeikert/Semi.jl)
