@@ -8,7 +8,7 @@
 # StenoGraphs.jl ― Write meta graphs quickly
 
 
-[![](https://img.shields.io/badge/docs-dev-blue.svg)](https://aaronpeikert.github.io/StenoGraphs.jl/dev) [![Build Status](https://github.com/aaronpeikert/https://github.com/aaronpeikert/StenoGraphs.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/aaronpeikert/StenoGraphs.jl/actions/workflows/CI.yml?query=branch%3Amain) [![Coverage](https://codecov.io/gh/aaronpeikert/StenoGraphs.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/aaronpeikert/StenoGraphs.jl)
+[![](https://img.shields.io/badge/docs-dev-blue.svg)](https://aaronpeikert.github.io/StenoGraphs.jl/dev) [![Build Status](https://github.com/aaronpeikert/StenoGraphs.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/aaronpeikert/StenoGraphs.jl/actions/workflows/CI.yml?query=branch%3Amain) [![Coverage](https://codecov.io/gh/aaronpeikert/StenoGraphs.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/aaronpeikert/StenoGraphs.jl)
 
 
 > **Stenography**: a quick way of writing using special signs or abbreviations
