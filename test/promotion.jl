@@ -1,5 +1,5 @@
 @testset "Conversion" begin
-    @test convert(Node,:a) ≂ Node(:a)
+    @test convert(Node,:a) == Node(:a)
 end
 
 struct Start{S <: Number} <: Modifier

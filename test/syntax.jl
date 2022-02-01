@@ -1,5 +1,5 @@
 @testset "Quoted Symbol Syntax" begin
-    @test Edge(:a, :b) ≂ StenoGraphs.@quote_symbols a → b
+    @test Edge(:a, :b) == StenoGraphs.@quote_symbols a → b
 end
 
 @testset "Addition as hcat" begin
@@ -8,7 +8,7 @@ end
 end
 
 @testset "Broadcasting Edges" begin
-    @test Edge(:a, [:b :c]) ≂ vec([Edge(:a, :b) Edge(:a, :c)])
-    @test Edge([:a :b], :c) ≂ vec([Edge(:a, :c) Edge(:b, :c)])
-    @test Edge([:a :b], [:c :d]) ≂ vec([Edge(:a, :c) Edge(:a, :d) Edge(:b, :c) Edge(:b, :d)])
+    @test Edge(:a, [:b :c]) == vec([Edge(:a, :b) Edge(:a, :c)])
+    @test Edge([:a :b], :c) == vec([Edge(:a, :c) Edge(:b, :c)])
+    @test Edge([:a :b], [:c :d]) == vec([Edge(:a, :c) Edge(:a, :d) Edge(:b, :c) Edge(:b, :d)])
 end

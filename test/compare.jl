@@ -20,7 +20,7 @@ end
 end
 
 @testset "UndirectedEdge" begin
-    UndirectedEdge(:a, :b) == UndirectedEdge(:b, :a)
+    @test UndirectedEdge(:a, :b) == UndirectedEdge(:b, :a)
 end
 
 @testset "DirectedEdge" begin
