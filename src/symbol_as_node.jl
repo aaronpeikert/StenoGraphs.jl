@@ -1,20 +1,20 @@
-# both lhs or rhs may be a Symbol that should be treated as Node
+# both src or dst may be a Symbol that should be treated as Node
 # only possible for function we own
-lhs_rhs_symbol_as_node = (:DirectedEdge, :UndirectedEdge)
-for f in lhs_rhs_symbol_as_node
-    @eval $f(lhs::Symbol, rhs::Symbol) = $f(Node(lhs), Node(rhs))
+src_dst_symbol_as_node = (:DirectedEdge, :UndirectedEdge)
+for f in src_dst_symbol_as_node
+    @eval $f(src::Symbol, dst::Symbol) = $f(Node(src), Node(dst))
 end
 
-# either rhs or lhs Symbol should be treated as Node (both is possibly type piracy)
-rhs_symbol_as_node = (:*, lhs_rhs_symbol_as_node...)
-for f in rhs_symbol_as_node
-    @eval $f(lhs, rhs::Symbol) = $f(lhs, Node(rhs))
+# either dst or src Symbol should be treated as Node (both is possibly type piracy)
+dst_symbol_as_node = (:*, src_dst_symbol_as_node...)
+for f in dst_symbol_as_node
+    @eval $f(src, dst::Symbol) = $f(src, Node(dst))
 end
 
-# lhs may be a Symbol that should be treated as Node
-lhs_symbol_as_node = (:ModifyingNode, rhs_symbol_as_node...)
-for f in lhs_symbol_as_node
-    @eval $f(lhs::Symbol, rhs) = $f(Node(lhs), rhs)
+# src may be a Symbol that should be treated as Node
+src_symbol_as_node = (:ModifyingNode, dst_symbol_as_node...)
+for f in src_symbol_as_node
+    @eval $f(src::Symbol, dst) = $f(Node(src), dst)
 end
 
 import Base.convert

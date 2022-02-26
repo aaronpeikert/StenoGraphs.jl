@@ -5,5 +5,5 @@ function show(io::IO, a::SimpleNode)
 end
 
 function show(io::IO, a::Edge)
-    print(io, "$(a.lhs) ~ $(a.rhs)")
+    print(io, "$(a.src) ~ $(a.dst)")
 end

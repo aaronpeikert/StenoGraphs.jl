@@ -1,3 +1,3 @@
-→(lhs, rhs) = DirectedEdge(lhs, rhs)
-←(lhs, rhs) = rhs → lhs
-↔(lhs, rhs) = UndirectedEdge(lhs, rhs)
+→(src, dst) = DirectedEdge(src, dst)
+←(src, dst) = dst → src
+↔(src, dst) = UndirectedEdge(src, dst)

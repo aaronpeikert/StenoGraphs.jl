@@ -10,16 +10,16 @@ Node(node) = SimpleNode(node)
 abstract type Edge end
 abstract type MetaEdge <: Edge end
 
-Edge(lhs, rhs) = DirectedEdge(lhs, rhs)
+Edge(src, dst) = DirectedEdge(src, dst)
 
 struct DirectedEdge{T1 <: Node, T2 <: Node} <: Edge
-    lhs::T1
-    rhs::T2
+    src::T1
+    dst::T2
 end
 
 struct UndirectedEdge{T1 <: Node, T2 <: Node} <: Edge
-    lhs::T1
-    rhs::T2
+    src::T1
+    dst::T2
 end
 
 abstract type Modifier end

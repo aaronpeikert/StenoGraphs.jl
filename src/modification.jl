@@ -1,27 +1,27 @@
 import Base.*
 
-@communative function *(lhs::Edge, rhs::Modifier)
-    ModifiedEdge(lhs, rhs)
+@communative function *(src::Edge, dst::Modifier)
+    ModifiedEdge(src, dst)
 end
 
-@communative function *(rhs::Edge, lhs::VecOrMat{M} where {M<:Modifier})
-    ModifiedEdge(rhs, vec(lhs))
+@communative function *(dst::Edge, src::VecOrMat{M} where {M<:Modifier})
+    ModifiedEdge(dst, vec(src))
 end
 
-@communative function *(lhs::Node, rhs::Modifier)
-    ModifyingNode(lhs, rhs)
+@communative function *(src::Node, dst::Modifier)
+    ModifyingNode(src, dst)
 end
 
-@communative function *(rhs::Node, lhs::VecOrMat{M} where {M<:Modifier})
-    ModifyingNode(rhs, vec(lhs))
+@communative function *(dst::Node, src::VecOrMat{M} where {M<:Modifier})
+    ModifyingNode(dst, vec(src))
 end
 
-function *(lhs::Modifier, rhs::Modifier)
-    vec([lhs rhs])
+function *(src::Modifier, dst::Modifier)
+    vec([src dst])
 end
 
-function *(lhs::VecOrMat{M} where {M<:Modifier}, rhs::VecOrMat{M} where {M<:Modifier})
-    vec([vec(lhs)... vec(rhs)...])
+function *(src::VecOrMat{M} where {M<:Modifier}, dst::VecOrMat{M} where {M<:Modifier})
+    vec([vec(src)... vec(dst)...])
 end
 
 
@@ -31,7 +31,7 @@ end
 
 edges = (:DirectedEdge, :UndirectedEdge)
 for e in edges
-    @eval $e(lhs::Node, rhs::ModifyingNode) = ModifiedEdge($e(lhs, rhs.node), rhs.modifiers)
-    @eval $e(lhs::ModifyingNode, rhs::Node) = ModifiedEdge($e(lhs.node, rhs), lhs.modifiers)
-    @eval $e(lhs::ModifyingNode, rhs::ModifyingNode) = ModifiedEdge($e(lhs.node, rhs.node), [lhs.modifiers..., rhs.modifiers...])
+    @eval $e(src::Node, dst::ModifyingNode) = ModifiedEdge($e(src, dst.node), dst.modifiers)
+    @eval $e(src::ModifyingNode, dst::Node) = ModifiedEdge($e(src.node, dst), src.modifiers)
+    @eval $e(src::ModifyingNode, dst::ModifyingNode) = ModifiedEdge($e(src.node, dst.node), [src.modifiers..., dst.modifiers...])
 end
