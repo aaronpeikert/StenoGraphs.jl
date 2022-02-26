@@ -48,3 +48,9 @@ ModifyingNode(node::Node, modifier::Modifier) = ModifyingNode(node, [modifier])
 
 ModifiedEdge(edge::Edge, modifier::Matrix{M} where {M <: Modifier}) = ModifiedEdge(edge, vec(modifier))
 ModifyingNode(node::Node, modifier::Matrix{M} where {M <: Modifier}) = ModifyingNode(node, vec(modifier))
+
+struct Arrow{E <: Edge, N1 <: Node, N2 <: Node} <: MetaEdge
+    edge::E
+    lhs::N1
+    rhs::N2
+end
