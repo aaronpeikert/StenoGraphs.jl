@@ -9,3 +9,6 @@ import Base.==
 ==(x::ModifyingNode, y::ModifyingNode) = x.node == y.node && x.modifiers == y.modifiers
 
 ==(x::VecOrMat{T}, y::VecOrMat{T}) where T <: Modifier = issetequal(x, y)
+
+# compare arrows
+==(x::T, y::T) where T <: Arrow = x.edge == y.edge && x.lhs == y.lhs && x.rhs == y.rhs

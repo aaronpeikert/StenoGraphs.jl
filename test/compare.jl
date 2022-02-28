@@ -36,3 +36,12 @@ end
     me5 = ModifiedEdge(:a → :b, [Start(1) Weight()])
     @test me5 == me3
 end
+
+@testset "Arrow" begin
+    a1 = :a → :b
+    a2 = deepcopy(a1)
+    a3 = :b ← :a
+    @test a1 == a2
+    @test a1 != a3
+    @test a1.edge == a3.edge
+end
