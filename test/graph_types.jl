@@ -16,5 +16,6 @@ end
 @testset "ModifedEdges" begin
     # ModifyingNode leads to ModifiedEdge with simple Node
     @test Edge(Node(:a), ModifyingNode(Node(:b), Weight())) == ModifiedEdge(Edge(:a, :b), Weight())
-    @test [ModifiedEdge(Edge(:a, :b), Weight()), Edge(:a, :c)] == @StenoGraph a → b * Weight() + c
+    # check if the same works with vector
+    @test [ModifiedEdge(Edge(:a, :b), Weight()), Edge(:a, :c)] == Edge(:a, [:b * Weight() :c])
 end

@@ -24,16 +24,16 @@ end
 end
 
 @testset "DirectedEdge" begin
-    me1 = ModifiedEdge(:a → :b, Start(1))
+    me1 = ModifiedEdge(Edge(:a, :b), Start(1))
     @test me1 == me1
     me2 = deepcopy(me1)
     @test me1 == me2
     me2.modifiers[1] = Start(2)
     @test me1 != me2
-    me3 = ModifiedEdge(:a → :b, [Weight() Start(1)])
+    me3 = ModifiedEdge(Edge(:a, :b), [Weight() Start(1)])
     me4 = deepcopy(me3)
     @test me3 == me4
-    me5 = ModifiedEdge(:a → :b, [Start(1) Weight()])
+    me5 = ModifiedEdge(Edge(:a, :b), [Start(1) Weight()])
     @test me5 == me3
 end
 
