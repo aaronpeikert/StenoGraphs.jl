@@ -1,5 +1,5 @@
 @testset "Quoted Symbol Syntax" begin
-    @test Edge(:a, :b) == StenoGraphs.@quote_symbols a → b
+    @test (:a → :b) == (StenoGraphs.@quote_symbols a → b)
 end
 
 @testset "Addition as hcat" begin
