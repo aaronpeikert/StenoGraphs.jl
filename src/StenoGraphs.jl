@@ -19,6 +19,7 @@ module StenoGraphs
     export →, ←, ↔
     export ==
     export unmeta
+    export unarrow
 
     include("graph_types.jl")
     include("syntax/symbol.jl")

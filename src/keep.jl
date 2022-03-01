@@ -7,12 +7,14 @@ struct Src <: SourceDestination end
 struct Dst <: SourceDestination end
 
 keep(x::AbstractNode, ::Type{T}) where {T <: Node} = keep(x.node, T)
+keep(x::AbstractNode, ::Type{T}) where {T <: AbstractNode} = x
 keep(x::Node, ::Type{T}) where {T <: Node} = x
 keep(x::Node, ::Type{T}) where {T <: AbstractNode} = x
 
 keep(x::AbstractEdge, ::Type{T}) where {T <: Edge} = keep(x.edge, T)
+keep(x::AbstractEdge, ::Type{T}) where {T <: AbstractEdge} = keep(x.edge, T)
 keep(x::Edge, ::Type{T}) where {T <: Edge} = x
-keep(x::Edge, ::Type{T}) where {T <: AbstractNode} = x
+keep(x::Edge, ::Type{T}) where {T <: AbstractEdge} = x
 
 keep(x::AbstractEdge, ::Type{T}) where {T <: Src} = x.src
 keep(x::AbstractEdge, ::Type{T}) where {T <: Dst} = x.dst
@@ -38,3 +40,5 @@ keep(x::Arrow, _) = x
 
 unmeta(x::AbstractEdge) = keep(x, Edge)
 unmeta(x::AbstractNode) = keep(x, Node)
+
+unarrow(x::Arrow) = keep(x, AbstractEdge)

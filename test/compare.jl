@@ -43,5 +43,5 @@ end
     a3 = :b ← :a
     @test a1 == a2
     @test a1 != a3
-    @test a1.edge == a3.edge
+    @test unmeta(a1) == unmeta(a3)
 end
