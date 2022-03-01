@@ -18,6 +18,7 @@ module StenoGraphs
     export promote_rule
     export →, ←, ↔
     export ==
+    export unmeta
 
     include("graph_types.jl")
     include("syntax/symbol.jl")
@@ -29,4 +30,5 @@ module StenoGraphs
     include("modification.jl")
     include("symbol_as_node.jl")
     include("compare.jl")
+    include("unmeta.jl")
 end

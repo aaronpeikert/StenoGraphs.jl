@@ -27,4 +27,9 @@ using Test, SafeTestsets
         using StenoGraphs
         include("compare.jl")
     end
+
+    @safetestset "Unmeta" begin
+        using StenoGraphs
+        include("unmeta.jl")
+    end
 end
