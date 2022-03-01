@@ -36,7 +36,7 @@ struct ModifyingNode{N <: AbstractNode, VM <: Vector{M} where {M <: Modifier}} <
     modifiers::VM
 end
 
-struct Arrow{E <: Edge, N1 <: Node, N2 <: Node} <: MetaEdge
+struct Arrow{E <: AbstractEdge, N1 <: Node, N2 <: Node} <: MetaEdge
     edge::E
     lhs::N1
     rhs::N2
