@@ -1,8 +1,12 @@
 module StenoGraphs
 
+    export AbstractNode
     export Node
+    export MetaNode
     export SimpleNode
+    export AbstractEdge
     export Edge
+    export MetaEdge
     export DirectedEdge
     export UndirectedEdge
     export Modifier
