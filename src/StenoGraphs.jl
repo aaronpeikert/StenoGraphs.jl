@@ -30,5 +30,5 @@ module StenoGraphs
     include("modification.jl")
     include("symbol_as_node.jl")
     include("compare.jl")
-    include("unmeta.jl")
+    include("keep.jl")
 end

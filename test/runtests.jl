@@ -30,6 +30,11 @@ using Test, SafeTestsets
 
     @safetestset "Unmeta" begin
         using StenoGraphs
-        include("unmeta.jl")
+        include("keep.jl")
+    end
+
+    @safetestset "Arrow" begin
+        using StenoGraphs
+        include("arrow.jl")
     end
 end
