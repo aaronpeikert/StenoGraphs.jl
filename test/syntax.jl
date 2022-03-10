@@ -13,6 +13,10 @@ end
     @test Edge([:a :b], [:c :d]) == vec([Edge(:a, :c) Edge(:a, :d) Edge(:b, :c) Edge(:b, :d)])
 end
 
+@testset "Singleline Arrows" begin
+    @test [Edge(:a, :c), Edge(:b, :c)] == @StenoGraph [a b] → c
+end
+
 @testset "Multiline Arrows" begin
     @test [Edge(:a, :c), Edge(:b, :c), Edge(:f, :e)] == @StenoGraph begin
         [a b] → c
