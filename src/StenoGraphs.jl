@@ -16,7 +16,7 @@ module StenoGraphs
     export *
     export convert
     export promote_rule
-    export →, ←, ↔
+    export →, ←, ↔, ⇒, ⇐, ⇔
     export ==
     export unmeta
     export unarrow
