@@ -30,9 +30,9 @@ end
         (Edge(:a, :b) * (Weight(1) * Start(1)))
 
     @test (ModifyingNode(:b, [Weight(1) Start(1)])) ==
-        (@StenoGraph Weight(1) * Start(1) * b) ==
-        (@StenoGraph Weight(1) * b * Start(1)) ==
-        (@StenoGraph b * Weight(1) * Start(1)) ==
+        (Weight(1) * Start(1) * :b) ==
+        (Weight(1) * :b * Start(1)) ==
+        (:b * Weight(1) * Start(1)) ==
         (Node(:b) * Weight(1) * Start(1)) ==
         (Weight(1) * Node(:b) * Start(1)) == 
         (Node(:b) * (Weight(1) * Start(1)))
