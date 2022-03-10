@@ -16,8 +16,10 @@ module StenoGraphs
     export *
     export convert
     export promote_rule
-    export →, ←, ↔
+    export →, ←, ↔, ⇒, ⇐, ⇔
     export ==
+    export unmeta
+    export unarrow
 
     include("graph_types.jl")
     include("syntax/symbol.jl")
@@ -29,4 +31,5 @@ module StenoGraphs
     include("modification.jl")
     include("symbol_as_node.jl")
     include("compare.jl")
+    include("keep.jl")
 end

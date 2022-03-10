@@ -1,6 +1,6 @@
 # both src or dst may be a Symbol that should be treated as Node
 # only possible for function we own
-src_dst_symbol_as_node = (:DirectedEdge, :UndirectedEdge, :→, :←, :↔)
+src_dst_symbol_as_node = (:DirectedEdge, :UndirectedEdge)
 for f in src_dst_symbol_as_node
     @eval $f(src::Symbol, dst::Symbol) = $f(Node(src), Node(dst))
 end
@@ -18,7 +18,6 @@ for f in src_symbol_as_node
 end
 
 import Base.convert
-# implicitly defines conversion for Symbols
 convert(::Type{T}, x) where {T <: AbstractNode} = T(x)
 convert(::Type{T}, x::Symbol) where {T <: AbstractNode} = SimpleNode(x)
 # conversion of Nodes does not change anything

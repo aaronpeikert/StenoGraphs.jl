@@ -11,4 +11,4 @@ import Base.==
 ==(x::VecOrMat{T}, y::VecOrMat{T}) where T <: Modifier = issetequal(x, y)
 
 # compare arrows
-==(x::T, y::T) where T <: Arrow = x.edge == y.edge && x.lhs == y.lhs && x.rhs == y.rhs
+==(x::T, y::T) where T <: Arrow = x.edges == y.edges && x.lhs == y.lhs && x.rhs == y.rhs

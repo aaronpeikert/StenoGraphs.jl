@@ -36,23 +36,8 @@ struct ModifyingNode{N <: AbstractNode, VM <: Vector{M} where {M <: Modifier}} <
     modifiers::VM
 end
 
-ModifiedEdge(edge::ModifiedEdge, modifier::Modifier) = ModifiedEdge(edge.edge, [edge.modifiers..., modifier])    
-ModifyingNode(node::ModifyingNode, modifier::Modifier) = ModifyingNode(node.node, [node.modifiers..., modifier])
-
-ModifiedEdge(edge::ModifiedEdge, modifier::Matrix{M} where {M <: Modifier}) = ModifiedEdge(edge.edge, [edge.modifiers..., modifier...])    
-ModifyingNode(node::ModifyingNode, modifier::Matrix{M} where {M <: Modifier}) = ModifyingNode(node.node, [node.modifiers..., modifier...])
-
-ModifiedEdge(edge::ModifiedEdge, modifier::Vector{M} where {M <: Modifier}) = ModifiedEdge(edge.edge, [edge.modifiers..., modifier...])    
-ModifyingNode(node::ModifyingNode, modifier::Vector{M} where {M <: Modifier}) = ModifyingNode(node.node, [node.modifiers..., modifier...])
-
-ModifiedEdge(edge::Edge, modifier::Modifier) = ModifiedEdge(edge, [modifier])
-ModifyingNode(node::Node, modifier::Modifier) = ModifyingNode(node, [modifier])
-
-ModifiedEdge(edge::Edge, modifier::Matrix{M} where {M <: Modifier}) = ModifiedEdge(edge, vec(modifier))
-ModifyingNode(node::Node, modifier::Matrix{M} where {M <: Modifier}) = ModifyingNode(node, vec(modifier))
-
-struct Arrow{E <: Edge, N1 <: Node, N2 <: Node} <: MetaEdge
-    edge::E
+struct Arrow{VE <: Vector{E} where {E <: AbstractEdge}, N1, N2} <: MetaEdge
+    edges::VE
     lhs::N1
     rhs::N2
 end
