@@ -47,4 +47,4 @@ keep(x::Arrow, _) = x
 unmeta(x::AbstractEdge) = keep(x, Edge)
 unmeta(x::AbstractNode) = keep(x, Node)
 
-unarrow(x::Arrow) = keep(x, AbstractEdge)
+unarrow(x) = keep(x, AbstractEdge)
