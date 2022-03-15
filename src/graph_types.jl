@@ -26,14 +26,14 @@ end
 
 abstract type Modifier end
 
-struct ModifiedEdge{E <: AbstractEdge, VM <: Vector{M} where {M <: Modifier}} <: MetaEdge
+struct ModifiedEdge{E <: AbstractEdge, DM <: AbstractDict{S, M} where {S <: Symbol, M <: Modifier}} <: MetaEdge
     edge::E
-    modifiers::VM
+    modifiers::DM
 end
 
-struct ModifyingNode{N <: AbstractNode, VM <: Vector{M} where {M <: Modifier}} <: MetaNode
+struct ModifyingNode{N <: AbstractNode, DM <: AbstractDict{S, M} where {S <: Symbol, M <: Modifier}} <: MetaNode
     node::N
-    modifiers::VM
+    modifiers::DM
 end
 
 struct Arrow{VE <: Vector{E} where {E <: AbstractEdge}, N1, N2} <: MetaEdge
