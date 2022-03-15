@@ -36,8 +36,8 @@ using StenoGraphs
 
 
 ```
-1-element Vector{StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}}:
- StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}(StenoGraphs.SimpleNode{Symbol}(:a), StenoGraphs.SimpleNode{Symbol}(:b))
+a → b
+
 ```
 
 
@@ -57,27 +57,38 @@ Multiple nodes on one side lead to multiple edges:
 
 
 ```
-2-element Vector{StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}}:
- StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}(StenoGraphs.SimpleNode{Symbol}(:a), StenoGraphs.SimpleNode{Symbol}(:c))
- StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}(StenoGraphs.SimpleNode{Symbol}(:b), StenoGraphs.SimpleNode{Symbol}(:c))
+a → c
+b → c
+
 ```
 
 
-There are two desirable outcomes for multible edges on both sides, either elementwise edges or cross product. The single line arrow (`→`) means element wise and double line arrow (`⇒`) means crossproduct.
+There are two desirable outcomes for multible edges on both sides, either elementwise edges or cross product. The single line arrow (`→`) means element wise and double line arrow (`⇒`) means crossproduct (don't tell anyone but for a single node on one side `→` is converted to `⇒` for convinience).
 
 
 ```julia
 @StenoGraph [a b] → [c d]
+```
+
+
+```
+a → c
+b → d
+
+```
+
+
+```julia
 @StenoGraph [a b] ⇒ [c d]
 ```
 
 
 ```
-4-element Vector{StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}}:
- StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}(StenoGraphs.SimpleNode{Symbol}(:a), StenoGraphs.SimpleNode{Symbol}(:c))
- StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}(StenoGraphs.SimpleNode{Symbol}(:a), StenoGraphs.SimpleNode{Symbol}(:d))
- StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}(StenoGraphs.SimpleNode{Symbol}(:b), StenoGraphs.SimpleNode{Symbol}(:c))
- StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}(StenoGraphs.SimpleNode{Symbol}(:b), StenoGraphs.SimpleNode{Symbol}(:d))
+a → c
+a → d
+b → c
+b → d
+
 ```
 
 
@@ -88,7 +99,7 @@ There are two desirable outcomes for multible edges on both sides, either elemen
 ## Modification
 
 
-Modification is done by overloading '*' for types of Modifier.
+Modification is done by overloading `*` for types of Modifier.
 
 
 Let's define a `Modifier`:
@@ -110,8 +121,8 @@ A modifier can be directly applied to edges:
 
 
 ```
-1-element Vector{StenoGraphs.ModifiedEdge{StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}, Dict{Symbol, StenoGraphs.Modifier}}}:
- StenoGraphs.ModifiedEdge{StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}, Dict{Symbol, StenoGraphs.Modifier}}(StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}(StenoGraphs.SimpleNode{Symbol}(:a), StenoGraphs.SimpleNode{Symbol}(:b)), Dict{Symbol, StenoGraphs.Modifier}(:Weight => Main.Weight(1)))
+a → b * Main.Weight(1)
+
 ```
 
 
@@ -124,7 +135,7 @@ Multiplying a `Node` with a `Modifier` leads to a `ModifyingNode`.
 
 
 ```
-StenoGraphs.ModifyingNode{StenoGraphs.SimpleNode{Symbol}, Dict{Symbol, StenoGraphs.Modifier}}(StenoGraphs.SimpleNode{Symbol}(:b), Dict{Symbol, StenoGraphs.Modifier}(:Weight => Main.Weight(1)))
+b * Main.Weight(1)
 ```
 
 
@@ -137,8 +148,8 @@ A `ModifyingNode` will modify its edges:
 
 
 ```
-1-element Vector{StenoGraphs.ModifiedEdge{StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}, Dict{Symbol, StenoGraphs.Modifier}}}:
- StenoGraphs.ModifiedEdge{StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}, Dict{Symbol, StenoGraphs.Modifier}}(StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}(StenoGraphs.SimpleNode{Symbol}(:a), StenoGraphs.SimpleNode{Symbol}(:b)), Dict{Symbol, StenoGraphs.Modifier}(:Weight => Main.Weight(1)))
+a → b * Main.Weight(1)
+
 ```
 
 
