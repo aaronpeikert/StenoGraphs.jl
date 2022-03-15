@@ -38,6 +38,11 @@ end
         (Node(:b) * (Weight(1) * Start(1)))
 end
 
+@testset "Modification of Arrow" begin
+    @test unarrow((:a → :b) * Start(1)) == unarrow(:a → Start(1) * :b)
+    @test unarrow(([:a :b] → [:c :d]) * Start(1)) == unarrow([:a :b] → [:c :d] .* Ref(Start(1)))
+end
+
 
 @testset "Multiplication of VecOrMat of Modifiers" begin
     [Weight(1), Start(1)] * [Weight(2) Start(2)] == [Weight(1), Start(1), Weight(2), Start(2)]

@@ -23,6 +23,8 @@ ModifyingNode(node::Node, modifier::Modifier) = ModifyingNode(node, moddict(modi
 ModifiedEdge(edge::Edge, modifier::VecOrMat{M} where {M <: Modifier}) = ModifiedEdge(edge, moddict(vec(modifier)))
 ModifyingNode(node::Node, modifier::VecOrMat{M} where {M <: Modifier}) = ModifyingNode(node, moddict(vec(modifier)))
 
+ModifiedEdge(edge::Arrow, modifier) = Arrow(ModifiedEdge.(unarrow(edge), Ref(modifier)), edge.lhs, edge.rhs)
+
 import Base.*
 
 @communative function *(src::AbstractEdge, dst::Modifier)
