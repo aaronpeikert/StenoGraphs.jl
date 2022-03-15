@@ -28,7 +28,7 @@ end
     @test me1 == me1
     me2 = deepcopy(me1)
     @test me1 == me2
-    me2.modifiers[1] = Start(2)
+    me2.modifiers[:Start] = Start(2)
     @test me1 != me2
     me3 = ModifiedEdge(Edge(:a, :b), [Weight() Start(1)])
     me4 = deepcopy(me3)
