@@ -12,8 +12,7 @@ As with shorthand, it is optimized for writing quickly (by humans) but is less q
 To install `StenoGraphs.jl`:
 
 ```julia
-import Pkg; Pkg.add(url="https://github.com/aaronpeikert/StenoGraphs.jl.git")
-"
+import Pkg; Pkg.add("StenoGraphs")
 ```
 
 Your first `@StenoGraph` using `StenoGraphs`:
@@ -31,16 +30,12 @@ Multiple nodes on one side lead to multiple edges:
 @StenoGraph [a b] → c
 ```
 
-Multiple nodes on both sides lead to the cross product of edges:
+There are two desirable outcomes for multible edges on both sides, either elementwise edges or cross product.
+The single line arrow (`→`) means element wise and double line arrow (`⇒`) means crossproduct.
 
 ```@example 1
 @StenoGraph [a b] → [c d]
-```
-
-Unless you specifically broadcast:
-
-```@example 1
-@StenoGraph [a, b] .→ [c, d]
+@StenoGraph [a b] ⇒ [c d]
 ```
 
 ## Modification
@@ -66,7 +61,7 @@ A modifier can be directly applied to edges:
 Multiplying a `Node` with a `Modifier` leads to a `ModifyingNode`.
 
 ```@example mod
-@StenoGraph b * Weight(1)
+:b * Weight(1)
 ```
 
 A `ModifyingNode` will modify its edges:

@@ -22,8 +22,7 @@ To install `StenoGraphs.jl`:
 
 
 ```julia
-import Pkg; Pkg.add(url="https://github.com/aaronpeikert/StenoGraphs.jl.git")
-"
+import Pkg; Pkg.add("StenoGraphs")
 ```
 
 
@@ -37,7 +36,8 @@ using StenoGraphs
 
 
 ```
-StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}(StenoGraphs.SimpleNode{Symbol}(:a), StenoGraphs.SimpleNode{Symbol}(:b))
+1-element Vector{StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}}:
+ StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}(StenoGraphs.SimpleNode{Symbol}(:a), StenoGraphs.SimpleNode{Symbol}(:b))
 ```
 
 
@@ -63,11 +63,12 @@ Multiple nodes on one side lead to multiple edges:
 ```
 
 
-Multiple nodes on both sides lead to the cross product of edges:
+There are two desirable outcomes for multible edges on both sides, either elementwise edges or cross product. The single line arrow (`→`) means element wise and double line arrow (`⇒`) means crossproduct.
 
 
 ```julia
 @StenoGraph [a b] → [c d]
+@StenoGraph [a b] ⇒ [c d]
 ```
 
 
@@ -76,21 +77,6 @@ Multiple nodes on both sides lead to the cross product of edges:
  StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}(StenoGraphs.SimpleNode{Symbol}(:a), StenoGraphs.SimpleNode{Symbol}(:c))
  StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}(StenoGraphs.SimpleNode{Symbol}(:a), StenoGraphs.SimpleNode{Symbol}(:d))
  StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}(StenoGraphs.SimpleNode{Symbol}(:b), StenoGraphs.SimpleNode{Symbol}(:c))
- StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}(StenoGraphs.SimpleNode{Symbol}(:b), StenoGraphs.SimpleNode{Symbol}(:d))
-```
-
-
-Unless you specifically broadcast:
-
-
-```julia
-@StenoGraph [a, b] .→ [c, d]
-```
-
-
-```
-2-element Vector{StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}}:
- StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}(StenoGraphs.SimpleNode{Symbol}(:a), StenoGraphs.SimpleNode{Symbol}(:c))
  StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}(StenoGraphs.SimpleNode{Symbol}(:b), StenoGraphs.SimpleNode{Symbol}(:d))
 ```
 
@@ -124,7 +110,8 @@ A modifier can be directly applied to edges:
 
 
 ```
-StenoGraphs.ModifiedEdge{StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}, Vector{Main.Weight}}(StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}(StenoGraphs.SimpleNode{Symbol}(:a), StenoGraphs.SimpleNode{Symbol}(:b)), Main.Weight[Main.Weight(1)])
+1-element Vector{StenoGraphs.ModifiedEdge{StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}, Dict{Symbol, StenoGraphs.Modifier}}}:
+ StenoGraphs.ModifiedEdge{StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}, Dict{Symbol, StenoGraphs.Modifier}}(StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}(StenoGraphs.SimpleNode{Symbol}(:a), StenoGraphs.SimpleNode{Symbol}(:b)), Dict{Symbol, StenoGraphs.Modifier}(:Weight => Main.Weight(1)))
 ```
 
 
@@ -132,12 +119,12 @@ Multiplying a `Node` with a `Modifier` leads to a `ModifyingNode`.
 
 
 ```julia
-@StenoGraph b * Weight(1)
+:b * Weight(1)
 ```
 
 
 ```
-StenoGraphs.ModifyingNode{StenoGraphs.SimpleNode{Symbol}, Vector{Main.Weight}}(StenoGraphs.SimpleNode{Symbol}(:b), Main.Weight[Main.Weight(1)])
+StenoGraphs.ModifyingNode{StenoGraphs.SimpleNode{Symbol}, Dict{Symbol, StenoGraphs.Modifier}}(StenoGraphs.SimpleNode{Symbol}(:b), Dict{Symbol, StenoGraphs.Modifier}(:Weight => Main.Weight(1)))
 ```
 
 
@@ -150,7 +137,8 @@ A `ModifyingNode` will modify its edges:
 
 
 ```
-StenoGraphs.ModifiedEdge{StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}, Vector{Main.Weight}}(StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}(StenoGraphs.SimpleNode{Symbol}(:a), StenoGraphs.SimpleNode{Symbol}(:b)), Main.Weight[Main.Weight(1)])
+1-element Vector{StenoGraphs.ModifiedEdge{StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}, Dict{Symbol, StenoGraphs.Modifier}}}:
+ StenoGraphs.ModifiedEdge{StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}, Dict{Symbol, StenoGraphs.Modifier}}(StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}(StenoGraphs.SimpleNode{Symbol}(:a), StenoGraphs.SimpleNode{Symbol}(:b)), Dict{Symbol, StenoGraphs.Modifier}(:Weight => Main.Weight(1)))
 ```
 
 
