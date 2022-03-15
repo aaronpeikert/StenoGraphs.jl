@@ -20,6 +20,7 @@ module StenoGraphs
     export ==
     export unmeta
     export unarrow
+    export show
 
     include("graph_types.jl")
     include("syntax/symbol.jl")
@@ -32,4 +33,6 @@ module StenoGraphs
     include("symbol_as_node.jl")
     include("compare.jl")
     include("keep.jl")
+    include("show.jl")
+
 end
