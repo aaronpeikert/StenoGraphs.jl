@@ -40,6 +40,11 @@ struct ModifyingNode{N <: AbstractNode, DM <: AbstractDict{S, M} where {S <: Sym
     modifiers::DM
 end
 
+struct ModifiedNode{N <: AbstractNode, DM <: AbstractDict{S, M} where {S <: Symbol, M <: NodeModifier}} <: MetaNode
+    node::N
+    modifiers::DM
+end
+
 struct Arrow{VE <: Vector{E} where {E <: AbstractEdge}, N1, N2} <: MetaEdge
     edges::VE
     lhs::N1

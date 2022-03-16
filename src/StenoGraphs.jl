@@ -14,6 +14,7 @@ module StenoGraphs
     export NodeOrEdgeModifier
     export ModifiedEdge
     export ModifyingNode
+    export ModifiedNode
     export @StenoGraph
     export *
     export convert

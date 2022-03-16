@@ -7,6 +7,7 @@ struct Start <: EdgeModifier
 end
 
 struct Observed <: NodeModifier end
+struct Ordinal <: NodeModifier end
 
 @testset "Multiplication of Edges" begin
     @test Edge(:a, :b) * Weight(1) == ModifiedEdge(Edge(:a, :b), Weight(1))
@@ -38,6 +39,11 @@ end
         (Node(:b) * Weight(1) * Start(1)) ==
         (Weight(1) * Node(:b) * Start(1)) == 
         (Node(:b) * (Weight(1) * Start(1)))
+end
+
+@testset "ModifiedNode" begin
+    @test Node(:a)^Observed() == Observed()^Node(:a) == ModifiedNode(Node(:a), Observed())
+    @test Node(:a)^Observed()^Ordinal() == Node(:a)^[Observed(), Ordinal()] == ModifiedNode(Node(:a), [Observed(), Ordinal()])
 end
 
 @testset "Modification of Arrow" begin

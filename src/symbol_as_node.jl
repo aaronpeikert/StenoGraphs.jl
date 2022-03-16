@@ -6,7 +6,7 @@ for f in src_dst_symbol_as_node
 end
 
 # either dst or src Symbol should be treated as Node (both is possibly type piracy)
-dst_symbol_as_node = (:*, src_dst_symbol_as_node...)
+dst_symbol_as_node = (:*, :^, src_dst_symbol_as_node...)
 for f in dst_symbol_as_node
     @eval $f(src, dst::Symbol) = $f(src, Node(dst))
 end

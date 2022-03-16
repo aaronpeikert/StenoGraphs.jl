@@ -7,6 +7,7 @@ import Base.==
 
 # there is no special compare method for SimpleNode, since Symbols are not mutable
 ==(x::ModifyingNode, y::ModifyingNode) = x.node == y.node && x.modifiers == y.modifiers
+==(x::ModifiedNode, y::ModifiedNode) = x.node == y.node && x.modifiers == y.modifiers
 
 ==(x::VecOrMat{T}, y::VecOrMat{T}) where T <: Modifier = issetequal(x, y)
 
