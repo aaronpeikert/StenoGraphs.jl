@@ -10,6 +10,9 @@ function quote_symbols(ex::Expr)
     to_quote = eachindex(ex.args)
 
     if ex.head == :call
+        if ex.args[1] == :_ 
+            return ex.args[2]
+        end
         to_quote = to_quote[2:end]
     end
     for i in to_quote
@@ -19,5 +22,5 @@ function quote_symbols(ex::Expr)
 end
 
 macro quote_symbols(ex)
-    quote_symbols(ex)
+    esc(quote_symbols(ex))
 end
