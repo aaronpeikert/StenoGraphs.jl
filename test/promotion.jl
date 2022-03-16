@@ -2,7 +2,7 @@
     @test convert(Node,:a) == Node(:a)
 end
 
-struct Start{S <: Number} <: Modifier
+struct Start{S <: Number} <: EdgeModifier
     s::S
 end
 

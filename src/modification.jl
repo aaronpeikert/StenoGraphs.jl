@@ -1,52 +1,78 @@
 import Base.Pair
-Pair(x::Modifier) = Pair(nameof(typeof(x)), x)
+Pair(x::Modifier) = Pair{Symbol, Modifier}(nameof(typeof(x)), x)
+Pair(x::NodeModifier) = Pair{Symbol, NodeModifier}(nameof(typeof(x)), x)
+Pair(x::EdgeModifier) = Pair{Symbol, EdgeModifier}(nameof(typeof(x)), x)
+
 
 function moddict(x::Modifier)
-    Dict{Symbol, Modifier}(Pair(x))
+    Dict(Pair(x))
 end
 
 function moddict(x::Vector{M} where {M <: Modifier})
-    Dict{Symbol, Modifier}(Pair.(x)...)
+    Dict(Pair.(x)...)
 end
 
 moddict(x::Dict{Symbol, Modifier}) = x
 
-ModifiedEdge(edge::ModifiedEdge, modifier::Modifier) = ModifiedEdge(edge.edge, merge(edge.modifiers, moddict(modifier)))    
-ModifyingNode(node::ModifyingNode, modifier::Modifier) = ModifyingNode(node.node, merge(node.modifiers, moddict(modifier)))
+ModifiedEdge(edge::ModifiedEdge, modifier::EdgeModifier) = ModifiedEdge(edge.edge, merge(edge.modifiers, moddict(modifier)))    
+ModifyingNode(node::ModifyingNode, modifier::EdgeModifier) = ModifyingNode(node.node, merge(node.modifiers, moddict(modifier)))
+ModifiedNode(node::ModifiedNode, modifier::NodeModifier) = ModifiedNode(node.node, merge(node.modifiers, moddict(modifier)))
 
-ModifiedEdge(edge::ModifiedEdge, modifier::VecOrMat{M} where {M <: Modifier}) = ModifiedEdge(edge.edge, merge(edge.modifiers, moddict(vec(modifier))))    
-ModifyingNode(node::ModifyingNode, modifier::VecOrMat{M} where {M <: Modifier}) = ModifyingNode(node.node, merge(node.modifiers, moddict(vec(modifier))))
+ModifiedEdge(edge::ModifiedEdge, modifier::VecOrMat{M} where {M <: EdgeModifier}) = ModifiedEdge(edge.edge, merge(edge.modifiers, moddict(vec(modifier))))    
+ModifyingNode(node::ModifyingNode, modifier::VecOrMat{M} where {M <: EdgeModifier}) = ModifyingNode(node.node, merge(node.modifiers, moddict(vec(modifier))))
+ModifiedNode(node::ModifyingNode, modifier::VecOrMat{M} where {M <: NodeModifier}) = ModifiedNode(node.node, merge(node.modifiers, moddict(vec(modifier))))
 
-ModifiedEdge(edge::Edge, modifier::Modifier) = ModifiedEdge(edge, moddict(modifier))
-ModifyingNode(node::Node, modifier::Modifier) = ModifyingNode(node, moddict(modifier))
+ModifiedEdge(edge::Edge, modifier::EdgeModifier) = ModifiedEdge(edge, moddict(modifier))
+ModifyingNode(node::Node, modifier::EdgeModifier) = ModifyingNode(node, moddict(modifier))
+ModifiedNode(node::Node, modifier::NodeModifier) = ModifiedNode(node, moddict(modifier))
 
-ModifiedEdge(edge::Edge, modifier::VecOrMat{M} where {M <: Modifier}) = ModifiedEdge(edge, moddict(vec(modifier)))
-ModifyingNode(node::Node, modifier::VecOrMat{M} where {M <: Modifier}) = ModifyingNode(node, moddict(vec(modifier)))
+ModifiedEdge(edge::Edge, modifier::VecOrMat{M} where {M <: EdgeModifier}) = ModifiedEdge(edge, moddict(vec(modifier)))
+ModifyingNode(node::Node, modifier::VecOrMat{M} where {M <: EdgeModifier}) = ModifyingNode(node, moddict(vec(modifier)))
+ModifiedNode(node::Node, modifier::VecOrMat{M} where {M <: NodeModifier}) = ModifiedNode(node, moddict(vec(modifier)))
 
+ModifiedEdge(edge::Arrow, modifier) = Arrow(ModifiedEdge.(unarrow(edge), Ref(modifier)), edge.lhs, edge.rhs)
 import Base.*
 
-@communative function *(src::AbstractEdge, dst::Modifier)
-    ModifiedEdge(src, dst)
+@communative function *(x::AbstractEdge, y)
+    ModifiedEdge(x, y)
 end
 
-@communative function *(dst::AbstractEdge, src::VecOrMat{M} where {M<:Modifier})
-    ModifiedEdge(dst, vec(src))
+@communative function *(x::AbstractEdge, y::VecOrMat{T} where T) 
+    ModifiedEdge(x, vec(y))
 end
 
-@communative function *(src::AbstractNode, dst::Modifier)
-    ModifyingNode(src, dst)
+@communative function *(y::AbstractNode, x)
+    ModifyingNode(y, x)
 end
 
-@communative function *(dst::AbstractNode, src::VecOrMat{M} where {M<:Modifier})
-    ModifyingNode(dst, vec(src))
+@communative function *(x::AbstractNode, y::VecOrMat{T} where T) 
+    ModifyingNode(x, vec(y))
 end
 
-function *(src::Modifier, dst::Modifier)
-    vec([src dst])
+function *(y::EdgeModifier, x::EdgeModifier)
+    vec([y x])
 end
 
-function *(src::VecOrMat{M} where {M<:Modifier}, dst::VecOrMat{M} where {M<:Modifier})
-    vec([vec(src)... vec(dst)...])
+function *(y::VecOrMat{M1} where {M1<:EdgeModifier}, x::VecOrMat{M2} where {M2<:EdgeModifier})
+    vec([vec(y)... vec(x)...])
+end
+
+import Base.^
+
+@communative function ^(x::AbstractNode, y::NodeModifier)
+    ModifiedNode(x, y)
+end
+
+@communative function ^(x::AbstractNode, y::VecOrMat{T} where T)
+    ModifiedNode(x, vec(y))
+end
+
+function ^(y::NodeModifier, x::NodeModifier)
+    vec([y x])
+end
+
+function ^(y::VecOrMat{M} where {M<:Modifier}, x::VecOrMat{M} where {M<:Modifier})
+    vec([vec(y)... vec(x)...])
 end
 
 
@@ -55,7 +81,7 @@ end
 
 edges = (:DirectedEdge, :UndirectedEdge)
 for e in edges
-    @eval $e(src::AbstractNode, dst::ModifyingNode) = ModifiedEdge($e(src, dst.node), dst.modifiers)
-    @eval $e(src::ModifyingNode, dst::AbstractNode) = ModifiedEdge($e(src.node, dst), src.modifiers)
-    @eval $e(src::ModifyingNode, dst::ModifyingNode) = ModifiedEdge($e(src.node, dst.node), merge(src.modifiers, dst.modifiers))
+    @eval $e(y::AbstractNode, x::ModifyingNode) = ModifiedEdge($e(y, x.node), x.modifiers)
+    @eval $e(y::ModifyingNode, x::AbstractNode) = ModifiedEdge($e(y.node, x), y.modifiers)
+    @eval $e(y::ModifyingNode, x::ModifyingNode) = ModifiedEdge($e(y.node, x.node), merge(y.modifiers, x.modifiers))
 end

@@ -1,10 +1,13 @@
-struct Weight <: Modifier
+struct Weight <: EdgeModifier
     w
 end
 
-struct Start <: Modifier
+struct Start <: EdgeModifier
     s
 end
+
+struct Observed <: NodeModifier end
+struct Ordinal <: NodeModifier end
 
 @testset "Multiplication of Edges" begin
     @test Edge(:a, :b) * Weight(1) == ModifiedEdge(Edge(:a, :b), Weight(1))
@@ -38,14 +41,12 @@ end
         (Node(:b) * (Weight(1) * Start(1)))
 end
 
+@testset "ModifiedNode" begin
+    @test Node(:a)^Observed() == Observed()^Node(:a) == ModifiedNode(Node(:a), Observed())
+    @test Node(:a)^Observed()^Ordinal() == Node(:a)^[Observed(), Ordinal()] == ModifiedNode(Node(:a), [Observed(), Ordinal()])
+end
 
-@testset "Multiplication of VecOrMat of Modifiers" begin
-    [Weight(1), Start(1)] * [Weight(2) Start(2)] == [Weight(1), Start(1), Weight(2), Start(2)]
-
-    vn1 = (ModifyingNode(Node(:a), [Weight(1), Start(1)])) ==
-        ([Weight(1), Start(1)] * :b) ==
-        (:b * [Weight(1), Start(1)]) ==
-        ([Weight(1)] * :b * [Start(1)]) ==
-
-    @test [Weight(1) Start(1)] * :b *  [Weight(2) Start(2)] == [Weight(1) Start(1) Weight(2) Start(2)] * :b
+@testset "Modification of Arrow" begin
+    @test unarrow((:a → :b) * Start(1)) == unarrow(:a → Start(1) * :b)
+    @test unarrow(([:a :b] → [:c :d]) * Start(1)) == unarrow([:a :b] → [:c :d] .* Ref(Start(1)))
 end

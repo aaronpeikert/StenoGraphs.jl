@@ -1,4 +1,4 @@
-struct Start <: Modifier
+struct Start <: EdgeModifier
     s
 end
 

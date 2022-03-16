@@ -43,6 +43,10 @@ function show(io::IO, a::ModifiedEdge)
     print(io, "$(a.edge) * $(a.modifiers)")
 end
 
+function show(io::IO, a::ModifiedNode)
+    print(io, "$(a.node)^$(a.modifiers)")    
+end
+
 function show(io::IO, a::Dict{Symbol, M}) where {M <: Modifier}
     keyset = [k for k in keys(a)]
     if length(keyset) > 1

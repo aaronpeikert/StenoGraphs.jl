@@ -7,7 +7,7 @@ end
 end
 
 # define modifier
-struct Weight <: Modifier end
+struct Weight <: EdgeModifier end
 
 @testset "ModifedNode" begin
     @test ModifyingNode(:a, Weight()) == ModifyingNode(Node(:a), Weight())

@@ -1,12 +1,13 @@
 import Base.==
-struct Weight <: Modifier end
+struct Weight <: EdgeModifier end
 ==(x::Weight, y::Weight) = true 
 
-struct Start <: Modifier
+struct Start <: EdgeModifier
     s::Number
 end
 ==(x::Start, y::Start) = x.s == y.s
 
+struct Observed <: NodeModifier end
 
 @testset "Modifier" begin
     @test [Start(1) Weight()] == [Start(1) Weight()]
@@ -16,7 +17,11 @@ end
 @testset "Node" begin
     @test Node(:a) == Node(:a)
     @test Node(:a) != Node(:b)
+    a = ModifyingNode(Node(:a), [Start(1) Weight()])
+    @test a == deepcopy(a)
     @test ModifyingNode(Node(:a), [Start(1) Weight()]) == ModifyingNode(Node(:a), [Start(1) Weight()])
+    b = ModifiedNode(Node(:a), Observed())
+    @test b == deepcopy(b)
 end
 
 @testset "UndirectedEdge" begin
