@@ -50,3 +50,14 @@ end
     @test a1 != a3
     @test unmeta(a1) == unmeta(a3)
 end
+
+@testset "Hash of UndirectedEdge" begin
+    e1 = UndirectedEdge(:a, :b)
+    e2 = UndirectedEdge(:b, :a)
+    me1 = ModifiedEdge(e1, Weight())
+    me2 = ModifiedEdge(e2, Weight())
+    @test hash(e1) == hash(e2)
+    @test hash(me1) == hash(me2)
+    @test length(unique([e1, e2])) == 1
+    @test length(unique([me1, me2])) == 1
+end

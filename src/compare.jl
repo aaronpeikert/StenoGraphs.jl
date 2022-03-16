@@ -13,3 +13,11 @@ import Base.==
 
 # compare arrows
 ==(x::T, y::T) where T <: Arrow = x.edges == y.edges && x.lhs == y.lhs && x.rhs == y.rhs
+
+# required for sorting
+import Base.isless
+isless(x::SimpleNode, y::SimpleNode) = isless(x.node, y.node)
+
+import Base.hash
+hash(x::T, h::UInt) where {T <: UndirectedEdge} = hash(T, hash(sort([x.src, x.dst]), h))
+hash(x::T, h::UInt) where {T <: ModifiedEdge} = hash(T, hash(x.edge, hash(x.modifiers, h)))
