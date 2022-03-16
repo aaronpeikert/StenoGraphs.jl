@@ -9,7 +9,9 @@ module StenoGraphs
     export MetaEdge
     export DirectedEdge
     export UndirectedEdge
-    export Modifier
+    export EdgeModifier
+    export NodeModifier
+    export NodeOrEdgeModifier
     export ModifiedEdge
     export ModifyingNode
     export @StenoGraph

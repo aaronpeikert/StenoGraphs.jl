@@ -57,11 +57,11 @@ end
     @test unarrow([:a :b] ⇔ [:c :d] ⇔ [:e :f] ⇔ [:g :h]) ⊆ undirect.(cresult)
 end
 
-struct Start <: Modifier
+struct Start <: EdgeModifier
     s
 end
 
-struct Weight <: Modifier
+struct Weight <: EdgeModifier
     w
 end
 

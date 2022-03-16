@@ -1,8 +1,8 @@
 import Base.==
-struct Weight <: Modifier end
+struct Weight <: EdgeModifier end
 ==(x::Weight, y::Weight) = true 
 
-struct Start <: Modifier
+struct Start <: EdgeModifier
     s::Number
 end
 ==(x::Start, y::Start) = x.s == y.s

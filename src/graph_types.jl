@@ -25,13 +25,17 @@ struct UndirectedEdge{T1 <: AbstractNode, T2 <: AbstractNode} <: Edge
 end
 
 abstract type Modifier end
+abstract type EdgeModifier <: Modifier end
 
-struct ModifiedEdge{E <: AbstractEdge, DM <: AbstractDict{S, M} where {S <: Symbol, M <: Modifier}} <: MetaEdge
+abstract type NodeModifier <: Modifier end
+const NodeOrEdgeModifier = Union{EdgeModifier,NodeModifier}
+
+struct ModifiedEdge{E <: AbstractEdge, DM <: AbstractDict{S, M} where {S <: Symbol, M <: EdgeModifier}} <: MetaEdge
     edge::E
     modifiers::DM
 end
 
-struct ModifyingNode{N <: AbstractNode, DM <: AbstractDict{S, M} where {S <: Symbol, M <: Modifier}} <: MetaNode
+struct ModifyingNode{N <: AbstractNode, DM <: AbstractDict{S, M} where {S <: Symbol, M <: EdgeModifier}} <: MetaNode
     node::N
     modifiers::DM
 end

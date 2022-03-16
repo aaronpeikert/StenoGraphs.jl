@@ -1,10 +1,12 @@
-struct Weight <: Modifier
+struct Weight <: EdgeModifier
     w
 end
 
-struct Start <: Modifier
+struct Start <: EdgeModifier
     s
 end
+
+struct Observed <: NodeModifier end
 
 @testset "Multiplication of Edges" begin
     @test Edge(:a, :b) * Weight(1) == ModifiedEdge(Edge(:a, :b), Weight(1))

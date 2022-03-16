@@ -1,27 +1,30 @@
 import Base.Pair
-Pair(x::Modifier) = Pair(nameof(typeof(x)), x)
+Pair(x::Modifier) = Pair{Symbol, Modifier}(nameof(typeof(x)), x)
+Pair(x::NodeModifier) = Pair{Symbol, NodeModifier}(nameof(typeof(x)), x)
+Pair(x::EdgeModifier) = Pair{Symbol, EdgeModifier}(nameof(typeof(x)), x)
+
 
 function moddict(x::Modifier)
-    Dict{Symbol, Modifier}(Pair(x))
+    Dict(Pair(x))
 end
 
 function moddict(x::Vector{M} where {M <: Modifier})
-    Dict{Symbol, Modifier}(Pair.(x)...)
+    Dict(Pair.(x)...)
 end
 
 moddict(x::Dict{Symbol, Modifier}) = x
 
-ModifiedEdge(edge::ModifiedEdge, modifier::Modifier) = ModifiedEdge(edge.edge, merge(edge.modifiers, moddict(modifier)))    
-ModifyingNode(node::ModifyingNode, modifier::Modifier) = ModifyingNode(node.node, merge(node.modifiers, moddict(modifier)))
+ModifiedEdge(edge::ModifiedEdge, modifier::EdgeModifier) = ModifiedEdge(edge.edge, merge(edge.modifiers, moddict(modifier)))    
+ModifyingNode(node::ModifyingNode, modifier::EdgeModifier) = ModifyingNode(node.node, merge(node.modifiers, moddict(modifier)))
 
-ModifiedEdge(edge::ModifiedEdge, modifier::VecOrMat{M} where {M <: Modifier}) = ModifiedEdge(edge.edge, merge(edge.modifiers, moddict(vec(modifier))))    
-ModifyingNode(node::ModifyingNode, modifier::VecOrMat{M} where {M <: Modifier}) = ModifyingNode(node.node, merge(node.modifiers, moddict(vec(modifier))))
+ModifiedEdge(edge::ModifiedEdge, modifier::VecOrMat{M} where {M <: EdgeModifier}) = ModifiedEdge(edge.edge, merge(edge.modifiers, moddict(vec(modifier))))    
+ModifyingNode(node::ModifyingNode, modifier::VecOrMat{M} where {M <: EdgeModifier}) = ModifyingNode(node.node, merge(node.modifiers, moddict(vec(modifier))))
 
-ModifiedEdge(edge::Edge, modifier::Modifier) = ModifiedEdge(edge, moddict(modifier))
-ModifyingNode(node::Node, modifier::Modifier) = ModifyingNode(node, moddict(modifier))
+ModifiedEdge(edge::Edge, modifier::EdgeModifier) = ModifiedEdge(edge, moddict(modifier))
+ModifyingNode(node::Node, modifier::EdgeModifier) = ModifyingNode(node, moddict(modifier))
 
-ModifiedEdge(edge::Edge, modifier::VecOrMat{M} where {M <: Modifier}) = ModifiedEdge(edge, moddict(vec(modifier)))
-ModifyingNode(node::Node, modifier::VecOrMat{M} where {M <: Modifier}) = ModifyingNode(node, moddict(vec(modifier)))
+ModifiedEdge(edge::Edge, modifier::VecOrMat{M} where {M <: EdgeModifier}) = ModifiedEdge(edge, moddict(vec(modifier)))
+ModifyingNode(node::Node, modifier::VecOrMat{M} where {M <: EdgeModifier}) = ModifyingNode(node, moddict(vec(modifier)))
 
 ModifiedEdge(edge::Arrow, modifier) = Arrow(ModifiedEdge.(unarrow(edge), Ref(modifier)), edge.lhs, edge.rhs)
 
