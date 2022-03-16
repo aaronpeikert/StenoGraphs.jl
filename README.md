@@ -106,13 +106,13 @@ Let's define a `Modifier`:
 
 
 ```julia
-struct Weight <: Modifier
+struct Weight <: EdgeModifier
     w::Number
 end
 ```
 
 
-A modifier can be directly applied to edges:
+An  `EdgeModifier` can be directly applied to edges:
 
 
 ```julia
@@ -126,7 +126,7 @@ a → b * Main.Weight(1)
 ```
 
 
-Multiplying a `Node` with a `Modifier` leads to a `ModifyingNode`.
+Multiplying a `Node` with an `EdgeModifier` leads to a `ModifyingNode`.
 
 
 ```julia
@@ -153,11 +153,21 @@ a → b * Main.Weight(1)
 ```
 
 
-To modify Nodes directly to create a `ModifyingNode` (instead of `ModifyingNode`), the following syntax is planned, but not implemented:
+To modify Nodes directly with a `NodeModifier` to create a `ModifiedNode` (instead of `ModifyingNode`) we overload `^`:
 
 
 ```julia
-a^modifier()
+struct NodeLabel <: NodeModifier
+    l
+end
+
+@StenoGraph a → b^NodeLabel("Dickes B")
+```
+
+
+```
+a → b^Main.NodeLabel("Dickes B")
+
 ```
 
 
