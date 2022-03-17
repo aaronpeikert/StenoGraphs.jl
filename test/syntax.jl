@@ -2,6 +2,15 @@
     @test (:a → :b) == (StenoGraphs.@quote_symbols a → b)
     b = :c
     @test (:a → :c) == (StenoGraphs.@quote_symbols a → _(b))
+    let err = nothing
+        try
+            eval(:(StenoGraphs.@quote_symbols a → _(b, c)))
+        catch err
+        end
+    
+        @test err isa Exception
+        @test  occursin("Unqote only a single argument. Right: `_(x)`, Wrong: `_(x, y)`.", sprint(showerror, err))
+    end
 end
 
 @testset "Addition as hcat" begin
