@@ -1,5 +1,5 @@
 
-<!-- README.md is generated from docs/src/README.md. Please edit that file and rebuild with `cd docs/ && julia make_readme.jl`-->
+<!-- README.md is generated from docs/src/index.md. Please edit that file and rebuild with `cd docs/ && julia make_readme.jl`-->
 
 <a id='StenoGraphs.jl-―-A-concise-language-to-write-meta-graphs'></a>
 
