@@ -5,6 +5,13 @@ on_ci() = get(ENV, "CI", nothing) == "true"
 
 makedocs(
     sitename = "StenoGraphs",
+    pages = [
+        "Home" => "index.md",
+        "Manual" => Any[
+            "man/types.md",
+            "man/arrows.md"
+        ]
+    ],
     format = Documenter.HTML(
         prettyurls = on_ci()
     ),
