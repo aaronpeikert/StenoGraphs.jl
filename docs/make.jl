@@ -21,7 +21,8 @@ makedocs(
 )
 
 deploydocs(
-    repo = "github.com/aaronpeikert/StenoGraphs.jl"
+    repo = "github.com/aaronpeikert/StenoGraphs.jl",
+    devbranch = "devel"
 )
 
 !on_ci() && include("make_readme.jl")
