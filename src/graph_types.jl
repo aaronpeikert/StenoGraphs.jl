@@ -1,294 +1,48 @@
-"""
-    AbstractNode
+abstract type Node end
 
-At the top of the type hierarchy of `StenoGraphs`.
-Anything that might resemble a node.
-"""
-abstract type AbstractNode end
-
-"""
-    Node
-
-Subtype of [`AbstractNode`](@ref).
-Any subtype of `Node` must have the field `node` (and no other) that uniquily identifies the node.
-"""
-abstract type Node <: AbstractNode end
-
-"""
-    MetaNode
-
-Subtype of [`AbstractNode`](@ref).
-Any subtype of `MetaNode` must have a field `node` of subtype [`Node`](@ref), but may have any number of other fields containing metadata.
-"""
-abstract type MetaNode <: AbstractNode end
-
-"""
-    SimpleNode
-
-Constructs a subtype of [`Node`](@ref) with a symbol as identifier.
-
-# Example
-
-```jldoctest
-julia> SimpleNode(:a)
-a
-```
-"""
 struct SimpleNode{T <: Symbol} <: Node
     node::T
 end
 
-"""
-    Node(node)
-
-Alias for [`SimpleNode`](@ref).
-
-# Example
-
-```jldoctest
-julia> Node(:a)
-a
-```
-"""
 Node(node) = SimpleNode(node)
 
-"""
-    AbstractEdge
+abstract type Edge end
 
-At the top of the type hierarchy of `StenoGraphs`.
-Anything that might resemble an edge.
-"""
-abstract type AbstractEdge end
+Edge(lhs, rhs) = DirectedEdge(lhs, rhs)
 
-"""
-    Edge
-
-Subtype of [`AbstractEdge`](@ref).
-Any subtype of `Edge` must have the fields `src` and `dst` (and no other), which must be a subtype of [`AbstractNode`](@ref).
-Any implementation might be stricter about typing.
-"""
-abstract type Edge <: AbstractEdge end
-
-"""
-    MetaEdge
-
-Subtype of [`AbstractEdge`](@ref).
-Any subtype of `MetaEdge` must have a field `edge` of subtype [`Edge`](@ref), but may have any number of other fields containing metadata.
-"""
-abstract type MetaEdge <: AbstractEdge end
-
-"""
-    Edge(src, dst)
-
-Alias for [`DirectedEdge`](@ref).
-
-# Example
-
-```jldoctest
-julia> Edge(:a, :b)
-a → b
-```
-
-"""
-Edge(src, dst) = DirectedEdge(src, dst)
-
-
-"""
-    DirectedEdge(src, dst)
-
-Subtype of [`Edge`](@ref).
-Directed edge from `src` to `dst`.
-
-# Example
-
-```jldoctest
-julia> DirectedEdge(:a, :b)
-a → b
-```
-"""
-struct DirectedEdge{T1 <: AbstractNode, T2 <: AbstractNode} <: Edge
-    src::T1
-    dst::T2
+struct DirectedEdge{T1 <: Node, T2 <: Node} <: Edge
+    lhs::T1
+    rhs::T2
 end
 
-"""
-    UndirectedEdge(src, dst)
-
-Subtype of [`Edge`](@ref).
-Undirected edge from `src` to `dst`. What is what does not matter.
-
-# Example
-```jldoctest
-julia> e1 = UndirectedEdge(:a, :b)
-a ↔ b
-
-julia> e2 = UndirectedEdge(:b, :a)
-b ↔ a
-
-julia> isequal(e1, e2)
-true
-
-julia> unique([e1, e2])
-a ↔ b
-```
-"""
-struct UndirectedEdge{T1 <: AbstractNode, T2 <: AbstractNode} <: Edge
-    src::T1
-    dst::T2
+struct UndirectedEdge{T1 <: Node, T2 <: Node} <: Edge
+    lhs::T1
+    rhs::T2
 end
 
-"""
-    Modifier
-
-The abstract type that powers EdgeModifier and NodeModifier.
-`StenoGraphs` does not implement any concrete modifiers.
-
-"""
 abstract type Modifier end
 
-
-"""
-    EdgeModifier
-
-Subtype of [`Modifier`](@ref).
-[`ModifiedEdge`](@ref)s require `EdgeModifier`s.
-`EdgeModifier`s usually make use of `*` for creating [`ModifiedEdge`](@ref)s/[`ModifyingNode`](@ref)s.
-One special application for `EdgeModifier`s is the creation of [`ModifyingNode`](@ref)s.
-Since `StenoGraphs` does not implement any `EdgeModifier` users must implement them.
-If these are not atomic they must take care to implement comparison methods (see examples in [`NodeModifier`](@ref))
-
-# Example
-
-```jldoctest
-# `StenoGraphs` does not implement any `EdgeModifier`s
-julia> struct Weight{N <: Number} <: EdgeModifier w::N end
-
-julia> ModifiedEdge(Edge(:a, :b), Weight(.5)) == # directly create ModifiedEdge
-        Edge(:a, :b) * Weight(.5) == # modify an edge
-        Edge(:a, :b * Weight(.5)) # modify Edge throu a ModifyingNode
-true
-
-```
-"""
-abstract type EdgeModifier <: Modifier end
-
-"""
-    NodeModifier
-
-Subtype of [`Modifier`](@ref).
-[`ModifiedNode`](@ref)s require `NodeModifier`s.
-`NodeModifier`s usually make use of `^` for creating [`ModifiedNode`](@ref)s.
-Since `StenoGraphs` does not implement any `NodeModifier` users must implement them.
-If these may contain any mutable fields (i.e. strings, vectors, arrays, etc.) users must take care to implement comparison methods.
-
-# Example
-
-```jldoctest
-# `StenoGraphs` does not implement any `NodeModifier`s
-julia> struct Label <: NodeModifier l end
-
-julia> import Base.==
-
-julia> ==(x::Label, y::Label) = x.l == y.l;
-
-julia> ModifiedNode(Node(:a), Label("hi")) == :a^Label("hi")
-true
-
-```
-"""
-abstract type NodeModifier <: Modifier end
-const NodeOrEdgeModifier = Union{EdgeModifier,NodeModifier}
-
-"""
-    ModifiedEdge
-
-Subtype of [`MetaEdge`](@ref) that contains two fields (`edge` and `modifiers`).
-`modifiers` is a `Dict{Symbol, EdgeModifier}` where the keys are `nameof(typeof(EdgeModifier))`.
-Modifiying an edge with several modifiers of the same type will therefore overwrite old modifiers.
-A `ModifiedEdge` is created by modifying an edge directly (with `*`) or via [`ModifyingNode`](@ref)s where a node is modified that than modifies the edge.
-
-# Example
-```jldoctest
-julia> struct Weight{N <: Number} <: EdgeModifier w::N end
-
-julia> struct Start{N <: Number} <: EdgeModifier s::N end
-
-julia> ModifiedEdge(Edge(:a, :b), Weight(3))
-a → b * Weight{Int64}(3)
-
-julia> ModifiedEdge(Edge(:a, :b), Weight(3)) == Edge(:a, :b) * Weight(3)
-true
-
-julia> ModifiedEdge(Edge(:a, :b), [Weight(3), Start(2)])
-a → b * [Start{Int64}(2), Weight{Int64}(3)]
-
-julia> @StenoGraph a → b * Weight(3) * Start(2)
-a → b * [Start{Int64}(2), Weight{Int64}(3)]
-
-julia> @StenoGraph a → b * Weight(3) * Start(2) * Weight(2)
-a → b * [Start{Int64}(2), Weight{Int64}(2)]
-```
-"""
-struct ModifiedEdge{E <: AbstractEdge, DM <: AbstractDict{S, M} where {S <: Symbol, M <: EdgeModifier}} <: MetaEdge
+struct ModifiedEdge{E <: Edge, VM <: Vector{M} where {M <: Modifier}} <: Edge
     edge::E
-    modifiers::DM
+    modifiers::VM
 end
 
-"""
-    ModifyingNode
-
-Subtype of [`MetaNode`](@ref) that contains two fields (`node` and `modifiers`).
-`modifiers` is a `Dict{Symbol, EdgeModifier}` where the keys are `nameof(typeof(EdgeModifier))`.
-Modifiying an node with several modifiers of the same type will therefore overwrite old modifiers.
-A `ModifyingNode` is created by multiplying it (`*`) with an *`EdgeModifier`* since it will modify edges build upon it.
-If you want to modify the node use `^` and see [`ModifiedNode`](@ref).
-
-# Example
-```jldoctest
-julia> struct Weight{N <: Number} <: EdgeModifier w::N end
-
-julia> struct Start{N <: Number} <: EdgeModifier s::N end
-
-julia> @StenoGraph a → b * Weight(3) * Start(2)
-a → b * [Start{Int64}(2), Weight{Int64}(3)]
-
-julia> @StenoGraph a → b * Weight(3) * Start(2) * Weight(2)
-a → b * [Start{Int64}(2), Weight{Int64}(2)]
-```
-"""
-struct ModifyingNode{N <: AbstractNode, DM <: AbstractDict{S, M} where {S <: Symbol, M <: EdgeModifier}} <: MetaNode
+struct ModifyingNode{N <: Node, VM <: Vector{M} where {M <: Modifier}} <: Node
     node::N
-    modifiers::DM
+    modifiers::VM
 end
 
-"""
-    ModifiedNode
+ModifiedEdge(edge::ModifiedEdge, modifier::Modifier) = ModifiedEdge(edge.edge, [edge.modifiers..., modifier])    
+ModifyingNode(node::ModifyingNode, modifier::Modifier) = ModifyingNode(node.node, [node.modifiers..., modifier])
 
-Subtype of [`MetaNode`](@ref) that contains two fields (`node` and `modifiers`).
-`modifiers` is a `Dict{Symbol, NodeModifier}` where the keys are `nameof(typeof(NodeModifier))`.
-Modifiying a node with several modifiers of the same type will therefore overwrite old modifiers.
+ModifiedEdge(edge::ModifiedEdge, modifier::Matrix{M} where {M <: Modifier}) = ModifiedEdge(edge.edge, [edge.modifiers..., modifier...])    
+ModifyingNode(node::ModifyingNode, modifier::Matrix{M} where {M <: Modifier}) = ModifyingNode(node.node, [node.modifiers..., modifier...])
 
-# Example
+ModifiedEdge(edge::ModifiedEdge, modifier::Vector{M} where {M <: Modifier}) = ModifiedEdge(edge.edge, [edge.modifiers..., modifier...])    
+ModifyingNode(node::ModifyingNode, modifier::Vector{M} where {M <: Modifier}) = ModifyingNode(node.node, [node.modifiers..., modifier...])
 
-```jldoctest
-julia> struct Observed <: NodeModifier end
+ModifiedEdge(edge::Edge, modifier::Modifier) = ModifiedEdge(edge, [modifier])
+ModifyingNode(node::Node, modifier::Modifier) = ModifyingNode(node, [modifier])
 
-julia> struct Label{N <: String} <: NodeModifier s::N end
-
-julia> Node(:b) ^ Label("some label") ^ Observed()
-b^[Observed(), Label{String}("some label")]
-
-julia> Node(:b) ^ Label("some label") ^ Observed() ^ Label("some other label")
-b^[Observed(), Label{String}("some other label")]
-```
-"""
-struct ModifiedNode{N <: AbstractNode, DM <: AbstractDict{S, M} where {S <: Symbol, M <: NodeModifier}} <: MetaNode
-    node::N
-    modifiers::DM
-end
-
-struct Arrow{VE <: Vector{E} where {E <: AbstractEdge}, N1, N2} <: MetaEdge
-    edges::VE
-    lhs::N1
-    rhs::N2
-end
+ModifiedEdge(edge::Edge, modifier::Matrix{M} where {M <: Modifier}) = ModifiedEdge(edge, vec(modifier))
+ModifyingNode(node::Node, modifier::Matrix{M} where {M <: Modifier}) = ModifyingNode(node, vec(modifier))
