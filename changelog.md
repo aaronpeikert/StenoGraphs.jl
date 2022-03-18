@@ -20,12 +20,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * add show methods for edges ([`#13`](https://github.com/aaronpeikert/StenoGraphs.jl/pull/13))
 * ModifiedNode ([`#16`](https://github.com/aaronpeikert/StenoGraphs.jl/pull/16))
 
-## Fixed
+### Fixed
 * add hash method so that `isequal(edge1, edge2)` implies `hash(edge1) == hash(edge2)` ([`#17`](https://github.com/aaronpeikert/StenoGraphs.jl/pull/17))
 
 ## [0.0.2]
 
-Skipped in favor of [0.2.0].
+Skipped in favor of [0.1.0].
 
 ## [0.0.1]
 
