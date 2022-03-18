@@ -41,8 +41,12 @@ end
     ModifiedEdge(x, vec(y))
 end
 
-@communative function *(y::AbstractNode, x)
+@communative function *(y::AbstractNode, x::EdgeModifier)
     ModifyingNode(y, x)
+end
+
+@communative function *(y::AbstractNode, x::NodeModifier)
+    ModifiedNode(y, x)
 end
 
 @communative function *(x::AbstractNode, y::VecOrMat{T} where T) 
@@ -51,6 +55,10 @@ end
 
 function *(y::EdgeModifier, x::EdgeModifier)
     vec([y x])
+end
+
+@communative function *(y::EdgeModifier, x::VecOrMat{T} where {T <: EdgeModifier})
+    vec([y x...])
 end
 
 function *(y::VecOrMat{M1} where {M1<:EdgeModifier}, x::VecOrMat{M2} where {M2<:EdgeModifier})
@@ -67,11 +75,15 @@ end
     ModifiedNode(x, vec(y))
 end
 
+@communative function ^(y::NodeModifier, x::VecOrMat{T} where {T <: NodeModifier})
+    vec([y x...])
+end
+
 function ^(y::NodeModifier, x::NodeModifier)
     vec([y x])
 end
 
-function ^(y::VecOrMat{M} where {M<:Modifier}, x::VecOrMat{M} where {M<:Modifier})
+function ^(y::VecOrMat{M1} where {M1<:NodeModifier}, x::VecOrMat{M2} where {M2<:NodeModifier})
     vec([vec(y)... vec(x)...])
 end
 
