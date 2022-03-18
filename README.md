@@ -1,5 +1,5 @@
 
-<!-- README.md is generated from docs/src/index.md. Please edit that file and rebuild with `cd docs/ && julia make_readme.jl`-->
+<!-- README.md is generated from docs/src/README.md. Please edit that file and rebuild with `cd docs/ && julia make_readme.jl`-->
 
 <a id='StenoGraphs.jl-―-Write-meta-graphs-quickly'></a>
 
@@ -22,7 +22,7 @@ To install `StenoGraphs.jl`:
 
 
 ```julia
-import Pkg; Pkg.add("StenoGraphs")
+import Pkg; Pkg.add(url="https://github.com/aaronpeikert/StenoGraphs.jl.git")
 ```
 
 
@@ -36,8 +36,7 @@ using StenoGraphs
 
 
 ```
-a → b
-
+StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}(StenoGraphs.SimpleNode{Symbol}(:a), StenoGraphs.SimpleNode{Symbol}(:b))
 ```
 
 
@@ -57,13 +56,13 @@ Multiple nodes on one side lead to multiple edges:
 
 
 ```
-a → c
-b → c
-
+2-element Vector{StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}}:
+ StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}(StenoGraphs.SimpleNode{Symbol}(:a), StenoGraphs.SimpleNode{Symbol}(:c))
+ StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}(StenoGraphs.SimpleNode{Symbol}(:b), StenoGraphs.SimpleNode{Symbol}(:c))
 ```
 
 
-There are two desirable outcomes for multible edges on both sides, either elementwise edges or cross product. The single line arrow (`→`) means element wise and double line arrow (`⇒`) means crossproduct (don't tell anyone but for a single node on one side `→` is converted to `⇒` for convinience).
+Multiple nodes on both sides lead to the cross product of edges:
 
 
 ```julia
@@ -72,23 +71,26 @@ There are two desirable outcomes for multible edges on both sides, either elemen
 
 
 ```
-a → c
-b → d
-
+4-element Vector{StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}}:
+ StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}(StenoGraphs.SimpleNode{Symbol}(:a), StenoGraphs.SimpleNode{Symbol}(:c))
+ StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}(StenoGraphs.SimpleNode{Symbol}(:a), StenoGraphs.SimpleNode{Symbol}(:d))
+ StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}(StenoGraphs.SimpleNode{Symbol}(:b), StenoGraphs.SimpleNode{Symbol}(:c))
+ StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}(StenoGraphs.SimpleNode{Symbol}(:b), StenoGraphs.SimpleNode{Symbol}(:d))
 ```
+
+
+Unless you specifically broadcast:
 
 
 ```julia
-@StenoGraph [a b] ⇒ [c d]
+@StenoGraph [a, b] .→ [c, d]
 ```
 
 
 ```
-a → c
-a → d
-b → c
-b → d
-
+2-element Vector{StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}}:
+ StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}(StenoGraphs.SimpleNode{Symbol}(:a), StenoGraphs.SimpleNode{Symbol}(:c))
+ StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}(StenoGraphs.SimpleNode{Symbol}(:b), StenoGraphs.SimpleNode{Symbol}(:d))
 ```
 
 
@@ -99,20 +101,20 @@ b → d
 ## Modification
 
 
-Modification is done by overloading `*` for types of Modifier.
+Modification is done by overloading '*' for types of Modifier.
 
 
 Let's define a `Modifier`:
 
 
 ```julia
-struct Weight <: EdgeModifier
+struct Weight <: Modifier
     w::Number
 end
 ```
 
 
-An  `EdgeModifier` can be directly applied to edges:
+A modifier can be directly applied to edges:
 
 
 ```julia
@@ -121,21 +123,20 @@ An  `EdgeModifier` can be directly applied to edges:
 
 
 ```
-a → b * Main.Weight(1)
-
+StenoGraphs.ModifiedEdge{StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}, Vector{Main.Weight}}(StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}(StenoGraphs.SimpleNode{Symbol}(:a), StenoGraphs.SimpleNode{Symbol}(:b)), Main.Weight[Main.Weight(1)])
 ```
 
 
-Multiplying a `Node` with an `EdgeModifier` leads to a `ModifyingNode`.
+Multiplying a `Node` with a `Modifier` leads to a `ModifyingNode`.
 
 
 ```julia
-:b * Weight(1)
+@StenoGraph b * Weight(1)
 ```
 
 
 ```
-b * Main.Weight(1)
+StenoGraphs.ModifyingNode{StenoGraphs.SimpleNode{Symbol}, Vector{Main.Weight}}(StenoGraphs.SimpleNode{Symbol}(:b), Main.Weight[Main.Weight(1)])
 ```
 
 
@@ -148,26 +149,15 @@ A `ModifyingNode` will modify its edges:
 
 
 ```
-a → b * Main.Weight(1)
-
+StenoGraphs.ModifiedEdge{StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}, Vector{Main.Weight}}(StenoGraphs.DirectedEdge{StenoGraphs.SimpleNode{Symbol}, StenoGraphs.SimpleNode{Symbol}}(StenoGraphs.SimpleNode{Symbol}(:a), StenoGraphs.SimpleNode{Symbol}(:b)), Main.Weight[Main.Weight(1)])
 ```
 
 
-To modify Nodes directly with a `NodeModifier` to create a `ModifiedNode` (instead of `ModifyingNode`) we overload `^`:
+To modify Nodes directly to create a `ModifyingNode` (instead of `ModifyingNode`), the following syntax is planned, but not implemented:
 
 
 ```julia
-struct NodeLabel <: NodeModifier
-    l
-end
-
-@StenoGraph a → b^NodeLabel("Dickes B")
-```
-
-
-```
-a → b^Main.NodeLabel("Dickes B")
-
+a^modifier()
 ```
 
 

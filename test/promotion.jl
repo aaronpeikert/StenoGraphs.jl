@@ -1,14 +1,13 @@
 @testset "Conversion" begin
-    @test convert(Node,:a) == Node(:a)
+    @test convert(Node,:a) ≂ Node(:a)
 end
 
-struct Start{S <: Number} <: EdgeModifier
+struct Start{S <: Number} <: Modifier
     s::S
 end
 
 @testset "Promotion" begin
-    @test eltype([Node(:a), :b]) <: Node
-    @test eltype([Node(:a), :b, Start(1) * :c]) <: AbstractNode
-    @test eltype([:b, Start(1) * :c]) <: AbstractNode
-    @test eltype([Start(1) * :b, Start(1) * :c]) <: MetaNode
+    @test typeof([Node(:a), :b]) == Vector{Node}
+    @test typeof([Node(:a), :b, Start(1) * :c]) == Vector{Node}
+    @test typeof([:b, Start(1) * :c]) == Vector{Node}
 end

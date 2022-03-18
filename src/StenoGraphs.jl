@@ -1,42 +1,26 @@
 module StenoGraphs
 
-    export AbstractNode
     export Node
-    export MetaNode
     export SimpleNode
-    export AbstractEdge
     export Edge
-    export MetaEdge
     export DirectedEdge
     export UndirectedEdge
     export Modifier
-    export EdgeModifier
-    export NodeModifier
-    export NodeOrEdgeModifier
     export ModifiedEdge
     export ModifyingNode
-    export ModifiedNode
     export @StenoGraph
     export *
     export convert
     export promote_rule
-    export →, ←, ↔, ⇒, ⇐, ⇔
-    export ==
-    export unmeta
-    export unarrow
-    export show
+    export →, ←, ↔
 
     include("graph_types.jl")
     include("syntax/symbol.jl")
-    include("syntax/arrow.jl")
+    include("syntax/edge.jl")
     include("syntax/addition.jl")
     include("broadcast.jl")
     include("macro_communative.jl")
     include("syntax/macro.jl")
     include("modification.jl")
     include("symbol_as_node.jl")
-    include("compare.jl")
-    include("keep.jl")
-    include("show.jl")
-
 end

@@ -1,8 +1,8 @@
-struct Weight <: EdgeModifier
+struct Weight <: Modifier
     w
 end
 
-struct Start <: EdgeModifier
+struct Start <: Modifier
     s
 end
 
@@ -10,7 +10,7 @@ end
     StenoGraphs.@communative foo(a::Weight, b::Start) = a.w * b.s
     @test foo(Weight(2), Start(3)) == foo(Start(3), Weight(2))
 
-    StenoGraphs.@communative function bar(x::Vector{m} where {m <: EdgeModifier}, y::Int)
+    StenoGraphs.@communative function bar(x::Vector{m} where {m <: Modifier}, y::Int)
         length(x)*y
     end
     @test bar([Weight(1), Start(2)], 2) == 4
