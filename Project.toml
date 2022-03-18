@@ -4,5 +4,5 @@ authors = ["Aaron Peikert <aaron.peikert@posteo.de> and contributors"]
 version = "0.3.0"
 
 [compat]
-julia = "1"
+julia = "1.2"
 
