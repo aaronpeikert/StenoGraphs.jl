@@ -39,11 +39,21 @@ end
         (Node(:b) * Weight(1) * Start(1)) ==
         (Weight(1) * Node(:b) * Start(1)) == 
         (Node(:b) * (Weight(1) * Start(1)))
+    
+    @test Start(3)*Start(4)*Weight(5) ==
+        [Start(3), Start(4), Weight(5)] ==
+        (Start(3)*Start(4))*Weight(5) ==
+        Start(3)*(Start(4)*Weight(5))
 end
 
 @testset "ModifiedNode" begin
     @test Node(:a)^Observed() == Observed()^Node(:a) == ModifiedNode(Node(:a), Observed())
     @test Node(:a)^Observed()^Ordinal() == Node(:a)^[Observed(), Ordinal()] == ModifiedNode(Node(:a), [Observed(), Ordinal()])
+    @test Node(:a)^Observed()^Ordinal()^Ordinal() == ModifiedNode(Node(:a), [Observed(), Ordinal()])
+    @test Observed()^Observed()^Ordinal() ==
+        [Observed(), Observed(), Ordinal()] ==
+        (Observed()^Observed())^Ordinal() ==
+        Observed()^(Observed()^Ordinal())
 end
 
 @testset "Modification of Arrow" begin
