@@ -41,8 +41,12 @@ end
     ModifiedEdge(x, vec(y))
 end
 
-@communative function *(y::AbstractNode, x)
+@communative function *(y::AbstractNode, x::EdgeModifier)
     ModifyingNode(y, x)
+end
+
+@communative function *(y::AbstractNode, x::NodeModifier)
+    ModifiedNode(y, x)
 end
 
 @communative function *(x::AbstractNode, y::VecOrMat{T} where T) 
