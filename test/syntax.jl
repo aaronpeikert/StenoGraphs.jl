@@ -14,8 +14,8 @@
 end
 
 @testset "Addition as hcat" begin
-    @test StenoGraphs.addition_to_vector(:(a * b + c)) == :([a * b c])
-    @test StenoGraphs.addition_to_vector(:(a * (b + c))) == :(a * [b c])
+    @test StenoGraphs.addition_to_vector!(:(a * b + c)) == :([a * b c])
+    @test StenoGraphs.addition_to_vector!(:(a * (b + c))) == :(a * [b c])
 end
 
 @testset "Broadcasting Edges" begin
