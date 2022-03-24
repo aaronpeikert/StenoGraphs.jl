@@ -40,4 +40,9 @@ using Test, SafeTestsets, Documenter
         using StenoGraphs
         include("arrow.jl")
     end
+
+    @safetestset "Deprecate" begin
+        using StenoGraphs
+        include("deprecate.jl")
+    end
 end
