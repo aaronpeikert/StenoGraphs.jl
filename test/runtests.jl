@@ -23,7 +23,7 @@ using Test, SafeTestsets, Documenter
     end
     @safetestset "Promotion and Conversion" begin
         using StenoGraphs
-        include("promotion.jl")
+        include("conversion.jl")
     end
 
     @safetestset "Comparison" begin

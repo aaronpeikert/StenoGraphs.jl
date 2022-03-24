@@ -34,7 +34,7 @@ module StenoGraphs
     include("macro_communative.jl")
     include("syntax/macro.jl")
     include("modification.jl")
-    include("symbol_as_node.jl")
+    include("conversion.jl")
     include("compare.jl")
     include("keep.jl")
     include("show.jl")
