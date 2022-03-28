@@ -3,7 +3,7 @@ using Test, SafeTestsets, Documenter
 
 @testset "StenoGraphs.jl" begin
     DocMeta.setdocmeta!(StenoGraphs, :DocTestSetup, :(using StenoGraphs); recursive=true)
-    #doctest(StenoGraphs)
+    doctest(StenoGraphs)
 
     @safetestset "Graph Types" begin
         using StenoGraphs
