@@ -27,7 +27,7 @@ module StenoGraphs
     export show
 
     include("graph_types.jl")
-    include("syntax/symbol.jl")
+    include("syntax/variable_as_node.jl")
     include("syntax/arrow.jl")
     include("syntax/addition.jl")
     include("broadcast.jl")

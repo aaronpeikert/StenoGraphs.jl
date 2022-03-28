@@ -1,10 +1,10 @@
 @testset "Quoted Symbol Syntax" begin
-    @test (:a → :b) == (StenoGraphs.@quote_symbols a → b)
-    b = :c
-    @test (:a → :c) == (StenoGraphs.@quote_symbols a → _(b))
+    @test (Node(:a) → Node(:b)) == (StenoGraphs.@variable_as_node a → b)
+    b = Node(:c)
+    @test (Node(:a) → Node(:c)) == (StenoGraphs.@variable_as_node a → _(b))
     let err = nothing
         try
-            eval(:(StenoGraphs.@quote_symbols a → _(b, c)))
+            eval(:(StenoGraphs.@variable_as_node a → _(b, c)))
         catch err
         end
     
