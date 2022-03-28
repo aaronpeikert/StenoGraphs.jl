@@ -85,7 +85,7 @@ Alias for [`DirectedEdge`](@ref).
 # Example
 
 ```jldoctest
-julia> Edge(:a, :b)
+julia> Edge(Node(:a), Node(:b))
 a → b
 ```
 
@@ -102,7 +102,7 @@ Directed edge from `src` to `dst`.
 # Example
 
 ```jldoctest
-julia> DirectedEdge(:a, :b)
+julia> DirectedEdge(Node(:a), Node(:b))
 a → b
 ```
 """
@@ -119,10 +119,10 @@ Undirected edge from `src` to `dst`. What is what does not matter.
 
 # Example
 ```jldoctest
-julia> e1 = UndirectedEdge(:a, :b)
+julia> e1 = UndirectedEdge(Node(:a), Node(:b))
 a ↔ b
 
-julia> e2 = UndirectedEdge(:b, :a)
+julia> e2 = UndirectedEdge(Node(:b), Node(:a))
 b ↔ a
 
 julia> isequal(e1, e2)
@@ -163,9 +163,9 @@ If these are not atomic they must take care to implement comparison methods (see
 # `StenoGraphs` does not implement any `EdgeModifier`s
 julia> struct Weight{N <: Number} <: EdgeModifier w::N end
 
-julia> ModifiedEdge(Edge(:a, :b), Weight(.5)) == # directly create ModifiedEdge
-        Edge(:a, :b) * Weight(.5) == # modify an edge
-        Edge(:a, :b * Weight(.5)) # modify Edge throu a ModifyingNode
+julia> ModifiedEdge(Edge(Node(:a), Node(:b)), Weight(.5)) == # directly create ModifiedEdge
+        Edge(Node(:a), Node(:b)) * Weight(.5) == # modify an edge
+        Edge(Node(:a), Node(:b) * Weight(.5)) # modify Edge through a ModifyingNode
 true
 
 ```
@@ -191,7 +191,7 @@ julia> import Base.==
 
 julia> ==(x::Label, y::Label) = x.l == y.l;
 
-julia> ModifiedNode(Node(:a), Label("hi")) == :a^Label("hi")
+julia> ModifiedNode(Node(:a), Label("hi")) == Node(:a)^Label("hi")
 true
 
 ```
@@ -213,13 +213,13 @@ julia> struct Weight{N <: Number} <: EdgeModifier w::N end
 
 julia> struct Start{N <: Number} <: EdgeModifier s::N end
 
-julia> ModifiedEdge(Edge(:a, :b), Weight(3))
+julia> ModifiedEdge(Edge(Node(:a), Node(:b)), Weight(3))
 a → b * Weight{Int64}(3)
 
-julia> ModifiedEdge(Edge(:a, :b), Weight(3)) == Edge(:a, :b) * Weight(3)
+julia> ModifiedEdge(Edge(Node(:a), Node(:b)), Weight(3)) == Edge(Node(:a), Node(:b)) * Weight(3)
 true
 
-julia> ModifiedEdge(Edge(:a, :b), [Weight(3), Start(2)])
+julia> ModifiedEdge(Edge(Node(:a), Node(:b)), [Weight(3), Start(2)])
 a → b * [Start{Int64}(2), Weight{Int64}(3)]
 
 julia> @StenoGraph a → b * Weight(3) * Start(2)
