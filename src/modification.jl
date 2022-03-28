@@ -88,7 +88,7 @@ function ^(y::VecOrMat{M1} where {M1<:NodeModifier}, x::VecOrMat{M2} where {M2<:
 end
 
 
-# Edge(:a, :b) ≠ Edge(:b, :a) 
+# Edge(Node(:a), Node(:b)) ≠ Edge(Node(:b), Node(:a)) 
 # not communative
 
 edges = (:DirectedEdge, :UndirectedEdge)

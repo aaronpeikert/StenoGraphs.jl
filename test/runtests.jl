@@ -3,7 +3,7 @@ using Test, SafeTestsets, Documenter
 
 @testset "StenoGraphs.jl" begin
     DocMeta.setdocmeta!(StenoGraphs, :DocTestSetup, :(using StenoGraphs); recursive=true)
-    doctest(StenoGraphs)
+    #doctest(StenoGraphs)
 
     @safetestset "Graph Types" begin
         using StenoGraphs
@@ -17,30 +17,26 @@ using Test, SafeTestsets, Documenter
         using StenoGraphs
         include("modification.jl")
     end
-    @safetestset "Communative" begin
+        @safetestset "Communative" begin
         using StenoGraphs
-        include("comunative.jl")
+       include("comunative.jl")
     end
     @safetestset "Promotion and Conversion" begin
         using StenoGraphs
         include("conversion.jl")
     end
-
     @safetestset "Comparison" begin
         using StenoGraphs
         include("compare.jl")
     end
-
     @safetestset "Unmeta" begin
         using StenoGraphs
         include("keep.jl")
     end
-
     @safetestset "Arrow" begin
         using StenoGraphs
         include("arrow.jl")
     end
-
     @safetestset "Deprecate" begin
         using StenoGraphs
         include("deprecate.jl")

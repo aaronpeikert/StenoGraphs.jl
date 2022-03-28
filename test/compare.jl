@@ -25,35 +25,35 @@ end
 end
 
 @testset "UndirectedEdge" begin
-    @test UndirectedEdge(:a, :b) == UndirectedEdge(:b, :a)
+    @test UndirectedEdge(Node(:a), Node(:b)) == UndirectedEdge(Node(:b), Node(:a))
 end
 
 @testset "DirectedEdge" begin
-    me1 = ModifiedEdge(Edge(:a, :b), Start(1))
+    me1 = ModifiedEdge(Edge(Node(:a), Node(:b)), Start(1))
     @test me1 == me1
     me2 = deepcopy(me1)
     @test me1 == me2
     me2.modifiers[:Start] = Start(2)
     @test me1 != me2
-    me3 = ModifiedEdge(Edge(:a, :b), [Weight() Start(1)])
+    me3 = ModifiedEdge(Edge(Node(:a), Node(:b)), [Weight() Start(1)])
     me4 = deepcopy(me3)
     @test me3 == me4
-    me5 = ModifiedEdge(Edge(:a, :b), [Start(1) Weight()])
+    me5 = ModifiedEdge(Edge(Node(:a), Node(:b)), [Start(1) Weight()])
     @test me5 == me3
 end
 
 @testset "Arrow" begin
-    a1 = :a → :b
+    a1 = Node(:a) → Node(:b)
     a2 = deepcopy(a1)
-    a3 = :b ← :a
+    a3 = Node(:b) ← Node(:a)
     @test a1 == a2
     @test a1 != a3
     @test unmeta(a1) == unmeta(a3)
 end
 
 @testset "Hash of UndirectedEdge" begin
-    e1 = UndirectedEdge(:a, :b)
-    e2 = UndirectedEdge(:b, :a)
+    e1 = UndirectedEdge(Node(:a), Node(:b))
+    e2 = UndirectedEdge(Node(:b), Node(:a))
     me1 = ModifiedEdge(e1, Weight())
     me2 = ModifiedEdge(e2, Weight())
     @test hash(e1) == hash(e2)
