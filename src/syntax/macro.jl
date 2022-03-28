@@ -6,8 +6,6 @@ macro StenoGraph(ex)
         vec = Expr(:call, :vcat, exs...)
         return esc(:(vcat(unarrow.($vec)...)))
     else
-        StenoGraphs.quote_symbols!(ex)
-        StenoGraphs.addition_to_vector!(ex)
-        return esc(:(unarrow($ex)))
+        StenoGraph(Expr(:block, ex))
     end
 end
