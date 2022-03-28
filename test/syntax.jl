@@ -1,10 +1,10 @@
 @testset "Quoted Symbol Syntax" begin
-    @test (:a → :b) == (StenoGraphs.@quote_symbols a → b)
-    b = :c
-    @test (:a → :c) == (StenoGraphs.@quote_symbols a → _(b))
+    @test (Node(:a) → Node(:b)) == (StenoGraphs.@variable_as_node a → b)
+    b = Node(:c)
+    @test (Node(:a) → Node(:c)) == (StenoGraphs.@variable_as_node a → _(b))
     let err = nothing
         try
-            eval(:(StenoGraphs.@quote_symbols a → _(b, c)))
+            eval(:(StenoGraphs.@variable_as_node a → _(b, c)))
         catch err
         end
     
@@ -19,17 +19,17 @@ end
 end
 
 @testset "Broadcasting Edges" begin
-    @test Edge(:a, [:b :c]) == vec([Edge(:a, :b) Edge(:a, :c)])
-    @test Edge([:a :b], :c) == vec([Edge(:a, :c) Edge(:b, :c)])
-    @test Edge([:a :b], [:c :d]) == vec([Edge(:a, :c) Edge(:a, :d) Edge(:b, :c) Edge(:b, :d)])
+    @test Edge(Node(:a), [Node(:b) Node(:c)]) == vec([Edge(Node(:a), Node(:b)) Edge(Node(:a), Node(:c))])
+    @test Edge([Node(:a) Node(:b)], Node(:c)) == vec([Edge(Node(:a), Node(:c)) Edge(Node(:b), Node(:c))])
+    @test Edge([Node(:a) Node(:b)], [Node(:c) Node(:d)]) == vec([Edge(Node(:a), Node(:c)) Edge(Node(:a), Node(:d)) Edge(Node(:b), Node(:c)) Edge(Node(:b), Node(:d))])
 end
 
 @testset "Singleline Arrows" begin
-    @test [Edge(:a, :c), Edge(:b, :c)] == @StenoGraph [a b] → c
+    @test [Edge(Node(:a), Node(:c)), Edge(Node(:b), Node(:c))] == @StenoGraph [a b] → c
 end
 
 @testset "Multiline Arrows" begin
-    @test [Edge(:a, :c), Edge(:b, :c), Edge(:f, :e)] == @StenoGraph begin
+    @test [Edge(Node(:a), Node(:c)), Edge(Node(:b), Node(:c)), Edge(Node.(:f), Node.(:e))] == @StenoGraph begin
         [a b] → c
         e ← f
     end
@@ -37,7 +37,7 @@ end
 
 
 @testset "Multiline Mix Arrow Edge" begin
-    @test [Edge(:a, :c), Edge(:b, :c), Edge(:f, :e)] ==
+    @test [Edge(Node(:a), Node(:c)), Edge(Node(:b), Node(:c)), Edge(Node.(:f), Node.(:e))] ==
     @StenoGraph begin
         [a b] → c
         Edge(f, e)

@@ -14,9 +14,6 @@ keep(x::AbstractNode, ::Type{T}) where {T <: AbstractNode} = x
 keep(x::Node, ::Type{T}) where {T <: Node} = x
 keep(x::Node, ::Type{T}) where {T <: AbstractNode} = x
 
-keep(x::Symbol, y, z) = keep(convert(AbstractNode, x), y, z)
-keep(x::Symbol, y) = keep(convert(AbstractNode, x), y)
-
 keep(x::AbstractEdge, ::Type{T}) where {T <: Edge} = keep(x.edge, T)
 keep(x::AbstractEdge, ::Type{T}) where {T <: AbstractEdge} = keep(x.edge, T)
 keep(x::Edge, ::Type{T}) where {T <: Edge} = x
