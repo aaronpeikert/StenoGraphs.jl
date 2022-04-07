@@ -41,4 +41,8 @@ using Test, SafeTestsets, Documenter
         using StenoGraphs
         include("deprecate.jl")
     end
+    @safetestset "Ids" begin
+        using StenoGraphs
+        include("id.jl")
+    end
 end
