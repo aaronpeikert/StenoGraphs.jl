@@ -38,7 +38,8 @@ module StenoGraphs
     include("compare.jl")
     include("keep.jl")
     include("show.jl")
-    
+    include("id.jl")
+
     include("deprecate.jl")
 
 end
