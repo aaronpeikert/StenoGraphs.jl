@@ -48,16 +48,20 @@ function show(io::IO, a::ModifiedNode)
 end
 
 function show(io::IO, a::Dict{Symbol, M}) where {M <: Modifier}
-    keyset = [k for k in keys(a)]
-    if length(keyset) > 1
-        print(io, "[")
-        for i in 1:(length(keyset) - 1)
-            k = keyset[i]
-            print(io, "$(a[k]), ")
+    if length(a) > 0
+        keyset = [k for k in keys(a)]
+        if length(keyset) > 1
+            print(io, "[")
+            for i in 1:(length(keyset) - 1)
+                k = keyset[i]
+                print(io, "$(a[k]), ")
+            end
+            print(io, "$(a[last(keyset)])]")
+        else
+            print(io, "$(a[last(keyset)])")
         end
-        print(io, "$(a[last(keyset)])]")
     else
-        print(io, "$(a[last(keyset)])")
+        print(io, nothing)
     end
 end
 

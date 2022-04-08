@@ -1,3 +1,8 @@
+emptymoddict(::Type{T}) where {T <: Modifier} = Dict{Symbol, T}()
+emptymoddict() = emptymoddict(Modifier)
+
+ModifiedEdge(x) = ModifiedEdge(x, emptymoddict(EdgeModifier))
+ModifiedNode(x) = ModifiedNode(x, emptymoddict(NodeModifier))
 import Base.convert
 convert(::Type{T}, x) where {T <: AbstractNode} = T(x)
 convert(::Type{T}, x::Symbol) where {T <: AbstractNode} = SimpleNode(x)
