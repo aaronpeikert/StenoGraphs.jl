@@ -25,6 +25,7 @@ module StenoGraphs
     export unmeta
     export unarrow
     export show
+    export merge
 
     include("graph_types.jl")
     include("syntax/variable_as_node.jl")
@@ -39,6 +40,7 @@ module StenoGraphs
     include("keep.jl")
     include("show.jl")
     include("id.jl")
+    include("meld.jl")
 
     include("deprecate.jl")
 

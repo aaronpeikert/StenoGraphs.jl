@@ -17,7 +17,7 @@ using Test, SafeTestsets, Documenter
         using StenoGraphs
         include("modification.jl")
     end
-        @safetestset "Communative" begin
+    @safetestset "Communative" begin
         using StenoGraphs
        include("comunative.jl")
     end
@@ -44,5 +44,9 @@ using Test, SafeTestsets, Documenter
     @safetestset "Ids" begin
         using StenoGraphs
         include("id.jl")
+    end
+    @safetestset "Meld" begin
+        using StenoGraphs
+        include("meld.jl")
     end
 end
