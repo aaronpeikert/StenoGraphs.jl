@@ -37,7 +37,7 @@ end
 
 
 @testset "Multiline Mix Arrow Edge" begin
-    @test [Edge(Node(:a), Node(:c)), Edge(Node(:b), Node(:c)), Edge(Node.(:f), Node.(:e))] ==
+    @test [Edge(Node(:a), Node(:c)), Edge(Node(:b), Node(:c)), Edge(Node(:f), Node(:e))] ==
     @StenoGraph begin
         [a b] → c
         Edge(f, e)

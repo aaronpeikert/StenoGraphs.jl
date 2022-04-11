@@ -287,8 +287,8 @@ struct ModifiedNode{N <: AbstractNode, DM <: AbstractDict{S, M} where {S <: Symb
     modifiers::DM
 end
 
-struct Arrow{VE <: Vector{E} where {E <: AbstractEdge}, N1, N2} <: MetaEdge
+struct Arrow{VE <: Vector{E} where {E <: AbstractEdge}} <: MetaEdge
     edges::VE
-    lhs::N1
-    rhs::N2
+    lhs
+    rhs
 end
