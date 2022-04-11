@@ -42,17 +42,21 @@ end
 
 @testset "Merge Nodes" begin
     let err = nothing
+        n2 = Node(:a) ^ Label("hi")
+        n3 = Node(:b) * Start(1)
         try
-            eval(:(merge(n2, n3)))
+            merge(n2, n3)
         catch err
         end
     
         @test err isa Exception
-        @test  occursin("$n1 ≠ $n3", sprint(showerror, err))
+        @test  occursin("$n2 ≠ $n3", sprint(showerror, err))
     end
     let err = nothing
+        e1 = Edge(Node(:a), Node(:b))
+        e4 = Edge(Node(:a), Node(:c))
         try
-            eval(:(merge(e1, e4)))
+            merge(e1, e4)
         catch err
         end
     
