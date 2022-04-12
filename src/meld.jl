@@ -73,3 +73,7 @@ end
 @communative function merge(x::ModifyingNode, y::ModifiedNode)
     check_nodes_match(x, y)
 end
+
+function merge(x::Vararg{Union{AbstractEdge, AbstractNode}})
+    foldr(merge, x) 
+end

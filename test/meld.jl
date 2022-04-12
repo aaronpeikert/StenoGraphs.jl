@@ -64,3 +64,16 @@ end
         @test  occursin("$e1 ≠ $e4", sprint(showerror, err))
     end
 end
+
+@testset "Merge n>2 Nodes/Edges" begin
+    rep(x, n) = collect(x for _ in 1:n)
+    e1 = Edge(Node(:a), Node(:b))
+    @test merge(rep(e1, 10)...) == e1
+    e2 = e1 * Weight(1)
+    @test merge(e1, e1, e2) == e2
+    e3 = e1 * Weight(2)
+    @test merge(e1, e2, e3) == e3
+    
+    n1 = Node(:a)
+    @test merge(rep(n1, 10)...) == n1
+end
