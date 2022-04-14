@@ -12,6 +12,13 @@ struct Label <: NodeModifier
     l
 end
 
+import Base.==
+==(x::Label, y::Label) = x.l == y.l
+
+rep(x, n) = collect(x for _ in 1:n)
+shuffle(x) = rand(x, length(x))
+
+
 @testset "Merge Edges" begin
     e1 = Edge(Node(:a), Node(:b))
     e2 = e1 * Weight(2)
@@ -66,7 +73,6 @@ end
 end
 
 @testset "Merge n>2 Nodes/Edges" begin
-    rep(x, n) = collect(x for _ in 1:n)
     e1 = Edge(Node(:a), Node(:b))
     @test merge(rep(e1, 10)...) == e1
     e2 = e1 * Weight(1)
@@ -76,4 +82,14 @@ end
     
     n1 = Node(:a)
     @test merge(rep(n1, 10)...) == n1
+end
+
+@testset "Meld Nodes" begin
+    ns = shuffle(Node.(vcat([rep(s, 5) for s in [:a, :b, :c]]...)))
+    uns = Node.([:a, :b, :c])
+    @test length(meld(ns)) == length(uns)
+    @test issetequal(meld(ns), uns)
+    n1 = Node(:a) ^ Label("hi")
+    ns = [n1, ns...]
+    @test sort(meld(ns)) == sort([n1, Node(:b), Node(:c)])
 end

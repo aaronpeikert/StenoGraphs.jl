@@ -21,10 +21,6 @@ end
 
 Base.showerror(io::IO, e::NodeMismatch) = print(io, e.n1, " ≠ ", e.n2)
 
-function check_nodes_match(x, y)
-    nodes_match(x, y) ? nothing : throw(NodeMismatch(x, y))
-end
-
 @communative function check_nodes_match(x, y)
     nodes_match(x, y) ? nothing : throw(NodeMismatch(x, y))
 end
@@ -74,6 +70,18 @@ end
     check_nodes_match(x, y)
 end
 
+merge(x::Union{AbstractNode, AbstractEdge}) = x
+
 function merge(x::Vararg{Union{AbstractEdge, AbstractNode}})
     foldr(merge, x) 
+end
+
+function meld(ns::Vector{<: AbstractNode})
+    ids = id.(ns)
+    uids = unique(ids)
+    out = similar(ns, length(uids))
+    for (i, id) in enumerate(uids)
+        out[i] = merge(ns[id .== ids]...)
+    end
+    out
 end
