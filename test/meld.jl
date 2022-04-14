@@ -47,7 +47,7 @@ end
     @test_throws StenoGraphs.NodeMismatch merge(n1, n5)
 end
 
-@testset "Merge Nodes" begin
+@testset "Modified/Modifying should error" begin
     let err = nothing
         n2 = Node(:a) ^ Label("hi")
         n3 = Node(:b) * Start(1)
@@ -57,8 +57,11 @@ end
         end
     
         @test err isa Exception
-        @test  occursin("$n2 ≠ $n3", sprint(showerror, err))
+        @test  occursin("$n3 ≠ $n2", sprint(showerror, err))
     end
+end
+
+@testset "Different edges should error" begin
     let err = nothing
         e1 = Edge(Node(:a), Node(:b))
         e4 = Edge(Node(:a), Node(:c))
