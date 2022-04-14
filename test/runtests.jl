@@ -48,5 +48,8 @@ using Test, SafeTestsets, Documenter
     @safetestset "Meld" begin
         using StenoGraphs
         include("meld.jl")
+    @safetestset "Swap" begin
+        using StenoGraphs
+        include("swap.jl")
     end
 end
