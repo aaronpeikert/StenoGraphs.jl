@@ -21,7 +21,7 @@ end
 
 Base.showerror(io::IO, e::NodeMismatch) = print(io, e.n1, " ≠ ", e.n2)
 
-@communative function check_nodes_match(x, y)
+function check_nodes_match(x, y)
     nodes_match(x, y) ? nothing : throw(NodeMismatch(x, y))
 end
 
