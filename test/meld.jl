@@ -30,6 +30,12 @@ shuffle(x) = rand(x, length(x))
     @test_throws StenoGraphs.EdgeMismatch merge(e1, e4)
 end
 
+@testset "Merge Edges with ModifiedNodes" begin
+    e1 = Edge(Node(:a), Node(:b)^Label("hi"))
+    e2 = Edge(Node(:a)^Label("ho"), Node(:b))
+    @test merge(e1, e2) == Edge(Node(:a)^Label("ho"), Node(:b)^Label("hi"))
+end
+
 @testset "Merge Nodes" begin
     n1 = Node(:a)
     n2 = n1 ^ Label("hi")
