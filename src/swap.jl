@@ -11,3 +11,5 @@ function swap_node(x::T, old::Node, new::Node) where {T <: Edge}
         KeyError(old)
     end
 end
+
+swap_node(x::ModifiedEdge, old, new) = ModifiedEdge(swap_node(keep(x, Edge), old, new), modifiers(x))
