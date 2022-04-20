@@ -33,3 +33,11 @@ end
     e3 = UndirectedEdge(n3, n2)
     @test swap_node(e1 * Weight(1), n1, n3) == e3 * Weight(1)
 end
+
+@testset "Swap nonexistent nodes" begin
+    n1 = Node(:a)
+    @test_throws KeyError swap_node(n1, Node(:c), Node(:d))
+
+    e1 = Edge(Node(:a), Node(:b))
+    @test_throws KeyError swap_node(e1, Node(:c), Node(:d))
+end
