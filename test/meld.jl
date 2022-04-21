@@ -50,7 +50,7 @@ end
         end
     
         @test err isa Exception
-        @test  occursin("$n2 ≠ $n3", sprint(showerror, err))
+        @test  occursin("$n3 ≠ $n2", sprint(showerror, err))
     end
     let err = nothing
         e1 = Edge(Node(:a), Node(:b))
