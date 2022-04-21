@@ -2,7 +2,10 @@ import Base.==
 # do not fall back to === for edges
 ==(x::T, y::T) where T <: Edge = x == y
 ==(x::DirectedEdge, y::DirectedEdge) = keep(x, Dst) == keep(y, Dst) && keep(x, Src) == keep(y, Src)
-==(x::UndirectedEdge, y::UndirectedEdge) = issetequal([keep(x, Src) keep(x, Dst)], [keep(y, Src) keep(y, Dst)])
+function ==(x::UndirectedEdge, y::UndirectedEdge)
+    (keep(x, Src) == keep(y, Src) && keep(x, Dst) == keep(y, Dst)) ||
+    (keep(x, Src) == keep(y, Dst) && keep(x, Dst) == keep(y, Src))
+end
 ==(x::ModifiedEdge, y::ModifiedEdge) = keep(x, Edge) == keep(y, Edge) && x.modifiers == y.modifiers
 
 # there is no special compare method for SimpleNode, since Symbols are not mutable
