@@ -7,6 +7,11 @@ struct Start <: EdgeModifier
 end
 ==(x::Start, y::Start) = x.s == y.s
 
+struct Label <: NodeModifier
+    l
+end
+==(x::Label, y::Label) = x.l == y.l
+
 struct Observed <: NodeModifier end
 
 @testset "Modifier" begin
@@ -26,6 +31,7 @@ end
 
 @testset "UndirectedEdge" begin
     @test UndirectedEdge(Node(:a), Node(:b)) == UndirectedEdge(Node(:b), Node(:a))
+    @test UndirectedEdge(Node(:a) ^ Label("hi"), Node(:b)) == UndirectedEdge(Node(:b), Node(:a) ^ Label("hi"))
 end
 
 @testset "DirectedEdge" begin
