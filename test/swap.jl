@@ -27,6 +27,7 @@ end
             e1 = $e(n1, n2)
             e3 = $e(n3, n2)
             @test swap_node(e1, n1, n3) == e3
+            @test swap_node(e1, n2, n3) == $e(n1, n3)
             @test swap_node(e1 * Weight(1), n1, n3) == e3 * Weight(1)
             @test swap_node($e(n1 ^ Label("hi"), n2), n1 ^ Label("hi"), n3 ^ Label("ho")) == $e(n3 ^ Label("ho"), n2)
         end
@@ -41,7 +42,7 @@ end
             n3 = Node(:c)
             e1 = $e(n1, n2)
             e3 = $e(n3, n2)
-            @test swap_edge(e1, e1, e3) == e3
+            @test swap_edge(e1, e1, e3) == swap_edge(e1, e1 => e3) == e3
             @test swap_edge(e1 * Weight(1), e1, e3) == e3 * Weight(1)
             @test swap_edge(e1, e1, e1 * Weight(1)) == e1 * Weight(1)
         end
