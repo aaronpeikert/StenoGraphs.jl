@@ -25,10 +25,6 @@ function check_nodes_match(x, y)
     nodes_match(x, y) ? nothing : throw(NodeMismatch(x, y))
 end
 
-@communative function check_nodes_match(x, y)
-    nodes_match(x, y) ? nothing : throw(NodeMismatch(x, y))
-end
-
 import Base.merge
 function merge(x::Edge, y::Edge)
     check_edges_match(x, y)
