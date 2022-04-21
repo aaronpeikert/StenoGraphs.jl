@@ -33,6 +33,20 @@ end
     end
 end
 
+@testset "Swap Edges" begin
+    for e in (:DirectedEdge, :UndirectedEdge)
+        @eval begin
+            n1 = Node(:a)
+            n2 = Node(:b)
+            n3 = Node(:c)
+            e1 = $e(n1, n2)
+            e3 = $e(n3, n2)
+            @test swap_edge(e1, e1, e3) == e3
+            @test swap_edge(e1 * Weight(1), e1, e3) == e3 * Weight(1)
+        end
+    end
+end
+
 @testset "Swap nonexistent nodes" begin
     n1 = Node(:a)
     @test_throws KeyError swap_node(n1, Node(:c), Node(:d))
