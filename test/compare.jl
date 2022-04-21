@@ -30,7 +30,7 @@ end
 end
 
 @testset "UndirectedEdge" begin
-    @test UndirectedEdge(:a, :b) == UndirectedEdge(:b, :a)
+    @test UndirectedEdge(Node(:a), Node(:b)) == UndirectedEdge(Node(:b), Node(:a))
     @test UndirectedEdge(Node(:a) ^ Label("hi"), Node(:b)) == UndirectedEdge(Node(:b), Node(:a) ^ Label("hi"))
 end
 
