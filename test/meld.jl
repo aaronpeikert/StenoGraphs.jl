@@ -31,9 +31,13 @@ shuffle(x) = rand(x, length(x))
 end
 
 @testset "Merge Edges with ModifiedNodes" begin
-    e1 = Edge(Node(:a), Node(:b)^Label("hi"))
-    e2 = Edge(Node(:a)^Label("ho"), Node(:b))
-    @test merge(e1, e2) == Edge(Node(:a)^Label("ho"), Node(:b)^Label("hi"))
+    for e in (:DirectedEdge, :UndirectedEdge)
+        @eval begin
+        e1 = $e(Node(:a), Node(:b)^Label("hi"))
+        e2 = $e(Node(:a)^Label("ho"), Node(:b))
+        @test merge(e1, e2) == $e(Node(:a)^Label("ho"), Node(:b)^Label("hi"))
+        end
+    end
 end
 
 @testset "Merge Nodes" begin
@@ -71,6 +75,18 @@ end
     let err = nothing
         e1 = Edge(Node(:a), Node(:b))
         e4 = Edge(Node(:a), Node(:c))
+        try
+            merge(e1, e4)
+        catch err
+        end
+    
+        @test err isa Exception
+        @test  occursin("$e1 ≠ $e4", sprint(showerror, err))
+    end
+
+    let err = nothing
+        e1 = Edge(Node(:a), Node(:b))
+        e4 = UndirectedEdge(Node(:a), Node(:b))
         try
             merge(e1, e4)
         catch err

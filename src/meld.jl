@@ -1,4 +1,5 @@
-edges_match(x, y) = keep(x, Edge) == keep(y, Edge)
+edges_match(x::AbstractEdge, y::AbstractEdge) = id(x) == id(y)
+@communative edges_match(x::DirectedEdge, y::UndirectedEdge) = false
 
 struct EdgeMismatch <: Exception
     e1::AbstractEdge
@@ -11,7 +12,11 @@ function check_edges_match(x, y)
     edges_match(x, y) ? nothing : throw(EdgeMismatch(x, y))
 end
 
-nodes_match(x, y) = keep(x, Node) == keep(y, Node)
+@communative function check_edges_match(x::DirectedEdge, y::UndirectedEdge)
+    throw(EdgeMismatch(x, y))
+end
+
+nodes_match(x::AbstractNode, y::AbstractNode) = id(x) == id(y)
 @communative nodes_match(x::ModifiedNode, y::ModifyingNode) = false
 
 struct NodeMismatch <: Exception
@@ -25,15 +30,30 @@ function check_nodes_match(x, y)
     nodes_match(x, y) ? nothing : throw(NodeMismatch(x, y))
 end
 
+
+function merge_(x, y)
+    (merge(keep(x, Src), keep(y, Src)), merge(keep(x, Dst), keep(y, Dst)))
+end
+
 import Base.merge
-function merge(x::Edge, y::Edge)
+function merge(x::DirectedEdge, y::DirectedEdge)
     check_edges_match(x, y)
-    x
+    DirectedEdge(merge_(x, y)...)
+end
+
+function merge(x::UndirectedEdge, y::UndirectedEdge)
+    check_edges_match(x, y)
+    UndirectedEdge(merge_(x, y)...)
+end
+
+function merge(x::Union{UndirectedEdge, DirectedEdge}, y::Union{UndirectedEdge, DirectedEdge})
+    # should not merge, check will fail
+    check_edges_match(x, y)
 end
 
 function merge(x::ModifiedEdge, y::ModifiedEdge)
     check_edges_match(x, y)
-    ModifiedEdge(keep(x, Edge), merge(modifiers(x), modifiers(y)))
+    ModifiedEdge(merge(keep(x, Edge), keep(y, Edge)), merge(modifiers(x), modifiers(y)))
 end
 
 @communative function merge(x::ModifiedEdge, y::Edge)
@@ -41,12 +61,12 @@ end
     x
 end
 
-function merge(x::Node, y::Node)
+function merge(x::T, y::T) where {T <: Node}
     check_nodes_match(x, y)
     x
 end
 
-function merge(x::ModifiedNode, y::ModifiedNode)
+function merge(x::T, y::T) where {T <: ModifiedNode}
     check_nodes_match(x, y)
     ModifiedNode(keep(x, Node), merge(modifiers(x), modifiers(y)))
 end
