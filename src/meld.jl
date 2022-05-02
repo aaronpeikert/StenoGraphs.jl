@@ -96,12 +96,12 @@ function merge(x::Vararg{Union{AbstractEdge, AbstractNode}})
     foldr(merge, x) 
 end
 
-function meld(ns::Vector{<: AbstractNode})
-    ids = id.(ns)
+function meld(x)
+    ids = id.(x)
     uids = unique(ids)
-    out = similar(ns, length(uids))
+    out = similar(x, length(uids))
     for (i, id) in enumerate(uids)
-        out[i] = merge(ns[id .== ids]...)
+        out[i] = merge(x[Ref(id) .== ids]...)
     end
     out
 end

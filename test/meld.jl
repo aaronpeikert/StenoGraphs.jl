@@ -118,3 +118,16 @@ end
     ns = [n1, ns...]
     @test sort(meld(ns)) == sort([n1, Node(:b), Node(:c)])
 end
+
+@testset "Meld Edges" begin
+    ns = Node.([:a, :b, :c])
+    es = [Edge(e...) for e in collect(Iterators.product(ns, ns))]
+    rep_es = shuffle(vcat(rep(vcat(es), 5)...))
+    @test issetequal(meld(rep_es), es)
+    
+    one = rep_es[1]
+    rep_modified_es = [one * Weight(1), rep_es[2:end]...]
+    modified_es =  [one * Weight(1), deleteat!([es...], [es...] .== Ref(one))...]
+
+    @test issetequal(meld(rep_modified_es), modified_es)
+end
