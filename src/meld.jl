@@ -36,6 +36,36 @@ function merge_(x, y)
 end
 
 import Base.merge
+
+"""
+    merge(x, y)
+
+Merges two (or more) edge/node and fails if not mergable.
+Returns always one edge/node.
+Works for:
+
+    * ModifiedEdge
+    * ModifyingNode
+    * ModifiedNode
+    * DirectedEdge
+    * UndirectedEdge
+    * some combinations thereof (those that are merable)
+    
+Requires carefull implementation by subtypes.
+Will unlikely work as expected out of the box for other subtypes because it is unclear what is mergable.
+
+# Example
+
+```jldoctest
+# `StenoGraphs` does not implement any `EdgeModifier`s
+julia> struct Weight{N <: Number} <: EdgeModifier w::N end
+
+julia> merge(Edge(Node(:a), Node(:b)), Edge(Node(:a), Node(:b) * Weight(2)))
+a → b * Weight{Int64}(2)
+
+```
+"""
+
 function merge(x::DirectedEdge, y::DirectedEdge)
     check_edges_match(x, y)
     DirectedEdge(merge_(x, y)...)
@@ -87,12 +117,13 @@ end
 end
 
 @communative function merge(x::ModifyingNode, y::ModifiedNode)
+    # should not merge, check will fail
     check_nodes_match(x, y)
 end
 
 merge(x::Union{AbstractNode, AbstractEdge}) = x
 
-function merge(x::Vararg{Union{AbstractEdge, AbstractNode}})
+function merge(x::Union{AbstractEdge, AbstractNode}...)
     foldr(merge, x) 
 end
 
