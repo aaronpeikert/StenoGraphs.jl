@@ -48,7 +48,7 @@ Works for:
     * ModifiedNode
     * DirectedEdge
     * UndirectedEdge
-    * some combinations thereof (those that are merable)
+    * some combinations thereof (those that are mergable)
     
 Requires carefull implementation by subtypes.
 Will unlikely work as expected out of the box for other subtypes because it is unclear what is mergable.
