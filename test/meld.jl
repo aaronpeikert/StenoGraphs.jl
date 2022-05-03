@@ -109,6 +109,12 @@ end
     @test merge(rep(n1, 10)...) == n1
 end
 
+@testset "Merge UndirectedEdge" begin
+    e1 = UndirectedEdge(Node(:a)^Label("hi"), Node(:b))
+    e2 = UndirectedEdge(Node(:b)*Weight(1.0), Node(:a))
+    merge(e1, e2) == UndirectedEdge(Node(:a)^Label("hi"), Node(:b)*Weight(1.0))
+end
+
 @testset "Meld Nodes" begin
     ns = shuffle(Node.(vcat([rep(s, 5) for s in [:a, :b, :c]]...)))
     uns = Node.([:a, :b, :c])

@@ -36,12 +36,11 @@ function merge_(x, y)
 end
 
 import Base.merge
-
 """
     merge(x, y)
 
 Merges two (or more) edge/node and fails if not mergable.
-Returns always one edge/node.
+In contrast to [`meld`](@ref), it returns always one edge/node.
 Works for:
 
     * ModifiedEdge
@@ -65,15 +64,17 @@ a → b * Weight{Int64}(2)
 
 ```
 """
-
 function merge(x::DirectedEdge, y::DirectedEdge)
     check_edges_match(x, y)
-    DirectedEdge(merge_(x, y)...)
+    DirectedEdge(merge(keep(x, Src), keep(y, Src)), merge(keep(x, Dst), keep(y, Dst)))
 end
 
 function merge(x::UndirectedEdge, y::UndirectedEdge)
     check_edges_match(x, y)
-    UndirectedEdge(merge_(x, y)...)
+    # sorting required
+    xns = sort([keep(x, Src), keep(x, Dst)])
+    yns = sort([keep(y, Src), keep(y, Dst)])
+    UndirectedEdge(merge.(xns, yns)...)
 end
 
 function merge(x::Union{UndirectedEdge, DirectedEdge}, y::Union{UndirectedEdge, DirectedEdge})
@@ -127,6 +128,28 @@ function merge(x::Union{AbstractEdge, AbstractNode}...)
     foldr(merge, x) 
 end
 
+"""
+    meld(x)
+
+Meldes a vector of edge/node. That means it tries to [`merge`](@ref) elements of the vector that relate to the same nodes.
+# Example
+
+```jldoctest
+# `StenoGraphs` does not implement any `EdgeModifier`s
+struct Weight{N <: Number} <: EdgeModifier w::N end;
+e1 = Edge(Node(:a), Node(:b));
+e2 = e1 * Weight(1.0);
+e3 = UndirectedEdge(Node(:a), Node(:c));
+e4 = UndirectedEdge(Node(:c), Node(:a));
+es = [e1, e1, e2, e2, e3, e3, e4, e4]
+meld(es) == [e2, e3]
+
+# output
+
+true
+```
+
+"""
 function meld(x)
     ids = id.(x)
     uids = unique(ids)
