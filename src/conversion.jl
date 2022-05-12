@@ -23,3 +23,4 @@ promote_rule(::Type{T}, ::Type{Symbol}) where {T <: AbstractNode} = AbstractNode
 promote_rule(::Type{T}, ::Type{Symbol}) where {T <: Node} = Node
 promote_rule(::Type{ <: Edge}, ::Type{T}) where {T <: MetaEdge} = T
 promote_rule(::Type{ <: Node}, ::Type{T}) where {T <: MetaNode} = T
+promote_rule(::Type{ <: Edge}, ::Type{T}) where {T <: ModifiedEdge} = ModifiedEdge

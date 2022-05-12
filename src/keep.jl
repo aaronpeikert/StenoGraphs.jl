@@ -41,6 +41,8 @@ keep(x::Arrow, ::Type{T}) where {T <: Dst} = keep(x.edges, T)
 
 keep(x::Arrow, _) = x
 
+keep(x, y, z) = keep(keep(x, y), z)
+
 unmeta(x::AbstractEdge) = keep(x, Edge)
 unmeta(x::AbstractNode) = keep(x, Node)
 

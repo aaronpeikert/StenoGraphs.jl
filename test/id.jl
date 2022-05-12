@@ -19,3 +19,8 @@ end
     @test StenoGraphs.id(e) == (:a, :b)
 end
 
+
+@testset "UndirectedEdge Ids" begin
+    @test StenoGraphs.id(UndirectedEdge(Node(:a), Node(:b))) == 
+    StenoGraphs.id(UndirectedEdge(Node(:b), Node(:a)))
+end

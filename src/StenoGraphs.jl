@@ -26,6 +26,7 @@ module StenoGraphs
     export unarrow
     export show
     export merge
+    export meld
     export swap_node
     export swap_edge
 
