@@ -10,7 +10,8 @@ makedocs(
         "Home" => "index.md",
         "Manual" => Any[
             "man/types.md",
-            "man/arrows.md"
+            "man/arrows.md",
+            "man/meld.md"
         ]
     ],
     format = Documenter.HTML(
