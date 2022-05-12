@@ -40,7 +40,7 @@ import Base.merge
     merge(x, y)
 
 Merges two (or more) edge/node and fails if not mergable.
-In contrast to [`meld`](@ref), it returns always one edge/node.
+In contrast to [`meld`](@ref), it returns always one edge/node or fails.
 Works for:
 
     * ModifiedEdge
