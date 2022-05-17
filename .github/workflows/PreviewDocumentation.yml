@@ -1,13 +1,12 @@
-name: Documentation
+name: Preview Documentation
 
 on:
-  push:
-    branches:
-    - 'documentation/*'
-    tags: '*'
+  pull_request:
+    types: [opened, synchronize]
 
 jobs:
   build:
+    if:  startsWith(github.head_ref, 'documentation/')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
