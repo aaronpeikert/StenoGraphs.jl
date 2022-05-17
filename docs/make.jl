@@ -24,7 +24,7 @@ makedocs(
 deploydocs(
     repo = "github.com/aaronpeikert/StenoGraphs.jl",
     devbranch = "devel",
-    push_previews = "push_previews=true" ∈ ARGS
+    push_preview = "push_preview=true" ∈ ARGS
 )
 
 !on_ci() && include("make_readme.jl")
