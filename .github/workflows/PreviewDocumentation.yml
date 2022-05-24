@@ -35,5 +35,6 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: 'Docs can be previewed here: ${{ GHP_URL }}previews/PR${{ PR_NUMBER }}'
+
+              body: 'Docs can be previewed here: ${{ env.GHP_URL }}previews/PR${{ env.PR_NUMBER }}'
             })
