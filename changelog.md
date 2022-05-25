@@ -7,9 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0]
+
+### Added
+
+* meld/merge of nodes and edges
+* promotion from Edge to MetaEdge with emtpy metadata is possible
+
 ### Fixed
 
 * `@StenoGraph` can be exported without exporting `unarrow`
+* empty `ModDicts` are printed correctly
+
+### Documentation
+
+* Arrows get a long form documentation
+* Dependencies of the documentation build are now locked in `Manifest.toml`
+
+### Deprecated
+
+* The use of symbols as nodes is deprecated
 
 ## [0.1.1]
 
