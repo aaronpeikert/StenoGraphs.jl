@@ -137,3 +137,12 @@ end
 
     @test issetequal(meld(rep_modified_es), modified_es)
 end
+
+@testset "Test meld in Macro" begin
+    test = @StenoGraph begin
+        a → b
+        a → Start(3)*b
+        a → Weight(3)*b
+    end 
+    @test test[1] == ModifiedEdge(Edge(Node(:a), Node(:b)), [Start(3), Weight(3)])
+end
