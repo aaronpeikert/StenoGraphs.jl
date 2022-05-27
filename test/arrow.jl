@@ -85,7 +85,7 @@ end
     end
 
     @test unarrow(Node(:a)^Label("A") → Node(:b)^Label("B"))[1] ==
-        Edge(ModifiedNode(:a, Label("A")), ModifiedNode(:b, Label("B")))
+        Edge(ModifiedNode(Node(:a), Label("A")), ModifiedNode(Node(:b), Label("B")))
     
 
 end
