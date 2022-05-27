@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0]
+
+### Added
+
+* meld/merge of nodes and edges
+* promotion from Edge to MetaEdge with emtpy metadata is possible
+
+### Fixed
+
+* `@StenoGraph` can be exported without exporting `unarrow`
+* empty `ModDicts` are printed correctly
+* `NodeModifiers` are always kept by arrows
+
+### Documentation
+
+* Arrows get a long form documentation
+* Dependencies of the documentation build are now locked in `Manifest.toml`
+
+### Deprecated
+
+* The use of symbols as nodes is deprecated
+
 ## [0.1.1]
 
 ### Added
@@ -26,12 +48,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * add show methods for edges ([`#13`](https://github.com/aaronpeikert/StenoGraphs.jl/pull/13))
 * ModifiedNode ([`#16`](https://github.com/aaronpeikert/StenoGraphs.jl/pull/16))
 
-## Fixed
+### Fixed
 * add hash method so that `isequal(edge1, edge2)` implies `hash(edge1) == hash(edge2)` ([`#17`](https://github.com/aaronpeikert/StenoGraphs.jl/pull/17))
 
 ## [0.0.2]
 
-Skipped in favor of [0.2.0].
+Skipped in favor of [0.1.0].
 
 ## [0.0.1]
 

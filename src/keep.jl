@@ -14,9 +14,6 @@ keep(x::AbstractNode, ::Type{T}) where {T <: AbstractNode} = x
 keep(x::Node, ::Type{T}) where {T <: Node} = x
 keep(x::Node, ::Type{T}) where {T <: AbstractNode} = x
 
-keep(x::Symbol, y, z) = keep(convert(AbstractNode, x), y, z)
-keep(x::Symbol, y) = keep(convert(AbstractNode, x), y)
-
 keep(x::AbstractEdge, ::Type{T}) where {T <: Edge} = keep(x.edge, T)
 keep(x::AbstractEdge, ::Type{T}) where {T <: AbstractEdge} = keep(x.edge, T)
 keep(x::Edge, ::Type{T}) where {T <: Edge} = x
@@ -31,6 +28,10 @@ keep(x::Arrow, ::Type{T}) where {T <: Edge} = keep(x.edges, T)
 keep(x::Arrow, ::Type{T}) where {T <: Left} = x.lhs
 keep(x::Arrow, ::Type{T}) where {T <: Right} = x.rhs
 
+keep(x::AbstractNode, ::Type{T}) where {T <: ModifiedNode} = keep(x, Node)
+keep(x::Node, ::Type{T}) where {T <: ModifiedNode} = x
+keep(x::ModifiedNode, ::Type{T}) where {T <: ModifiedNode} = x
+
 function keep(x::AbstractNode, ::Type{T1}, ::Type{T2}) where {T1 <: Union{Side, SourceDestination}, T2 <: AbstractNode}
     keep(x, T2)
 end
@@ -43,6 +44,8 @@ keep(x::Arrow, ::Type{T}) where {T <: Src} = keep(x.edges, T)
 keep(x::Arrow, ::Type{T}) where {T <: Dst} = keep(x.edges, T)
 
 keep(x::Arrow, _) = x
+
+keep(x, y, z) = keep(keep(x, y), z)
 
 unmeta(x::AbstractEdge) = keep(x, Edge)
 unmeta(x::AbstractNode) = keep(x, Node)

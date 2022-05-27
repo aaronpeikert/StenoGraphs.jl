@@ -19,25 +19,38 @@ using Test, SafeTestsets, Documenter
     end
     @safetestset "Communative" begin
         using StenoGraphs
-        include("comunative.jl")
+       include("comunative.jl")
     end
     @safetestset "Promotion and Conversion" begin
         using StenoGraphs
-        include("promotion.jl")
+        include("conversion.jl")
     end
-
     @safetestset "Comparison" begin
         using StenoGraphs
         include("compare.jl")
     end
-
     @safetestset "Unmeta" begin
         using StenoGraphs
         include("keep.jl")
     end
-
     @safetestset "Arrow" begin
         using StenoGraphs
         include("arrow.jl")
+    end
+    @safetestset "Deprecate" begin
+        using StenoGraphs
+        include("deprecate.jl")
+    end
+    @safetestset "Ids" begin
+        using StenoGraphs
+        include("id.jl")
+    end
+    @safetestset "Meld" begin
+        using StenoGraphs
+        include("meld.jl")
+    end
+    @safetestset "Swap" begin
+        using StenoGraphs
+        include("swap.jl")
     end
 end
