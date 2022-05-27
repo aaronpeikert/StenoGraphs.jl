@@ -4,7 +4,7 @@ function StenoGraph(ex)
         exs = StenoGraphs.variable_as_node!.(exs)
         exs = StenoGraphs.addition_to_vector!.(exs)
         vec = Expr(:call, :vcat, exs...)
-        return esc(:(vcat(StenoGraphs.unarrow.($vec)...)))
+        return esc(:(meld(vcat(StenoGraphs.unarrow.($vec)...))))
     else
         StenoGraph(Expr(:block, ex))
     end

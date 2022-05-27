@@ -30,7 +30,7 @@ a → c
 b → d
 ```
 """
-→(lhs, rhs) = Arrow(lhs, rhs, keep(lhs, Right, Node), keep(rhs, Left, AbstractNode))
+→(lhs, rhs) = Arrow(lhs, rhs, keep(lhs, Right, ModifiedNode), keep(rhs, Left, AbstractNode))
 
 """
 Double (cross product) arrow right (\\Rightarrow)
@@ -49,7 +49,7 @@ b → c
 b → d
 ```
 """
-⇒(lhs, rhs) = Arrow(lhs, rhs, keep(lhs, Right, Node), keep(rhs, Left, AbstractNode); cross = true)
+⇒(lhs, rhs) = Arrow(lhs, rhs, keep(lhs, Right, ModifiedNode), keep(rhs, Left, AbstractNode); cross = true)
 
 """
 Single (broadcasting) arrow left (\\leftarrow, Alt Gr + z)
@@ -66,7 +66,7 @@ c → a
 d → b
 ```
 """
-←(lhs, rhs) = Arrow(lhs, rhs, keep(rhs, Left, Node), keep(lhs, Right, AbstractNode))
+←(lhs, rhs) = Arrow(lhs, rhs, keep(rhs, Left, ModifiedNode), keep(lhs, Right, AbstractNode))
 
 """
 Double (cross product) arrow left (\\Leftarrow)
@@ -85,7 +85,7 @@ d → a
 d → b
 ```
 """
-⇐(lhs, rhs) = Arrow(lhs, rhs, keep(rhs, Left, Node), keep(lhs, Right, AbstractNode); cross = true)
+⇐(lhs, rhs) = Arrow(lhs, rhs, keep(rhs, Left, ModifiedNode), keep(lhs, Right, AbstractNode); cross = true)
 
 """
 Single (broadcasting) arrow left-right (\\leftrightarrow)
@@ -102,7 +102,7 @@ a ↔ c
 b ↔ d
 ```
 """
-↔(lhs, rhs) = Arrow(lhs, rhs, keep(lhs, Right, Node), keep(rhs, Left, AbstractNode); edge_fun = UndirectedEdge)
+↔(lhs, rhs) = Arrow(lhs, rhs, keep(lhs, Right, ModifiedNode), keep(rhs, Left, AbstractNode); edge_fun = UndirectedEdge)
 
 """
 Double (cross product) arrow left-right (\\Leftrightarrow)
@@ -121,7 +121,7 @@ b ↔ c
 b ↔ d
 ```
 """
-⇔(lhs, rhs) = Arrow(lhs, rhs, keep(lhs, Right, Node), keep(rhs, Left, AbstractNode); edge_fun = UndirectedEdge, cross = true)
+⇔(lhs, rhs) = Arrow(lhs, rhs, keep(lhs, Right, ModifiedNode), keep(rhs, Left, AbstractNode); edge_fun = UndirectedEdge, cross = true)
 
 # if either lhs or rhs are a single node, broadcast arrow (barrow) behave like cross arrow (carrow)
 barrows = [:→, :←, :↔]
