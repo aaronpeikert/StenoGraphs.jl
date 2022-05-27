@@ -28,6 +28,10 @@ keep(x::Arrow, ::Type{T}) where {T <: Edge} = keep(x.edges, T)
 keep(x::Arrow, ::Type{T}) where {T <: Left} = x.lhs
 keep(x::Arrow, ::Type{T}) where {T <: Right} = x.rhs
 
+keep(x::AbstractNode, ::Type{T}) where {T <: ModifiedNode} = keep(x, Node)
+keep(x::Node, ::Type{T}) where {T <: ModifiedNode} = x
+keep(x::ModifiedNode, ::Type{T}) where {T <: ModifiedNode} = x
+
 function keep(x::AbstractNode, ::Type{T1}, ::Type{T2}) where {T1 <: Union{Side, SourceDestination}, T2 <: AbstractNode}
     keep(x, T2)
 end

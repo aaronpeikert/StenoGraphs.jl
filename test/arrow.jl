@@ -78,3 +78,14 @@ end
     @test unarrow(Start(4) * Node(:a) ↔ Node(:b))[1] == unmeta(undirect(result))
 
 end
+
+@testset "NodeModifier remain on both sides" begin
+    struct Label <: NodeModifier
+        l
+    end
+
+    @test unarrow(Node(:a)^Label("A") → Node(:b)^Label("B"))[1] ==
+        Edge(ModifiedNode(Node(:a), Label("A")), ModifiedNode(Node(:b), Label("B")))
+    
+
+end
