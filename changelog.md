@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * `@StenoGraph` can be exported without exporting `unarrow`
 * empty `ModDicts` are printed correctly
+* `NodeModifiers` are always kept by arrows
 
 ### Documentation
 
