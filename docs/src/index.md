@@ -22,7 +22,7 @@ using StenoGraphs
 @StenoGraph a → b
 ```
 
-By the way, typing arrows can be done quickly on Linux by using `Alt Gr + I` resulting in ← and `Alt GR + I` resultin in →.
+By the way, typing arrows can be done quickly on Linux by using `Alt Gr + I` resulting in `←` and `Alt GR + I` resulting in `→` .
 All other platforms must use `\leftarrow` + `Tab` or `\rightarrow` + `Tab`.
 
 ## Multiple Nodes
