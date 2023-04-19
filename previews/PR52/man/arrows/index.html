@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>→ Arrows ← · StenoGraphs</title><script data-outdated-warner src="../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.044/juliamono.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.11/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../../">StenoGraphs</a></span></div><form class="docs-search" action="../../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><span class="tocitem">Manual</span><ul><li><a class="tocitem" href="../types/">Types</a></li><li class="is-active"><a class="tocitem" href>→ Arrows ←</a></li><li><a class="tocitem" href="../meld/">Meld/Merge</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Manual</a></li><li class="is-active"><a href>→ Arrows ←</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>→ Arrows ←</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/aaronpeikert/StenoGraphs.jl/blob/master/docs/src/man/arrows.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Arrows"><a class="docs-heading-anchor" href="#Arrows">→ Arrows ←</a><a id="Arrows-1"></a><a class="docs-heading-anchor-permalink" href="#Arrows" title="Permalink"></a></h1><p>Arrows are key for typing edges quickly in <code>StenoGraphs.jl</code>. They differ from edges fundamentally because they &quot;remember&quot; what you wrote (syntax, what was on the left side and right side), while edges represent only what you meant (semantic). Usual objects should not depend on how they were syntactically defined. However, arrows require syntactic information in order to be chainable. A hard and fast rule is: &quot;for typing: use arrows; for programming: use edges&quot;.</p><p>It is unfortunate to make this distinction, but if we ignore syntactical information, this:</p><pre><code class="language-julia-repl hljs">julia&gt; @StenoGraph a ← b → c
+b → a
+b → c</code></pre><p>Would result in:</p><pre><code class="nohighlight hljs">b → a
+a → c # &lt;-- crazy</code></pre><p>The underlying reason for this weird behaviour is left to right evaluation. Parenthesis make this clearer <code>(a ← b) → c</code>. So <code>a ← b</code> is evaluated first (in prefix notation: <code>←(a, b)</code>), resulting in the edge <code>b → a</code>. In a second step, on the resulting edge, this is evaluated: <code>→(b → a, c)</code>. An ordinary edge is defined by its <code>Src</code> (<code>b</code>) and <code>Dst</code> (<code>a</code>) and has no recollection of how it was defined (for programming, this is a good thing!). However, forming a new edge on top of it, would result in very strange things, with arrows in different directions. For that reason, we have <code>StenoGraphs.Arrow</code>. <code>Arrow</code>s do store syntactic information to echew this problem. However, they are &quot;ephemeral&quot;, so we strip syntactical information as soon as we can (e.g. the <code>@StenoGraph</code> macro <code>unarrow</code>s its results). For that reason, <code>Arrow</code> is unexported.</p><article class="docstring"><header><a class="docstring-binding" id="StenoGraphs.:→" href="#StenoGraphs.:→"><code>StenoGraphs.:→</code></a> — <span class="docstring-category">Function</span></header><section><div><p>Single (broadcasting) arrow right (\rightarrow, Alt Gr + i)</p><pre><code class="language-julia-repl hljs">julia&gt; @StenoGraph a → b
+a → b
+
+julia&gt; eltype(ans)
+DirectedEdge{SimpleNode{Symbol}, SimpleNode{Symbol}}
+
+julia&gt; @StenoGraph [a b] → [c d]
+a → c
+b → d</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/aaronpeikert/StenoGraphs.jl/blob/72d3c458aa4aa3c34caafa3bcce4dba519b9b5c5/src/syntax/arrow.jl#L18-L32">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="StenoGraphs.:⇒" href="#StenoGraphs.:⇒"><code>StenoGraphs.:⇒</code></a> — <span class="docstring-category">Function</span></header><section><div><p>Double (cross product) arrow right (\Rightarrow)</p><pre><code class="language-julia-repl hljs">julia&gt; @StenoGraph a ⇒ b
+a → b
+
+julia&gt; eltype(ans)
+DirectedEdge{SimpleNode{Symbol}, SimpleNode{Symbol}}
+
+julia&gt; @StenoGraph [a b] ⇒ [c d]
+a → c
+a → d
+b → c
+b → d</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/aaronpeikert/StenoGraphs.jl/blob/72d3c458aa4aa3c34caafa3bcce4dba519b9b5c5/src/syntax/arrow.jl#L35-L51">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="StenoGraphs.:←" href="#StenoGraphs.:←"><code>StenoGraphs.:←</code></a> — <span class="docstring-category">Function</span></header><section><div><p>Single (broadcasting) arrow left (\leftarrow, Alt Gr + z)</p><pre><code class="language-julia-repl hljs">julia&gt; @StenoGraph a ← b
+b → a
+
+julia&gt; eltype(ans)
+DirectedEdge{SimpleNode{Symbol}, SimpleNode{Symbol}}
+
+julia&gt; @StenoGraph [a b] ← [c d]
+c → a
+d → b</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/aaronpeikert/StenoGraphs.jl/blob/72d3c458aa4aa3c34caafa3bcce4dba519b9b5c5/src/syntax/arrow.jl#L54-L68">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="StenoGraphs.:⇐" href="#StenoGraphs.:⇐"><code>StenoGraphs.:⇐</code></a> — <span class="docstring-category">Function</span></header><section><div><p>Double (cross product) arrow left (\Leftarrow)</p><pre><code class="language-julia-repl hljs">julia&gt; @StenoGraph a ⇐ b
+b → a
+
+julia&gt; eltype(ans)
+DirectedEdge{SimpleNode{Symbol}, SimpleNode{Symbol}}
+
+julia&gt; @StenoGraph [a b] ⇐ [c d]
+c → a
+c → b
+d → a
+d → b</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/aaronpeikert/StenoGraphs.jl/blob/72d3c458aa4aa3c34caafa3bcce4dba519b9b5c5/src/syntax/arrow.jl#L71-L87">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="StenoGraphs.:↔" href="#StenoGraphs.:↔"><code>StenoGraphs.:↔</code></a> — <span class="docstring-category">Function</span></header><section><div><p>Single (broadcasting) arrow left-right (\leftrightarrow)</p><pre><code class="language-julia-repl hljs">julia&gt; @StenoGraph a ↔ b
+a ↔ b
+
+julia&gt; eltype(ans)
+UndirectedEdge{SimpleNode{Symbol}, SimpleNode{Symbol}}
+
+julia&gt; @StenoGraph [a b] ↔ [c d]
+a ↔ c
+b ↔ d</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/aaronpeikert/StenoGraphs.jl/blob/72d3c458aa4aa3c34caafa3bcce4dba519b9b5c5/src/syntax/arrow.jl#L90-L104">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="StenoGraphs.:⇔" href="#StenoGraphs.:⇔"><code>StenoGraphs.:⇔</code></a> — <span class="docstring-category">Function</span></header><section><div><p>Double (cross product) arrow left-right (\Leftrightarrow)</p><pre><code class="language-julia-repl hljs">julia&gt; @StenoGraph a ⇔ b
+a ↔ b
+
+julia&gt; eltype(ans)
+UndirectedEdge{SimpleNode{Symbol}, SimpleNode{Symbol}}
+
+julia&gt; @StenoGraph [a b] ⇔ [c d]
+a ↔ c
+a ↔ d
+b ↔ c
+b ↔ d</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/aaronpeikert/StenoGraphs.jl/blob/72d3c458aa4aa3c34caafa3bcce4dba519b9b5c5/src/syntax/arrow.jl#L107-L123">source</a></section></article></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../types/">« Types</a><a class="docs-footer-nextpage" href="../meld/">Meld/Merge »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.16 on <span class="colophon-date" title="Wednesday 19 April 2023 13:29">Wednesday 19 April 2023</span>. Using Julia version 1.6.7.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
