@@ -33,7 +33,7 @@ Multiple nodes on one side lead to multiple edges:
 @StenoGraph [a b] → c
 ```
 
-There are two desirable outcomes for multible edges on both sides, either elementwise edges or cross product. The single line arrow (`→`) means element wise and double line arrow (`⇒`) means crossproduct (don't tell anyone but for a single node on one side `→` is converted to `⇒` for convinience).
+There are two desirable outcomes for multible edges on both sides, either element-wise edges or cross product. The single line arrow (`→`) means element-wise and double line arrow (`⇒`) means crossproduct (don't tell anyone but for a single node on one side `→` is converted to `⇒` for convinience).
 
 ```@example 1
 @StenoGraph [a b] → [c d]
