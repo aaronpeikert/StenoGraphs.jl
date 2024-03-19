@@ -7,7 +7,7 @@
 end
 
 @testset "Declare nodes from" begin
-    nodes = [Symbol(i) for i in "xyz"]
+    nodes = Symbol.(["x", "y", "z"])
     @declare_nodes_from(nodes)
     @test StenoGraph(x → y) == [Edge(Node(:x), Node(:y))]
     @test StenoGraph(x → y, y → z) == 

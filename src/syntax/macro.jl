@@ -95,7 +95,7 @@ This comes in handy if you can create your nodes programatically.
 
 
 ```jldoctest
-nodes = [Symbol(i) for i in ('a':'e')]
+nodes = Symbol.('a':'e')
 
 @declare_nodes_from(nodes)
 e
