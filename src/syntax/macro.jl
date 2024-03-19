@@ -80,7 +80,7 @@ c
 
 Please note that if you defined `c` and then use `@declase_nodes c`, `c` will be overwritten!
 
-For programatic use see also [`@declare_nodes_from`](@ref).
+For programmatic use see also [`@declare_nodes_from`](@ref).
 """
 macro declare_nodes(syms...)
     esc(declare_nodes(syms...))
