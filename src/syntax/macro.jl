@@ -39,7 +39,7 @@ end
 """
     StenoGraph(x::Vector{ <: Arrow})
 
-Takes a vector of arrows and turns these into a list of edges.
+Takes a vector of arrows and turns it into a vector of edges.
 """
 StenoGraph(x::Vector{ <: Arrow}) = meld(vcat(unarrow.(x)...))
 StenoGraph(x::Arrow...) = StenoGraph(vcat(x...))
