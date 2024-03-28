@@ -17,6 +17,9 @@ module StenoGraphs
     export ModifyingNode
     export ModifiedNode
     export @StenoGraph
+    export StenoGraph
+    export @declare_nodes
+    export @declare_nodes_from
     export *
     export convert
     export promote_rule
