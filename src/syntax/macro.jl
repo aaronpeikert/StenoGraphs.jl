@@ -55,7 +55,7 @@ function declare_nodes(exs::Symbol...)
 end
 
 """
-    @declare_nodes(x::Vector{ <: Arrow})
+    @declare_nodes <node names>
 
 Is a very handy macro to save you from typing out every node you want to use.
 
@@ -88,7 +88,7 @@ end
  
 # Function to declare nodes from a vector of symbols at runtime.
 """
-    @declare_nodes(x::Vector{ <: Arrow})
+    @declare_nodes_from <x::Vector{Symbol}>
 
 Macro to declare nodes from a vector of symbols at runtime.
 This comes in handy if you can create your nodes programatically.
@@ -97,7 +97,7 @@ This comes in handy if you can create your nodes programatically.
 ```jldoctest
 nodes = Symbol.('a':'e')
 
-@declare_nodes_from(nodes)
+@declare_nodes_from nodes
 e
 
 # output
