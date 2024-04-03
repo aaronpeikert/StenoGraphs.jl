@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0]
+
+### Added
+
+* `@declare_nodes` and `@declare_nodes_from` are added as alternatives to autoqouting/escaping
+
 ## [0.2.0]
 
 ### Added
