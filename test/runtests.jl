@@ -53,4 +53,8 @@ using Test, SafeTestsets, Documenter
         using StenoGraphs
         include("swap.jl")
     end
+    @safetestset "Macro" begin
+        using StenoGraphs
+        include("macro.jl")
+    end
 end
