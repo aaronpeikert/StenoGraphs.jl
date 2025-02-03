@@ -6,6 +6,8 @@ Anything that might resemble a node.
 """
 abstract type AbstractNode end
 
+Base.length(::AbstractNode) = 1
+
 """
     Node
 
