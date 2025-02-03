@@ -10,7 +10,7 @@ DirectedEdge{SimpleNode{Symbol}, SimpleNode{Symbol}}
 
 julia&gt; @StenoGraph [a b] → [c d]
 a → c
-b → d</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/aaronpeikert/StenoGraphs.jl/blob/2e7332d7ee2ede388e21b95c483d3c8da851688e/src/syntax/arrow.jl#L18-L32">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="StenoGraphs.:⇒" href="#StenoGraphs.:⇒"><code>StenoGraphs.:⇒</code></a> — <span class="docstring-category">Function</span></header><section><div><p>Double (cross product) arrow right (\Rightarrow)</p><pre><code class="language-julia-repl hljs">julia&gt; @StenoGraph a ⇒ b
+b → d</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/aaronpeikert/StenoGraphs.jl/blob/55126be54ea0d7aec2e643ce0ba0f761151ecb3a/src/syntax/arrow.jl#L18-L32">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="StenoGraphs.:⇒" href="#StenoGraphs.:⇒"><code>StenoGraphs.:⇒</code></a> — <span class="docstring-category">Function</span></header><section><div><p>Double (cross product) arrow right (\Rightarrow)</p><pre><code class="language-julia-repl hljs">julia&gt; @StenoGraph a ⇒ b
 a → b
 
 julia&gt; eltype(ans)
@@ -20,7 +20,7 @@ julia&gt; @StenoGraph [a b] ⇒ [c d]
 a → c
 a → d
 b → c
-b → d</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/aaronpeikert/StenoGraphs.jl/blob/2e7332d7ee2ede388e21b95c483d3c8da851688e/src/syntax/arrow.jl#L35-L51">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="StenoGraphs.:←" href="#StenoGraphs.:←"><code>StenoGraphs.:←</code></a> — <span class="docstring-category">Function</span></header><section><div><p>Single (broadcasting) arrow left (\leftarrow, Alt Gr + z)</p><pre><code class="language-julia-repl hljs">julia&gt; @StenoGraph a ← b
+b → d</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/aaronpeikert/StenoGraphs.jl/blob/55126be54ea0d7aec2e643ce0ba0f761151ecb3a/src/syntax/arrow.jl#L35-L51">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="StenoGraphs.:←" href="#StenoGraphs.:←"><code>StenoGraphs.:←</code></a> — <span class="docstring-category">Function</span></header><section><div><p>Single (broadcasting) arrow left (\leftarrow, Alt Gr + z)</p><pre><code class="language-julia-repl hljs">julia&gt; @StenoGraph a ← b
 b → a
 
 julia&gt; eltype(ans)
@@ -28,7 +28,7 @@ DirectedEdge{SimpleNode{Symbol}, SimpleNode{Symbol}}
 
 julia&gt; @StenoGraph [a b] ← [c d]
 c → a
-d → b</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/aaronpeikert/StenoGraphs.jl/blob/2e7332d7ee2ede388e21b95c483d3c8da851688e/src/syntax/arrow.jl#L54-L68">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="StenoGraphs.:⇐" href="#StenoGraphs.:⇐"><code>StenoGraphs.:⇐</code></a> — <span class="docstring-category">Function</span></header><section><div><p>Double (cross product) arrow left (\Leftarrow)</p><pre><code class="language-julia-repl hljs">julia&gt; @StenoGraph a ⇐ b
+d → b</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/aaronpeikert/StenoGraphs.jl/blob/55126be54ea0d7aec2e643ce0ba0f761151ecb3a/src/syntax/arrow.jl#L54-L68">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="StenoGraphs.:⇐" href="#StenoGraphs.:⇐"><code>StenoGraphs.:⇐</code></a> — <span class="docstring-category">Function</span></header><section><div><p>Double (cross product) arrow left (\Leftarrow)</p><pre><code class="language-julia-repl hljs">julia&gt; @StenoGraph a ⇐ b
 b → a
 
 julia&gt; eltype(ans)
@@ -38,7 +38,7 @@ julia&gt; @StenoGraph [a b] ⇐ [c d]
 c → a
 c → b
 d → a
-d → b</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/aaronpeikert/StenoGraphs.jl/blob/2e7332d7ee2ede388e21b95c483d3c8da851688e/src/syntax/arrow.jl#L71-L87">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="StenoGraphs.:↔" href="#StenoGraphs.:↔"><code>StenoGraphs.:↔</code></a> — <span class="docstring-category">Function</span></header><section><div><p>Single (broadcasting) arrow left-right (\leftrightarrow)</p><pre><code class="language-julia-repl hljs">julia&gt; @StenoGraph a ↔ b
+d → b</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/aaronpeikert/StenoGraphs.jl/blob/55126be54ea0d7aec2e643ce0ba0f761151ecb3a/src/syntax/arrow.jl#L71-L87">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="StenoGraphs.:↔" href="#StenoGraphs.:↔"><code>StenoGraphs.:↔</code></a> — <span class="docstring-category">Function</span></header><section><div><p>Single (broadcasting) arrow left-right (\leftrightarrow)</p><pre><code class="language-julia-repl hljs">julia&gt; @StenoGraph a ↔ b
 a ↔ b
 
 julia&gt; eltype(ans)
@@ -46,7 +46,7 @@ UndirectedEdge{SimpleNode{Symbol}, SimpleNode{Symbol}}
 
 julia&gt; @StenoGraph [a b] ↔ [c d]
 a ↔ c
-b ↔ d</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/aaronpeikert/StenoGraphs.jl/blob/2e7332d7ee2ede388e21b95c483d3c8da851688e/src/syntax/arrow.jl#L90-L104">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="StenoGraphs.:⇔" href="#StenoGraphs.:⇔"><code>StenoGraphs.:⇔</code></a> — <span class="docstring-category">Function</span></header><section><div><p>Double (cross product) arrow left-right (\Leftrightarrow)</p><pre><code class="language-julia-repl hljs">julia&gt; @StenoGraph a ⇔ b
+b ↔ d</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/aaronpeikert/StenoGraphs.jl/blob/55126be54ea0d7aec2e643ce0ba0f761151ecb3a/src/syntax/arrow.jl#L90-L104">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="StenoGraphs.:⇔" href="#StenoGraphs.:⇔"><code>StenoGraphs.:⇔</code></a> — <span class="docstring-category">Function</span></header><section><div><p>Double (cross product) arrow left-right (\Leftrightarrow)</p><pre><code class="language-julia-repl hljs">julia&gt; @StenoGraph a ⇔ b
 a ↔ b
 
 julia&gt; eltype(ans)
@@ -56,4 +56,4 @@ julia&gt; @StenoGraph [a b] ⇔ [c d]
 a ↔ c
 a ↔ d
 b ↔ c
-b ↔ d</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/aaronpeikert/StenoGraphs.jl/blob/2e7332d7ee2ede388e21b95c483d3c8da851688e/src/syntax/arrow.jl#L107-L123">source</a></section></article></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../types/">« Types</a><a class="docs-footer-nextpage" href="../meld/">Meld/Merge »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.16 on <span class="colophon-date" title="Monday 3 February 2025 16:41">Monday 3 February 2025</span>. Using Julia version 1.6.7.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+b ↔ d</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/aaronpeikert/StenoGraphs.jl/blob/55126be54ea0d7aec2e643ce0ba0f761151ecb3a/src/syntax/arrow.jl#L107-L123">source</a></section></article></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../types/">« Types</a><a class="docs-footer-nextpage" href="../meld/">Meld/Merge »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.16 on <span class="colophon-date" title="Monday 3 February 2025 17:02">Monday 3 February 2025</span>. Using Julia version 1.6.7.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
