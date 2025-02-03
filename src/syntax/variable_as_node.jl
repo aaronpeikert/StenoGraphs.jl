@@ -12,7 +12,7 @@ function variable_as_node!(ex::Expr, node::Type{T} where {T <: AbstractNode})
     if ex.head == :call
         if ex.args[1] == :_ 
             length(ex.args) > 2 ? error("Unqote only a single argument. Right: `_(x)`, Wrong: `_(x, y)`.") : nothing
-            return ex.args[2]
+            return Expr(:call, :(StenoGraphs.convert_symbol), ex.args[2], :SimpleNode)
         end
         to_quote = to_quote[2:end]
     end
@@ -21,6 +21,11 @@ function variable_as_node!(ex::Expr, node::Type{T} where {T <: AbstractNode})
     end
     ex
 end
+
+convert_symbol(x) = x
+convert_symbol(x, _) = convert_symbol(x)
+convert_symbol(x::Symbol, T) = convert(T, x)
+convert_symbol(x::VecOrMat{Symbol}, T) = convert.(T, x)
 
 variable_as_node!(ex) = variable_as_node!(ex, SimpleNode)
 

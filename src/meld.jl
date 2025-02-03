@@ -159,3 +159,4 @@ function meld(x)
     end
     out
 end
+meld(x...) = meld(reduce(vcat, vec.(x)))

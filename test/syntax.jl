@@ -11,6 +11,8 @@
         @test err isa Exception
         @test  occursin("Unqote only a single argument. Right: `_(x)`, Wrong: `_(x, y)`.", sprint(showerror, err))
     end
+    @test StenoGraphs.@variable_as_node(_(:a)) == Node(:a)
+    @test StenoGraphs.@variable_as_node(_([:a, :b])) == Node[:a, :b]
 end
 
 @testset "Addition as hcat" begin
@@ -41,5 +43,14 @@ end
     @StenoGraph begin
         [a b] → c
         Edge(f, e)
+    end
+end
+
+
+@testset "Nested Graphs" begin
+    @test [Edge(Node(:a), Node(:b)), Edge(Node(:b), Node(:c))] == 
+    @StenoGraph begin
+        _(@StenoGraph a → b)
+        b → c
     end
 end
