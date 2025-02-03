@@ -146,3 +146,7 @@ end
     end 
     @test test[1] == ModifiedEdge(Edge(Node(:a), Node(:b)), [Start(3), Weight(3)])
 end
+
+@testset "Meld StenoGraphs" begin
+    meld(@StenoGraph(a → b), @StenoGraph(b → c), @StenoGraph(c → d))
+end

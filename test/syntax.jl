@@ -43,3 +43,12 @@ end
         Edge(f, e)
     end
 end
+
+
+@testset "Nested Graphs" begin
+    @test [Edge(Node(:a), Node(:b)), Edge(Node(:b), Node(:c))] == 
+    @StenoGraph begin
+        _(@StenoGraph a → b)
+        b → c
+    end
+end

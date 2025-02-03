@@ -41,7 +41,7 @@ end
 
 Takes a vector of arrows and turns it into a vector of edges.
 """
-StenoGraph(x::Vector{ <: Arrow}) = meld(vcat(unarrow.(x)...))
+StenoGraph(x::Vector{ <: Union{Arrow, AbstractEdge}}) = meld(vcat(unarrow.(x)...))
 StenoGraph(x::Arrow...) = StenoGraph(vcat(x...))
 
 
