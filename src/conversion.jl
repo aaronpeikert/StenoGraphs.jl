@@ -14,7 +14,7 @@ convert(::Type{ <: Arrow}, x::Edge) = Arrow([x])
 convert(::Type{ <: ModifiedNode}, x::Node) = ModifiedNode(x)
 convert(::Type{ <: ModifyingNode}, x::Node) = ModifyingNode(x)
 # When converting a Symbol to a MetaNode, wrap it in a SimpleNode first.
-convert(::Type{T}, x::Symbol) where {T <: MetaNode} = T(SimpleNode(x))
+convert(::Type{T}, x::Symbol) where {T <: MetaNode} = convert(T, SimpleNode(x))
 
 # conversion of Nodes does not change anything
 convert(::Type{T}, x::T) where {T <: AbstractNode} = x
