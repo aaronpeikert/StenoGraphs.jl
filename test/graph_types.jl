@@ -1,5 +1,6 @@
 @testset "Nodes" begin
     @test typeof(Node(:a)) <: Node
+    @test length(Node(:a)) == 1
 end
 
 @testset "Edges" begin

@@ -23,7 +23,7 @@ function variable_as_node!(ex::Expr, node::Type{T} where {T <: AbstractNode})
 end
 
 convert_symbol(x) = x
-convert_symbol(x, _) = x
+convert_symbol(x, _) = convert_symbol(x)
 convert_symbol(x::Symbol, T) = convert(T, x)
 convert_symbol(x::VecOrMat{Symbol}, T) = convert.(T, x)
 
