@@ -32,6 +32,7 @@ module StenoGraphs
     export meld
     export swap_node
     export swap_edge
+    export id
 
     include("graph_types.jl")
     include("syntax/variable_as_node.jl")
