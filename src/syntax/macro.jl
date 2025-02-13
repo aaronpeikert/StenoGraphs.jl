@@ -117,7 +117,7 @@ e = Node(:e)
 e
 ```
 
-Please note that if you defined `c` and then use `@declase_nodes c`, `c` will be overwritten!
+Please note that if you defined `c` and then use `@declare_nodes c`, `c` will be overwritten!
 
 For non-programatic use see also [`@declare_nodes`](@ref).
 """

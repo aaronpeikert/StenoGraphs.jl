@@ -43,16 +43,19 @@ end
 """
     Node(node)
 
-Alias for [`SimpleNode`](@ref).
+Calls either [`SimpleNode`](@ref) or [`IntNode`](@ref).
 
 # Example
 
 ```jldoctest
 julia> Node(:a)
 a
+julia> Node(1)
+1
 ```
 """
 Node(node) = SimpleNode(node)
+Node(node::Int) = IntNode(node)
 
 """
     AbstractEdge
@@ -293,4 +296,23 @@ struct Arrow{VE <: Vector{E} where {E <: AbstractEdge}} <: MetaEdge
     edges::VE
     lhs
     rhs
+end
+
+"""
+IntNode(x::Int)
+
+Constructs a subtype of [`Node`](@ref) with an integer as identifier.
+
+See also [`SimpleNode`](@ref).
+
+# Example
+
+```jldoctest
+julia> StenoGraphs.IntNode(1)
+1
+```
+
+"""
+struct IntNode{T<:Int} <: Node
+    node::T
 end
