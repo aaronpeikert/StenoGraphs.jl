@@ -1,4 +1,5 @@
 using StenoGraphs
+import StatsBase
 
 struct Start{S <: Number} <: EdgeModifier
     s::S
@@ -16,8 +17,7 @@ import Base.==
 ==(x::Label, y::Label) = x.l == y.l
 
 rep(x, n) = collect(x for _ in 1:n)
-shuffle(x) = rand(x, length(x))
-
+shuffle(x) = StatsBase.sample(x, length(x), replace = false)
 
 @testset "Merge Edges" begin
     e1 = Edge(Node(:a), Node(:b))
