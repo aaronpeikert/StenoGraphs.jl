@@ -16,10 +16,13 @@ function variable_as_node!(ex::Expr, node::Type{T} where {T <: AbstractNode})
         end
         to_quote = to_quote[2:end]
     end
+    if ex.head == :.
+        to_quote = to_quote[2:end]
+    end
     for i in to_quote
         ex.args[i] = variable_as_node!(ex.args[i], node)
     end
-    ex
+    ex 
 end
 
 convert_symbol(x) = x
