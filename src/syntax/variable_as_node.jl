@@ -3,7 +3,7 @@ function variable_as_node!(ex, node::Type{T} where {T <: AbstractNode})
 end
 
 function variable_as_node!(ex::Symbol, node::Type{T} where {T <: AbstractNode})
-    Expr(:call, node, QuoteNode(ex))
+    Expr(:call, Symbol(node), QuoteNode(ex))
 end
 
 function variable_as_node!(ex::Expr, node::Type{T} where {T <: AbstractNode})
