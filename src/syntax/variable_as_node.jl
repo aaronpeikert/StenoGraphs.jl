@@ -15,6 +15,9 @@ function variable_as_node!(ex::Expr, node::Type{T} where {T <: AbstractNode})
             return Expr(:call, :(StenoGraphs.convert_symbol), ex.args[2], :(StenoGraphs.SimpleNode))
         end
         to_quote = to_quote[2:end]
+    elseif ex.head == :.
+        # For broadcasting, skip the first argument (the function name)
+        to_quote = to_quote[2:end]
     end
     for i in to_quote
         ex.args[i] = variable_as_node!(ex.args[i], node)

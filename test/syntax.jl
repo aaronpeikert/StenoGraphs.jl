@@ -13,6 +13,9 @@
     end
     @test StenoGraphs.@variable_as_node(_(:a)) == Node(:a)
     @test StenoGraphs.@variable_as_node(_([:a, :b])) == Node[:a, :b]
+    # Test broadcasting syntax - function name should not be converted to node
+    @test StenoGraphs.variable_as_node!(:(fun.(_(a)))) == :(fun.(StenoGraphs.convert_symbol(a, StenoGraphs.SimpleNode)))
+    @test StenoGraphs.variable_as_node!(:(map.(_(x)))) == :(map.(StenoGraphs.convert_symbol(x, StenoGraphs.SimpleNode)))
 end
 
 @testset "Addition as hcat" begin
