@@ -16,6 +16,7 @@ function variable_as_node!(ex::Expr, node::Type{T} where {T <: AbstractNode})
         end
         to_quote = to_quote[2:end]
     end
+    # For broadcast operators, skip the first argument to prevent the function name from being converted to a node. issue #63
     if ex.head == :.
         to_quote = to_quote[2:end]
     end
