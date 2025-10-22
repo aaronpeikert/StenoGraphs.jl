@@ -3,7 +3,7 @@ function variable_as_node!(ex, node::Type{T} where {T <: AbstractNode})
 end
 
 function variable_as_node!(ex::Symbol, node::Type{T} where {T <: AbstractNode})
-    Expr(:call, node, QuoteNode(ex))
+    Expr(:call, Symbol(node), QuoteNode(ex))
 end
 
 function variable_as_node!(ex::Expr, node::Type{T} where {T <: AbstractNode})
@@ -16,10 +16,14 @@ function variable_as_node!(ex::Expr, node::Type{T} where {T <: AbstractNode})
         end
         to_quote = to_quote[2:end]
     end
+    # For broadcast operators, skip the first argument to prevent the function name from being converted to a node. issue #63
+    if ex.head == :.
+        to_quote = to_quote[2:end]
+    end
     for i in to_quote
         ex.args[i] = variable_as_node!(ex.args[i], node)
     end
-    ex
+    ex 
 end
 
 convert_symbol(x) = x
