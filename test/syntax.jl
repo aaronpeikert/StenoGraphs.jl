@@ -54,3 +54,9 @@ end
         b → c
     end
 end
+
+@testset "Broadcast in variable_as_node! should not turn functions into nodes" begin
+    # https://github.com/aaronpeikert/StenoGraphs.jl/issues/63
+    @test StenoGraphs.variable_as_node!(:(fun.(a))) == :(fun.((SimpleNode)(:a)))
+    @test StenoGraphs.variable_as_node!(:(fun(a))) == :(fun((SimpleNode)(:a)))
+end
