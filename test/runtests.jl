@@ -57,4 +57,8 @@ using Test, SafeTestsets, Documenter
         using StenoGraphs
         include("macro.jl")
     end
+    @safetestset "DataFrames.jl" begin
+        using StenoGraphs, DataFrames
+        include("DataFrames.jl")
+    end
 end
