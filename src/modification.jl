@@ -14,7 +14,9 @@ end
 
 moddict(x::Dict{Symbol, Modifier}) = x
 
-modifiers(x) = x.modifiers
+modifiers(x::Union{ModifiedEdge, ModifyingNode, ModifiedNode}) = x.modifiers
+modifiers(x) = Dict{Symbol, Modifier}()
+
 
 ModifiedEdge(edge::ModifiedEdge, modifier::EdgeModifier) = ModifiedEdge(edge.edge, merge(modifiers(edge), moddict(modifier)))    
 ModifyingNode(node::ModifyingNode, modifier::EdgeModifier) = ModifyingNode(node.node, merge(modifiers(node), moddict(modifier)))
