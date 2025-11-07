@@ -19,9 +19,9 @@ jobs:
       fail-fast: false
       matrix:
         version:
-          - '1.6.7'
-          - '1.10.8'
-          - '1'
+          - '1.9' # lower bound in Project.toml
+          - '1.12.1' # last local development env
+          - '1' # latest Julia release
         os:
           - ubuntu-latest
         arch:
