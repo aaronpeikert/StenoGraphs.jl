@@ -8,7 +8,9 @@ struct Label <: StenoGraphs.NodeModifier l end
     g = @StenoGraph begin
         b → Weight(1)*a
         c → Weight(1)*Start(2)*b
-        c^Label("hi") ↔ a
+        c^Label("hi") ↔ a^Label("ho")
     end
-    @test "DstWeight" ∈ names(DataFrame(g))
+    d = DataFrame(g)
+    @test issetequal(["EdgeWeight", "EdgeStart", "Edge", "SrcLabel", "Src", "DstLabel", "Dst"], names(d))
+    @test issetequal(StenoGraph(d), g)
 end

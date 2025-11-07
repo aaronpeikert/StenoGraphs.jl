@@ -11,8 +11,6 @@ function DataFrame_(x::Vector{<:Union{AbstractEdge,AbstractNode}}, prefix="")
     df[!, prefix] = x
     return df
 end
-DataFrame_(x::Vector{<:AbstractNode}) = DataFrame_(x, "Node")
-DataFrame_(x::Vector{<:Edge}) = DataFrame_(x, "Edge")
 function DataFrames.DataFrame(g::Vector{<:AbstractEdge})
     hcat(
         DataFrame_(g, "Edge"),
@@ -20,5 +18,7 @@ function DataFrames.DataFrame(g::Vector{<:AbstractEdge})
         DataFrame_(keep.(g, Edge, StenoGraphs.Dst), "Dst")
     )
 end
+
+StenoGraph(x::DataFrame) = x.Edge
 
 end
