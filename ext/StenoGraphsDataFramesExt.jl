@@ -1,5 +1,6 @@
 module StenoGraphsDataFramesExt
 
+import DataFrames
 import DataFrames: DataFrame, rename!
 import Tables: dictcolumntable
 using StenoGraphs
