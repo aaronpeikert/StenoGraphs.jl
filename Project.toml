@@ -13,4 +13,4 @@ Tables = "1"
 julia = "1.9"
 
 [extensions]
-StenoGraphsDataFramesExt = ["DataFrames", "Tables"]
+StenoGraphsDataFramesExt = "DataFrames"
