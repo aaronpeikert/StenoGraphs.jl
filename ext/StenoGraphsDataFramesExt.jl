@@ -13,11 +13,11 @@ function DataFrame_(x::Vector{<:Union{AbstractEdge,AbstractNode}}, prefix="")
 end
 DataFrame_(x::Vector{<:AbstractNode}) = DataFrame_(x, "Node")
 DataFrame_(x::Vector{<:Edge}) = DataFrame_(x, "Edge")
-function DataFrames.DataFrame(x::Vector{<:AbstractEdge})
+function DataFrames.DataFrame(g::Vector{<:AbstractEdge})
     hcat(
-        DataFrame_(x, "Edge"),
-        DataFrame_(keep.(e, (StenoGraphs.Src,)), "Src"),
-        DataFrame_(keep.(e, (StenoGraphs.Dst,)), "Dst")
+        DataFrame_(g, "Edge"),
+        DataFrame_(keep.(g, Edge, StenoGraphs.Src), "Src"),
+        DataFrame_(keep.(g, Edge, StenoGraphs.Dst), "Dst")
     )
 end
 
