@@ -1,10 +1,11 @@
-module DataFramesStenoGraph
+module StenoGraphsDataFramesExt
 
-import DataFrames
+import DataFrames: DataFrame, rename!
+import Tables: dictcolumntable
 using StenoGraphs
 
 function DataFrame_(x::Vector{<:Union{AbstractEdge,AbstractNode}}, prefix="")
-    df = DataFrame(Tables.dictcolumntable(StenoGraphs.modifiers.(x)))
+    df = DataFrame(dictcolumntable(StenoGraphs.modifiers.(x)))
     rename!(x -> prefix * x, df)
     df[!, prefix] = x
     return df
