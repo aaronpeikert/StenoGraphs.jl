@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.4]
+
+### Added
+
+* Package extension `StenoGraphsDataFramesExt` for DataFrame conversion support (requires Julia 1.9+)
+* `DataFrame(::Vector{<:AbstractEdge})` method to convert graphs to DataFrames with separate columns for edge, source, and destination node modifiers
+* `StenoGraph(::DataFrame)` method to convert DataFrames back to graphs
+* DataFrames and Tables as weak dependencies
+
+### Changed
+
+* Minimum Julia version requirement updated from 1.6 to 1.9 (required for package extensions)
+* CI pipeline updated to test on Julia 1.9, 1.12.1, and latest stable version
+* Documentation workflows updated to use Julia 1.9
+
+### Breaking Changes
+
+* Minimum Julia version increased from 1.6 to 1.9 due to package extension requirements
+
 ## [0.4.3]
 
 ### Fixed
