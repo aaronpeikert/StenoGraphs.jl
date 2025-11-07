@@ -3,6 +3,7 @@ module StenoGraphsDataFramesExt
 import DataFrames
 import DataFrames: DataFrame, rename!
 import Tables: dictcolumntable
+import StenoGraphs
 using StenoGraphs
 
 function DataFrame_(x::Vector{<:Union{AbstractEdge,AbstractNode}}, prefix="")
@@ -90,6 +91,6 @@ true
 
 See also [`DataFrame(::Vector{<:AbstractEdge})`](@ref) for the conversion to DataFrame.
 """
-StenoGraph(x::DataFrame) = x.Edge
+StenoGraphs.StenoGraph(x::DataFrame) = x.Edge
 
 end
