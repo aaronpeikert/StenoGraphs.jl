@@ -140,7 +140,7 @@ a → b
 
 The main downside is that you can not use regular variables inside the macro.
 Had you declared `c = [Node(:a) Node(:b)]` outside the macro, inside it would nevertheless refer to `Node(:c)`.
-You would need to escape it using [`_`](@ref), i.e. use it as `_(c)` within the macro.
+You would need to escape it using `_()`, i.e. use it as `_(c)` within the macro.
 
 ## Let form (explicit declaration)
 
@@ -163,7 +163,7 @@ end
 ## Let form with splat (from node collections)
 
 Use `...` to expose all nodes from an existing collection as local variables.
-Node names are extracted via [`id`](@ref). Supports multiple collections and mixing
+Node names are extracted via `id`. Supports multiple collections and mixing
 with inline declarations.
 
 ```julia
@@ -232,11 +232,12 @@ end
  
 # Function to declare nodes from a vector of symbols at runtime.
 """
-    @declare_nodes_from <x::Vector{Symbol}>
+    @declare_nodes_from <x>
 
-Macro to declare nodes from a vector of symbols at runtime.
-This comes in handy if you can create your nodes programatically.
-
+Declare node variables at runtime from a collection of `Symbol`s or `AbstractNode`s.
+Each element is converted via `convert(AbstractNode, ...)` and bound to a variable
+named by `id()`. `ModifiedNode` wrappers are preserved; plain `Symbol`s become
+`SimpleNode`s.
 
 ```jldoctest
 nodes = Symbol.('a':'e')
@@ -261,14 +262,23 @@ e = Node(:e)
 e
 ```
 
-Please note that if you defined `c` and then use `@declare_nodes vec`, and `vec` contains `c`, `c` will be overwritten!
+Works equally well with a vector of nodes:
 
-For non-programatic use see also [`@declare_nodes`](@ref).
+```julia
+nodes = [Node(:a), Node(:b)]
+@declare_nodes_from nodes
+a   # SimpleNode(:a)
+```
+
+Please note that existing variables whose names match a node id will be overwritten!
+
+For non-programmatic use see also [`@declare_nodes`](@ref).
 """
 macro declare_nodes_from(syms)
     esc(quote
-        for sym in $(syms)
-            eval_expr = Expr(Symbol("="), sym, :(SimpleNode($(QuoteNode(sym)))))
+        for node in $(syms)
+            val = convert(AbstractNode, node)
+            eval_expr = Expr(Symbol("="), id(val), QuoteNode(val))
             Base.invokelatest(eval, eval_expr)
         end
     end)
