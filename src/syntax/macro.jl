@@ -1,8 +1,8 @@
 function StenoGraph_macro(ex)
     if ex.head == :block
         exs = filter(x -> !isa(x, LineNumberNode), ex.args)
-        exs = StenoGraphs.variable_as_node!.(exs)
         exs = StenoGraphs.addition_to_vector!.(exs)
+        exs = StenoGraphs.variable_as_node!.(exs)
         vec = Expr(:call, :vcat, exs...)
         return :(StenoGraph($vec))
     else

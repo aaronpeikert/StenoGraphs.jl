@@ -3,7 +3,7 @@ function addition_to_vector!(ex)
 end
 
 function addition_to_vector!(ex::Expr)
-    if ex.args[1] == :+
+    if ex.head == :call && ex.args[1] == :+
         return Expr(:hcat, ex.args[2:end]...)
     else
         for i in eachindex(ex.args)

@@ -30,6 +30,32 @@ end
     @test [Edge(Node(:a), Node(:c)), Edge(Node(:b), Node(:c))] == @StenoGraph [a b] → c
 end
 
+@testset "Re-exported @StenoGraph resolves without StenoGraphs in scope" begin
+    # Simulate a downstream package that re-exports @StenoGraph and arrows.
+    # The macro should work without `SimpleNode`, `StenoGraph`, or
+    # `convert_symbol` being directly available in the end-user's namespace.
+    # https://github.com/aaronpeikert/StenoGraphs.jl/issues/73
+    m = @eval module _ReExportTest
+        using StenoGraphs: @StenoGraph, →, ←, ↔
+        export @StenoGraph, →, ←, ↔
+    end
+    # Use the re-exported macro from an "end-user" context
+    # that has no direct access to StenoGraphs internals.
+    result = @eval module _EndUserTest
+        using ..$(nameof(m)): @StenoGraph, →, ←, ↔
+        using StenoGraphs: Node, Edge
+        graph = @StenoGraph a → b
+        addition = @StenoGraph a + b → c
+        multiline = @StenoGraph begin
+            a → b
+            c ← d
+        end
+    end
+    @test result.graph == [Edge(Node(:a), Node(:b))]
+    @test result.addition == [Edge(Node(:a), Node(:c)), Edge(Node(:b), Node(:c))]
+    @test result.multiline == [Edge(Node(:a), Node(:b)), Edge(Node(:d), Node(:c))]
+end
+
 @testset "Multiline Arrows" begin
     @test [Edge(Node(:a), Node(:c)), Edge(Node(:b), Node(:c)), Edge(Node.(:f), Node.(:e))] == @StenoGraph begin
         [a b] → c
@@ -72,5 +98,7 @@ end
     ex = StenoGraphs.variable_as_node!(:(MyFunc(a)))
     @test ex.args[1] == Expr(:escape, :MyFunc)
     @test ex.args[2] == Expr(:call, :SimpleNode, QuoteNode(:a))
-    @test @macroexpand(StenoGraphs.@variable_as_node a) == :(StenoGraphs.SimpleNode(:a))
+    expanded = @macroexpand(StenoGraphs.@variable_as_node a)
+    # @macroexpand resolves hygiene to a GlobalRef, so compare string representation
+    @test string(expanded) == string(:(StenoGraphs.SimpleNode(:a)))
 end
