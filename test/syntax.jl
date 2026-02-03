@@ -43,7 +43,7 @@ if VERSION ≥ v"1.12-"
         # Use the re-exported macro from an "end-user" context
         # that has no direct access to StenoGraphs internals.
         result = @eval module _EndUserTest
-            using ..$(nameof(m))?: @StenoGraph, →, ←, ↔
+            using ..$(nameof(m)): @StenoGraph, →, ←, ↔
             using StenoGraphs: Node, Edge
             graph = @StenoGraph a → b
             addition = @StenoGraph a + b → c
