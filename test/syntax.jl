@@ -149,6 +149,15 @@ end
         b → d
     end) == [Edge(Node(:a), Node(:c)), Edge(Node(:b), Node(:d))]
 
+    # External variables accessible (splat nodes + outside vector)
+    # The splat form uses eval, so external variables must be module-level.
+    @eval n1_ext = [Node(:a), Node(:b)]
+    @eval n2_ext = [Node(:y), Node(:z)]
+    @test @StenoGraph(let n1_ext...
+        a → b
+        a → n2_ext
+    end) == [Edge(Node(:a), Node(:b)), Edge(Node(:a), Node(:y)), Edge(Node(:a), Node(:z))]
+
     # Scoping: variables don't leak
     _splat_scope_nodes = [Node(:_splat_scope_a), Node(:_splat_scope_b)]
     @StenoGraph let _splat_scope_nodes...

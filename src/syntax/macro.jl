@@ -1,6 +1,6 @@
-function StenoGraph_macro(ex)
+function StenoGraph_macro(ex, mod::Module=StenoGraphs)
     if ex isa Expr && ex.head == :let
-        return StenoGraph_let_macro(ex)
+        return StenoGraph_let_macro(ex, mod)
     elseif ex isa Expr && ex.head == :block
         exs = filter(x -> !isa(x, LineNumberNode), ex.args)
         exs = StenoGraphs.addition_to_vector!.(exs)
@@ -15,23 +15,28 @@ end
 # --- let-style @StenoGraph ---
 
 """
-    _stenograph_let_from(collections, body_expr)
+    _stenograph_let_from(mod, collections, body_expr)
 
 Runtime helper for the splat form of `@StenoGraph let nodes... ...end`.
-Builds a scoped `let` expression from the node collections and evaluates it.
+Builds a scoped `let` expression from the node collections and evaluates it
+in the caller's module `mod` so that external variables resolve correctly.
 
 Each node in the collections is exposed as a local variable named by its `id()`.
 For duplicate ids, the last occurrence wins.
 """
-function _stenograph_let_from(collections, body_expr)
+function _stenograph_let_from(mod, collections, body_expr)
     bindings = Expr[]
     for col in collections
         for node in col
-            push!(bindings, Expr(:(=), id(node), convert(Node, node)))
+            # convert(AbstractNode, ...) handles both Symbol → SimpleNode
+            # and preserves ModifiedNode wrappers.
+            # We use QuoteNode to prevent eval from trying to look up the value.
+            val = convert(AbstractNode, node)
+            push!(bindings, Expr(:(=), id(val), QuoteNode(val)))
         end
     end
     let_expr = Expr(:let, Expr(:block, bindings...), body_expr)
-    Base.invokelatest(eval, let_expr)
+    Base.invokelatest(mod.eval, let_expr)
 end
 
 """
@@ -42,7 +47,7 @@ Handle `@StenoGraph let ... end` forms. Dispatches between:
 - **Splat**: `@StenoGraph let nodes...; ... end` — nodes from collection(s) exposed as variables
 - **Mixed**: `@StenoGraph let a, nodes...; ... end` — combination of both
 """
-function StenoGraph_let_macro(ex)
+function StenoGraph_let_macro(ex, mod::Module)
     bindings_ast = ex.args[1]
     body = ex.args[2]
 
@@ -63,10 +68,12 @@ function StenoGraph_let_macro(ex)
         return Expr(:let, Expr(:block, new_bindings...), graph_body)
     else
         # Splat form (possibly with bare symbols mixed in):
-        # Build the body expression as a QuoteNode so it can be eval'd at runtime.
-        # Use fully-qualified StenoGraphs.StenoGraph so it resolves at eval time.
+        # Build the body expression as a QuoteNode so it can be eval'd at runtime
+        # in the caller's module so external variables resolve correctly.
+        # We interpolate the StenoGraph function directly so it resolves regardless
+        # of whether the caller has StenoGraphs in scope.
         vec = Expr(:call, :vcat, body_exprs...)
-        splat_body = :(StenoGraphs.StenoGraph($vec))
+        splat_body = Expr(:call, StenoGraph, vec)
         # Bare symbols get prepended as SimpleNode bindings at runtime too
         bare_collection = if isempty(bare_syms)
             :([])
@@ -74,7 +81,7 @@ function StenoGraph_let_macro(ex)
             Expr(:vcat, [:(SimpleNode($(QuoteNode(s)))) for s in bare_syms]...)
         end
         collections = Expr(:vcat, bare_collection, [esc(s) for s in splat_exprs]...)
-        return :(_stenograph_let_from([$collections], $(QuoteNode(splat_body))))
+        return :(_stenograph_let_from($(mod), [$collections], $(QuoteNode(splat_body))))
     end
 end
 
@@ -145,6 +152,12 @@ The node bindings are scoped and do not leak into the surrounding namespace.
 @StenoGraph let a, b, c
     a → b → c
 end
+
+external = [Node(:y), Node(:z)]
+@StenoGraph let a, b, c
+    a → b
+    c → external
+end
 ```
 
 ## Let form with splat (from node collections)
@@ -164,7 +177,7 @@ See also [`@declare_nodes`](@ref) & [`@declare_nodes_from`](@ref) for alternativ
 
 """
 macro StenoGraph(ex)
-    StenoGraph_macro(ex)
+    StenoGraph_macro(ex, __module__)
 end
 
 """
