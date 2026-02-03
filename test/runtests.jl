@@ -58,6 +58,11 @@ using Test, SafeTestsets, Documenter
         using StenoGraphs, DataFrames
         include("DataFrames.jl")
     end
+    if VERSION ≥ v"1.12-"
+    @safetestset "Export" begin
+        include("export.jl")
+    end
+    end 
     DocMeta.setdocmeta!(StenoGraphs, :DocTestSetup, :(using StenoGraphs); recursive=true)
     doctest(StenoGraphs)
 end
