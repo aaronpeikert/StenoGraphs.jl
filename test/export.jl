@@ -19,6 +19,8 @@
             c ← d
         end
     end
+    @test_throws UndefVarError StenoGraphs.Edge
+    using StenoGraphs # note results is already constructed without StenoGraphs availible
     @test result.graph == [Edge(Node(:a), Node(:b))]
     @test result.addition == [Edge(Node(:a), Node(:c)), Edge(Node(:b), Node(:c))]
     @test result.multiline == [Edge(Node(:a), Node(:b)), Edge(Node(:d), Node(:c))]

@@ -59,9 +59,9 @@ using Test, SafeTestsets, Documenter
         include("DataFrames.jl")
     end
     if VERSION ≥ v"1.12-"
-    @safetestset "Export" begin
+        @safetestset "Export" begin
         include("export.jl")
-    end
+        end
     end 
     DocMeta.setdocmeta!(StenoGraphs, :DocTestSetup, :(using StenoGraphs); recursive=true)
     doctest(StenoGraphs)
