@@ -4,7 +4,7 @@ function StenoGraph_macro(ex)
         exs = StenoGraphs.variable_as_node!.(exs)
         exs = StenoGraphs.addition_to_vector!.(exs)
         vec = Expr(:call, :vcat, exs...)
-        return esc(:(StenoGraphs.StenoGraph($vec)))
+        return :(StenoGraph($vec))
     else
         StenoGraph_macro(Expr(:block, ex))
     end
