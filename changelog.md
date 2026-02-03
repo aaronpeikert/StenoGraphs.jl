@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+* `@StenoGraph let a, b; ... end` — explicit node declaration in a scoped `let` block. Declared symbols become `SimpleNode`s; all other symbols are normal Julia variables (no `_()` escaping needed). Bindings don't leak into the surrounding namespace.
+* `@StenoGraph let nodes...; ... end` — splat form that exposes all nodes from an existing collection as local variables, using `id()` to extract variable names. Supports multiple collections (`let v1..., v2...`) and mixing with inline declarations (`let a, nodes...`).
+
 ### Changed
 
 * Improved macro hygiene for `@StenoGraph`: replaced wholesale `esc()` with selective escaping. User-provided expressions (function names, literals) are escaped to resolve in caller context, while macro-introduced symbols (`SimpleNode`, `StenoGraph`, `convert_symbol`) remain unescaped and are resolved via Julia's built-in macro hygiene. This fixes re-export scenarios where a downstream package re-exports `@StenoGraph` without the end-user ever loading `StenoGraphs` directly.
