@@ -3,27 +3,30 @@ function variable_as_node!(ex, node::Type{T} where {T <: AbstractNode})
 end
 
 function variable_as_node!(ex::Symbol, node::Type{T} where {T <: AbstractNode})
-    Expr(:call, Symbol(node), QuoteNode(ex))
+    Expr(:call, nameof(node), QuoteNode(ex))
 end
 
 function variable_as_node!(ex::Expr, node::Type{T} where {T <: AbstractNode})
     to_quote = eachindex(ex.args)
 
     if ex.head == :call
-        if ex.args[1] == :_ 
+        if ex.args[1] == :_
             length(ex.args) > 2 ? error("Unqote only a single argument. Right: `_(x)`, Wrong: `_(x, y)`.") : nothing
-            return Expr(:call, :(StenoGraphs.convert_symbol), ex.args[2], :(StenoGraphs.SimpleNode))
+            return Expr(:call, :convert_symbol, esc(ex.args[2]), :SimpleNode)
         end
+        # Escape function name so it resolves in caller context
+        ex.args[1] = esc(ex.args[1])
         to_quote = to_quote[2:end]
     end
     # For broadcast operators, skip the first argument to prevent the function name from being converted to a node. issue #63
     if ex.head == :.
+        ex.args[1] = esc(ex.args[1])
         to_quote = to_quote[2:end]
     end
     for i in to_quote
         ex.args[i] = variable_as_node!(ex.args[i], node)
     end
-    ex 
+    ex
 end
 
 convert_symbol(x) = x
@@ -34,5 +37,5 @@ convert_symbol(x::VecOrMat{Symbol}, T) = convert.(T, x)
 variable_as_node!(ex) = variable_as_node!(ex, SimpleNode)
 
 macro variable_as_node(ex)
-    esc(variable_as_node!(ex, SimpleNode))
+    variable_as_node!(ex, SimpleNode)
 end
