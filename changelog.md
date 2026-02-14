@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.0]
+
 ### Changed
 
 * Improved macro hygiene for `@StenoGraph`: replaced wholesale `esc()` with selective escaping. User-provided expressions (function names, literals) are escaped to resolve in caller context, while macro-introduced symbols (`SimpleNode`, `StenoGraph`, `convert_symbol`) remain unescaped and are resolved via Julia's built-in macro hygiene. This fixes re-export scenarios where a downstream package re-exports `@StenoGraph` without the end-user ever loading `StenoGraphs` directly.
