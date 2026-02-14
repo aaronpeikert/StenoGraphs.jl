@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `@StenoGraph let nodes...; ... end` — splat form that exposes all nodes from an existing collection as local variables, using `id()` to extract variable names. Supports multiple collections (`let v1..., v2...`) and mixing with inline declarations (`let a, nodes...`).
 * `@declare_nodes_from` now accepts vectors of `AbstractNode`s (and mixed vectors of `Symbol`s and nodes), not only `Symbol` vectors. `ModifiedNode` wrappers are preserved. This brings `@declare_nodes_from` in line with the splat `let` form.
 
+## [0.5.0]
+
 ### Changed
 
 * Improved macro hygiene for `@StenoGraph`: replaced wholesale `esc()` with selective escaping. User-provided expressions (function names, literals) are escaped to resolve in caller context, while macro-introduced symbols (`SimpleNode`, `StenoGraph`, `convert_symbol`) remain unescaped and are resolved via Julia's built-in macro hygiene. This fixes re-export scenarios where a downstream package re-exports `@StenoGraph` without the end-user ever loading `StenoGraphs` directly.
