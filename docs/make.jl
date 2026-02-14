@@ -9,6 +9,7 @@ makedocs(
     pages = [
         "Home" => "index.md",
         "Manual" => Any[
+            "man/nodes.md",
             "man/types.md",
             "man/arrows.md",
             "man/meld.md"

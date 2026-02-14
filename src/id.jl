@@ -14,6 +14,10 @@ julia> id(Node(1))
 
 """
 
+function id(node::Symbol)
+    node
+end
+
 function id(node::AbstractNode)
     keep(node, Node).node
 end
