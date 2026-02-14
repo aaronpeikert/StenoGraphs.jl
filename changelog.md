@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.0]
+
+### Changed
+
+* Improved macro hygiene for `@StenoGraph`: replaced wholesale `esc()` with selective escaping. User-provided expressions (function names, literals) are escaped to resolve in caller context, while macro-introduced symbols (`SimpleNode`, `StenoGraph`, `convert_symbol`) remain unescaped and are resolved via Julia's built-in macro hygiene. This fixes re-export scenarios where a downstream package re-exports `@StenoGraph` without the end-user ever loading `StenoGraphs` directly.
+* Function names in call expressions (e.g., user-defined `EdgeModifier` constructors) and broadcast expressions are now explicitly escaped in `variable_as_node!` so they resolve in the caller's scope.
+* `@variable_as_node` no longer wraps its result in `esc()`, consistent with the new selective escaping approach.
+* `addition_to_vector!` is now applied before `variable_as_node!` in `StenoGraph_macro`, so that `+` is converted to `hcat` before symbols are escaped.
+* Used `nameof(node)` instead of `Symbol(node)` in `variable_as_node!` to produce unqualified type names regardless of calling context.
+
+### Fixed
+
+* `@StenoGraph` now works correctly when re-exported by a downstream package: end-users no longer need `StenoGraphs` in their namespace (closes [`#73`](https://github.com/aaronpeikert/StenoGraphs.jl/issues/73)).
+
 ## [0.4.4]
 
 ### Added
